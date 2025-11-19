@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RiffScroll</string>
+    <string name="practice_title">Practice Quest</string>
+    <string name="generate_routine">Generate Routine</string>
+    <string name="start_practice">Start Practice</string>
+    <string name="techniques">Techniques</string>
+    <string name="creativity">Creativity</string>
+    <string name="songs">Songs</string>
+    <string name="timer">Timer</string>
+    <string name="metronome">Metronome</string>
+    <string name="bpm">BPM: %d</string>
+    <string name="minutes">%d min</string>
+    <string name="level">Level %d</string>
+    <string name="xp">XP: %d/%d</string>
+    <string name="exercise_complete">Exercise Complete!</string>
+    <string name="routine_complete">Routine Complete!</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="next_exercise">Next Exercise</string>
+    <string name="skip">Skip</string>
+</resources>
