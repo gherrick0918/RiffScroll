@@ -1,5 +1,7 @@
 package com.riffscroll.viewmodel
 
+import android.media.AudioManager
+import android.media.ToneGenerator
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.riffscroll.data.*
@@ -43,6 +45,7 @@ class PracticeViewModel : ViewModel() {
     
     private var timerJob: Job? = null
     private var metronomeJob: Job? = null
+    private var toneGenerator: ToneGenerator? = null
     
     /**
      * Generate a new practice routine
@@ -197,12 +200,25 @@ class PracticeViewModel : ViewModel() {
         _isMetronomeActive.value = true
         metronomeJob?.cancel()
         
+        // Initialize ToneGenerator for metronome beeps
+        try {
+            toneGenerator = ToneGenerator(AudioManager.STREAM_MUSIC, 80)
+        } catch (e: Exception) {
+            // Handle case where ToneGenerator initialization fails
+            toneGenerator = null
+        }
+        
         metronomeJob = viewModelScope.launch {
             val bpm = _metronomeBpm.value
             val intervalMs = (60000.0 / bpm).toLong()
             
             while (_isMetronomeActive.value) {
-                // In a real app, play metronome sound here
+                // Play metronome beep
+                try {
+                    toneGenerator?.startTone(ToneGenerator.TONE_PROP_BEEP, 100)
+                } catch (e: Exception) {
+                    // Silently handle tone generation errors
+                }
                 delay(intervalMs)
             }
         }
@@ -215,6 +231,14 @@ class PracticeViewModel : ViewModel() {
         _isMetronomeActive.value = false
         metronomeJob?.cancel()
         metronomeJob = null
+        
+        // Release ToneGenerator resources
+        try {
+            toneGenerator?.release()
+            toneGenerator = null
+        } catch (e: Exception) {
+            // Silently handle release errors
+        }
     }
     
     /**
@@ -244,5 +268,6 @@ class PracticeViewModel : ViewModel() {
         super.onCleared()
         stopTimer()
         stopMetronome()
+        toneGenerator?.release()
     }
 }

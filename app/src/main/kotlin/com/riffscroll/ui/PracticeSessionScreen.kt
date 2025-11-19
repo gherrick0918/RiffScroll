@@ -183,6 +183,32 @@ fun CurrentExerciseCard(exercise: Exercise) {
             modifier = Modifier.padding(bottom = 16.dp)
         )
         
+        // Display tablature if available
+        if (exercise.tablature != null) {
+            Text(
+                text = "Tablature:",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = RpgTheme.accent,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            
+            RpgCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+            ) {
+                Text(
+                    text = exercise.tablature,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = RpgTheme.textPrimary,
+                    fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+        }
+        
         if (exercise.instructions.isNotEmpty()) {
             Text(
                 text = "Instructions:",
