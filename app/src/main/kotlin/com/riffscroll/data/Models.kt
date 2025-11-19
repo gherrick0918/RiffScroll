@@ -20,7 +20,8 @@ data class Exercise(
     val durationMinutes: Int,
     val hasTiming: Boolean = false,
     val bpm: Int? = null,
-    val instructions: List<String> = emptyList()
+    val instructions: List<String> = emptyList(),
+    val tablature: String? = null  // Optional tablature notation
 )
 
 /**
