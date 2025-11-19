@@ -11,7 +11,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel for managing practice routines and sessions
+ * ViewModel for managing practice routines and sessions.
+ * 
+ * Handles:
+ * - Routine generation and management
+ * - Practice session state and timing
+ * - Metronome control
+ * - User progress and XP tracking
  */
 class PracticeViewModel : ViewModel() {
     
