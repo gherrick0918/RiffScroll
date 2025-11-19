@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Old School RPG Theme Colors -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- RPG Theme -->
+    <color name="rpg_background">#1a1a2e</color>
+    <color name="rpg_surface">#16213e</color>
+    <color name="rpg_primary">#e94560</color>
+    <color name="rpg_secondary">#0f3460</color>
+    <color name="rpg_accent">#f39c12</color>
+    <color name="rpg_text_primary">#ecf0f1</color>
+    <color name="rpg_text_secondary">#bdc3c7</color>
+    <color name="rpg_border">#34495e</color>
+    <color name="rpg_success">#27ae60</color>
+    <color name="rpg_warning">#f39c12</color>
+    <color name="rpg_danger">#e74c3c</color>
+</resources>

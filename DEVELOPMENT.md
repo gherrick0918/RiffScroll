@@ -1,0 +1,312 @@
+# RiffScroll Development Guide
+
+## Building the App
+
+This project requires Android Studio and the Android SDK to build. The Android Gradle Plugin (AGP) is not available in CI environments without the full Android SDK.
+
+### Prerequisites
+
+1. **Android Studio** - Hedgehog (2023.1.1) or later
+2. **Android SDK** - API 34 (Android 14)
+3. **JDK** - Version 17 or later
+4. **Gradle** - Version 8.2 (automatically downloaded by wrapper)
+
+### Build Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/gherrick0918/RiffScroll.git
+   cd RiffScroll
+   ```
+
+2. **Open in Android Studio**
+   - Open Android Studio
+   - Select "Open an Existing Project"
+   - Navigate to the cloned repository
+   - Wait for Gradle sync to complete
+
+3. **Build the project**
+   - From the menu: Build → Make Project
+   - Or use the command line:
+     ```bash
+     ./gradlew assembleDebug
+     ```
+
+4. **Run on device/emulator**
+   - Connect an Android device or start an emulator
+   - Click the "Run" button in Android Studio
+   - Or use: `./gradlew installDebug`
+
+## Project Architecture
+
+### MVVM Pattern
+
+The app uses the MVVM (Model-View-ViewModel) architecture pattern:
+
+```
+┌─────────────┐
+│    View     │ (Jetpack Compose UI)
+│  (UI Layer) │
+└──────┬──────┘
+       │ observes
+       ▼
+┌─────────────┐
+│  ViewModel  │ (PracticeViewModel)
+└──────┬──────┘
+       │ uses
+       ▼
+┌─────────────┐
+│    Model    │ (Data classes & Repository)
+└─────────────┘
+```
+
+### Key Components
+
+#### Data Layer (`data/`)
+
+- **Models.kt**: Core data classes
+  - `Exercise`: Individual practice exercise
+  - `ExerciseCategory`: Enum for exercise types
+  - `PracticeRoutine`: Collection of exercises
+  - `PracticeSession`: Active practice state
+  - `UserProgress`: RPG-style progress tracking
+
+- **ExerciseRepository.kt**: Data source
+  - Provides predefined exercises
+  - Generates balanced routines
+  - Categories: Techniques, Creativity, Songs
+
+#### ViewModel Layer (`viewmodel/`)
+
+- **PracticeViewModel.kt**: Business logic
+  - Manages practice state
+  - Timer functionality
+  - Metronome control
+  - XP and level progression
+  - Uses Kotlin Coroutines for async operations
+
+#### UI Layer (`ui/`)
+
+- **RpgComponents.kt**: Reusable themed components
+  - RpgCard, RpgButton, RpgProgressBar
+  - RpgHeader, RpgText, RpgBadge
+  - Consistent RPG theme styling
+
+- **HomeScreen.kt**: Main interface
+  - User progress display
+  - Routine generation controls
+  - Exercise list preview
+
+- **PracticeSessionScreen.kt**: Active practice
+  - Exercise details and instructions
+  - Timer display
+  - Metronome controls
+  - Session navigation
+
+- **MainActivity.kt**: App entry point
+  - Manages navigation between screens
+  - Collects ViewModel state
+
+## Design Principles
+
+### 1. Old School RPG Theme
+
+The app features a retro RPG aesthetic:
+
+- **Color Palette**:
+  - Background: Dark blue-black (#1a1a2e)
+  - Surface: Deep blue (#16213e)
+  - Primary: Crimson red (#e94560)
+  - Accent: Gold (#f39c12)
+  - Success: Green (#27ae60)
+
+- **Visual Elements**:
+  - Bordered cards with pixel-art inspiration
+  - Progress bars with gradient effects
+  - Badge/tag system for categories
+  - Level and XP system
+
+### 2. Responsive Design
+
+The app adapts to different screen sizes:
+
+- **Portrait Mode**: Vertical scrolling layout
+- **Landscape Mode**: Same layout with horizontal spacing
+- **Tablets**: Utilizes extra space with larger components
+- **Phones**: Compact, efficient layout
+
+The `configChanges` attribute in the manifest handles orientation changes without recreating the Activity.
+
+### 3. Practice Routine Balance
+
+The `generateBalancedRoutine()` function ensures variety:
+
+1. **Minimum Coverage**: At least one exercise from each category
+2. **Time-Based**: Fits within target duration (default 45 min)
+3. **Randomized**: Different routines each generation
+4. **No Duplicates**: Each exercise appears only once
+
+Example routine:
+```
+- Technique: Alternate Picking (5 min, 80 BPM)
+- Creativity: Improvisation (10 min, 90 BPM)
+- Song: Section Practice (15 min)
+- Technique: String Skipping (5 min, 70 BPM)
+- Creativity: Rhythm Creation (8 min, 100 BPM)
+Total: 43 minutes
+```
+
+### 4. Timer and Metronome Integration
+
+Each exercise can have:
+
+- **Duration**: Target practice time in minutes
+- **Timing**: Whether it uses a metronome
+- **BPM**: Suggested tempo (40-240 range)
+
+The timer runs continuously during practice, while the metronome can be toggled on/off and adjusted as needed.
+
+### 5. Progress System
+
+RPG-style progression mechanics:
+
+- **XP Gain**: 2 XP per minute of practice
+- **Level Up**: XP requirement increases by 50% each level
+- **Stats Tracked**:
+  - Total practice minutes
+  - Completed routines
+  - Current level and XP
+
+## Exercise Content
+
+### Technique Exercises (5)
+
+Focus on mechanical skills and dexterity:
+- Chromatic Scale Practice
+- Alternate Picking Drill
+- String Skipping Exercise
+- Hammer-On & Pull-Off Practice
+- Bending Accuracy
+
+### Creativity Exercises (4)
+
+Encourage musical expression:
+- Improvisation in Pentatonic
+- Melodic Composition
+- Rhythm Creation
+- Modal Exploration
+
+### Song Exercises (4)
+
+Apply skills to real music:
+- Song Section Practice
+- Full Song Play-Through
+- Song Memorization
+- Cover Song Learning
+
+Each exercise includes:
+- Clear name and description
+- Step-by-step instructions
+- Appropriate duration
+- Optional BPM for timing
+
+## Testing
+
+### Manual Testing Checklist
+
+- [ ] Generate routine with different durations (15, 30, 45, 60, 90 min)
+- [ ] Start practice session
+- [ ] Verify timer counts correctly
+- [ ] Test pause/resume functionality
+- [ ] Navigate through exercises with "Next" button
+- [ ] Toggle metronome on/off
+- [ ] Adjust metronome BPM (40-240 range)
+- [ ] Complete full routine and verify XP gain
+- [ ] Test level progression
+- [ ] Rotate device between portrait and landscape
+- [ ] Test on phone-sized screen
+- [ ] Test on tablet-sized screen
+
+### Automated Tests
+
+Unit tests can be added for:
+- `ExerciseRepository.generateBalancedRoutine()`
+- `PracticeViewModel` state transitions
+- XP calculation logic
+- Timer functionality
+
+Integration tests for:
+- Full practice session flow
+- Screen navigation
+- Data persistence (when added)
+
+## Future Enhancements
+
+Potential features to add:
+
+1. **Data Persistence**
+   - Save user progress locally
+   - Store practice history
+   - Custom exercise creation
+
+2. **Audio Integration**
+   - Actual metronome sound playback
+   - Backing tracks for practice
+   - Audio recording for self-evaluation
+
+3. **Advanced Features**
+   - Custom routine templates
+   - Practice goals and scheduling
+   - Statistics and charts
+   - Achievement system
+
+4. **Social Features**
+   - Share routines
+   - Practice challenges
+   - Leaderboards
+
+5. **Customization**
+   - Exercise difficulty levels
+   - Focus area selection
+   - Adjustable category weights
+
+## Troubleshooting
+
+### Gradle Sync Issues
+
+If Gradle sync fails:
+1. Check Android Studio and AGP versions match
+2. Verify JDK 17+ is installed
+3. Clear Gradle cache: `./gradlew clean`
+4. Invalidate caches in Android Studio
+
+### Build Errors
+
+Common solutions:
+1. Update Android SDK to latest version
+2. Check internet connection for dependency downloads
+3. Sync project with Gradle files
+4. Rebuild project from scratch
+
+### Runtime Issues
+
+If app crashes or misbehaves:
+1. Check Logcat for error messages
+2. Verify minimum SDK version (API 24+)
+3. Test on different devices/emulators
+4. Check for null pointer exceptions in ViewModel
+
+## Contributing
+
+When adding new features:
+
+1. Follow the existing MVVM architecture
+2. Maintain the RPG theme consistency
+3. Add appropriate comments and documentation
+4. Test on multiple screen sizes
+5. Ensure proper state management in ViewModel
+6. Use Jetpack Compose best practices
+
+## License
+
+Copyright 2024 RiffScroll
