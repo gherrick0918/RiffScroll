@@ -296,6 +296,336 @@ Starting position walks up
                 "This builds endurance for fast passages",
                 "Gradually increase duration as stamina improves"
             )
+        ),
+        // Additional exercises from speed training resources
+        Exercise(
+            id = "tech_13",
+            name = "Economy Picking Across Strings",
+            description = "Practice economy picking to reduce pick movement and increase speed",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Economy picking combines alternate picking with sweep picking",
+                "When moving to a new string in the same direction, continue that stroke",
+                "Example: Down on string 1, down on string 2 (economy), up on string 2",
+                "Practice three-note-per-string scales using economy picking",
+                "Start with a simple ascending pattern across two strings",
+                "Focus on smooth transitions between strings",
+                "Gradually increase speed while maintaining clean notes",
+                "Common in jazz, fusion, and shred guitar styles"
+            ),
+            tablature = """
+e|7-8-10-|
+B|8-10-12| (use economy motion)
+Pattern: ∏ ∨ ∏ ∏ ∨ ∏
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_14",
+            name = "Trill Exercise",
+            description = "Rapid hammer-on and pull-off between two notes for finger speed",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 100,
+            instructions = listOf(
+                "Trill means rapidly alternating between two notes",
+                "Pick the first note only, then hammer-on and pull-off repeatedly",
+                "Start with frets 5 and 7 on any string (two frets apart)",
+                "Practice: 5h7p5h7p5h7p5h7p... for 4 beats",
+                "Try different finger combinations: 1-3, 1-4, 2-4",
+                "Increase speed while maintaining even volume",
+                "Essential technique for fast passages and ornaments",
+                "Practice on all strings for complete finger development"
+            ),
+            tablature = """
+e|5h7p5h7p5h7p5h7p|
+(h=hammer-on, p=pull-off)
+Pick only the first note
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_15",
+            name = "String Skipping Arpeggio",
+            description = "Arpeggio patterns with string skipping for accuracy and speed",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 70,
+            instructions = listOf(
+                "Arpeggios across non-adjacent strings build pick accuracy",
+                "Example: A minor arpeggio skipping strings",
+                "Play: E string (5th fret), G string (7th fret), B string (5th fret)",
+                "Use strict alternate picking throughout",
+                "Focus on avoiding unwanted string noise",
+                "Mute unused strings with both hands",
+                "Start slowly, accuracy is more important than speed",
+                "Common in modern rock and metal guitar playing"
+            ),
+            tablature = """
+e|-------8----|
+B|----8-------|
+G|----------- |
+D|------------|
+A|5-----------|
+E|------------|
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_16",
+            name = "Descending Pull-Off Runs",
+            description = "Fast descending legato runs using pull-offs",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Place all four fingers on frets 5-6-7-8 before starting",
+                "Pick only the first note (8th fret)",
+                "Pull off rapidly: 8p7p6p5 in one smooth motion",
+                "Keep all fingers down until they need to pull off",
+                "Practice on each string separately",
+                "Move the pattern across all six strings",
+                "Combine with ascending hammer-ons for complete runs",
+                "Essential for fast legato playing and shred technique"
+            ),
+            tablature = """
+e|8p7p6p5-----|
+(Pick first note only)
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_17",
+            name = "Sweep Picking Triads",
+            description = "Basic sweep picking technique across three strings",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Sweep picking uses a single fluid motion across multiple strings",
+                "Start with a simple Am triad shape",
+                "Use one continuous downstroke across all three notes going down",
+                "Then one continuous upstroke coming back up",
+                "Keep pick angle consistent, let it glide across strings",
+                "Mute behind the pick with your fretting hand",
+                "Each note should ring clearly but not bleed together",
+                "Practice ascending and descending patterns separately first"
+            ),
+            tablature = """
+G|5------------|
+B|--5----------|
+e|----5--------|
+   ∏  ∏  ∏ (sweep down)
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_18",
+            name = "Single-String Scale Run",
+            description = "Complete scale played on a single string to build left-hand strength",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 70,
+            instructions = listOf(
+                "Play an entire scale on one string using position shifts",
+                "Example: G major on the G string: 0-2-4-5-7-9-11-12",
+                "Requires large stretches and position shifts",
+                "Use alternate picking throughout",
+                "Focus on clean fretting and minimal left-hand tension",
+                "Practice ascending and descending",
+                "Excellent for building finger independence and strength",
+                "Try different scales and different strings"
+            ),
+            tablature = """
+G|0-2-4-5-7-9-11-12-|
+(G major scale on G string)
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_19",
+            name = "Two-Hand Tapping Exercise",
+            description = "Basic two-hand tapping for extended range and speed",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 90,
+            instructions = listOf(
+                "Use your picking hand's index or middle finger to tap frets",
+                "Example pattern: Tap 12, pull-off to 5, hammer-on to 8",
+                "Notation: 12t 5 8h (t=tap with right hand)",
+                "Start slowly to develop coordination between hands",
+                "Tap firmly and pull off cleanly to sound the note",
+                "Practice on one string before moving to complex patterns",
+                "Keep fretting hand in position, minimize movement",
+                "Famous technique used by Eddie Van Halen, Steve Vai"
+            ),
+            tablature = """
+e|12t-5-8h-12t-5-8h|
+(t=tap with right hand)
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_20",
+            name = "Pentatonic Sequence Exercise",
+            description = "Sequenced patterns through pentatonic scale for speed and fluidity",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Use A minor pentatonic position 1 (5th position)",
+                "Play in sequences: groups of 3, 4, or 6 notes",
+                "Example sequence of 4: 5-7-8-5, 7-8-5-7, 8-5-7-8",
+                "Creates flowing, musical patterns rather than just scales",
+                "Practice with alternate picking throughout",
+                "Try different note groupings for variety",
+                "Essential for developing smooth, fast lead playing",
+                "Sequences help build muscle memory for improvisation"
+            ),
+            tablature = """
+A minor pentatonic (sequence of 4):
+e|5-7-8-5-7-8-5-8-|
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_21",
+            name = "Position Shifting Exercise",
+            description = "Practice smooth position shifts along the fretboard",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Play ascending chromatic pattern while shifting positions",
+                "Start at 1st position (1-2-3-4), shift to 2nd (2-3-4-5)",
+                "Continue shifting up the neck: 3-4-5-6, 4-5-6-7, etc.",
+                "Use the same finger pattern in each position",
+                "Focus on smooth, quick position changes",
+                "Minimize hesitation between positions",
+                "Slide your hand, don't jump awkwardly",
+                "Descend back down to starting position"
+            ),
+            tablature = """
+e|1-2-3-4-2-3-4-5-3-4-5-6-|
+Position shifts up the neck
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_22",
+            name = "Hybrid Picking Exercise",
+            description = "Combine pick and fingers for complex picking patterns",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 70,
+            instructions = listOf(
+                "Hold pick normally, use middle and ring fingers too",
+                "Pick bass notes with the pick, higher strings with fingers",
+                "Example: Pick low E, pluck G and B strings simultaneously",
+                "Common in country, bluegrass, and modern rock",
+                "Allows for wider interval jumps and faster patterns",
+                "Practice alternating between pick and finger plucks",
+                "Start with simple patterns before complex ones",
+                "Develops independence between pick and fingers"
+            ),
+            tablature = """
+e|-------5-----|
+B|-------5-----| (pluck with fingers)
+G|-----5-------| (pluck with fingers)
+D|-------------|
+A|--3----------| (pick)
+E|-------------|
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_23",
+            name = "Pinkie Anchor Training",
+            description = "Reversed chromatic pattern using pinky as anchor point (from 10 Guitar Speed Training Exercises)",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "This is the reversed form of standard chromatic exercises",
+                "Start with pinky on 4th fret, work backwards: 4-3-2-1",
+                "The pinky becomes the anchor point instead of the index finger",
+                "Pattern: pinky, ring, middle, index on each string",
+                "This strengthens the weakest fingers (pinky and ring)",
+                "Start slowly - this is much harder than forward chromatic",
+                "Take breaks if you feel burning in your fretting hand",
+                "Excellent for developing pinky independence and strength"
+            ),
+            tablature = """
+e|4-3-2-1------|
+B|------4-3-2-1|
+G|4-3-2-1------|
+D|------4-3-2-1|
+(Reversed pattern)
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_24",
+            name = "Chromatic Slide Extension",
+            description = "Chromatic pattern with pinky slides to extend range (from 10 Guitar Speed Training Exercises)",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Similar to standard chromatic but adds a slide at the peak",
+                "Pattern: 1-2-3-4, then slide pinky from 4 to 5",
+                "Descend from the 5th fret: 5-4-3-2-1",
+                "This creates an uneven 5-fret pattern vs standard 4-fret",
+                "Develops coordination between left and right hands",
+                "Teaches smooth fretboard gliding technique",
+                "Continue the pattern up the neck as far as comfortable",
+                "Start at even tempo and gradually increase speed"
+            ),
+            tablature = """
+e|1-2-3-4s5-4-3-2-1-|
+(s = slide from 4 to 5)
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_25",
+            name = "Neo-Classical Step-Up Pattern",
+            description = "Ascending linear pattern for coordination and neo-classical style (from 10 Guitar Speed Training Exercises)",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 70,
+            instructions = listOf(
+                "Neo-classical exercise pattern for hand coordination",
+                "Breaks out of the typical 'box' patterns",
+                "Linear series of notes across the fretboard",
+                "Focus on coordination between picking and fretting hands",
+                "Start very slow - this is technically demanding",
+                "Sounds musical even at slow speeds",
+                "Study classical composers for arrangement ideas",
+                "Great for developing fluid, connected playing across positions"
+            ),
+            tablature = """
+e|-----5-6-7-8-9---|
+B|---5-6-7-8-------|
+G|-5-6-7-----------|
+(Diagonal ascending pattern)
+            """.trimIndent()
         )
     )
     
@@ -426,6 +756,84 @@ G|-5-7------------|
 D|5-7-------------|
 A|5-7-------------|
 E|5-8-------------|
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "creative_6",
+            name = "Major Scale Position Practice",
+            description = "Practice major scales in different positions across the fretboard (from Berklee Guitar Handbook)",
+            category = ExerciseCategory.CREATIVITY,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Major scale follows the pattern: W-W-H-W-W-W-H",
+                "Practice C major in first position (open position)",
+                "Move to second position, then fifth, then seventh",
+                "A position is defined by where your first finger plays",
+                "Practice the same scale in multiple positions",
+                "This helps organize the fretboard visually",
+                "Essential for understanding keys and tonal music",
+                "Move slowly between positions, ensuring accuracy"
+            ),
+            tablature = """
+C Major (First Position):
+e|-----0-1-3-------|
+B|---0-1-3---------|
+G|-0-2-------------|
+(Continue pattern)
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "creative_7",
+            name = "Triad Practice Across String Sets",
+            description = "Practice major triads in all positions (from Berklee Guitar Handbook)",
+            category = ExerciseCategory.CREATIVITY,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 70,
+            instructions = listOf(
+                "A triad is a three-note chord: root, 3rd, and 5th",
+                "Practice C major triad: C-E-G",
+                "Play triads up the fretboard on strings 1-2-3",
+                "Move one fret at a time through all 12 keys",
+                "Major triad = major 3rd underneath a minor 3rd",
+                "Chordal playing and melodic playing are two sides of same coin",
+                "Understanding triads leads to thorough fretboard knowledge",
+                "Practice on all string sets: 1-2-3, 2-3-4, 3-4-5, etc."
+            ),
+            tablature = """
+C Major Triad (strings 1-2-3):
+e|--8--|
+B|--8--|
+G|--9--|
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "creative_8",
+            name = "Rhythmic Variation Development",
+            description = "Transform scales into musical solos using rhythmic variation (from Berklee Guitar Handbook)",
+            category = ExerciseCategory.CREATIVITY,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 90,
+            instructions = listOf(
+                "Playing scales note-by-note sounds like exercises, not music",
+                "Add rests to create space in your solos",
+                "Use uniform rhythmic modifications (quarter note + two eighths)",
+                "Add triplets at the beginning of measures for ornamentation",
+                "Repeat notes and sequences for melodic development",
+                "Displace notes by adding rests for syncopation",
+                "Add sustain on chord tones (1, 3, 5, 7) with tied notes",
+                "Make the process intuitive through practice"
+            ),
+            tablature = """
+Rhythmic pattern example:
+Quarter + 2 eighths:
+♩ ♪♪ ♩ ♪♪
             """.trimIndent()
         )
     )

@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -63,7 +65,8 @@ fun RpgButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    color: Color = RpgTheme.primary
+    color: Color = RpgTheme.primary,
+    fontSize: TextUnit = 16.sp
 ) {
     Button(
         onClick = onClick,
@@ -75,13 +78,17 @@ fun RpgButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = color,
             disabledContainerColor = RpgTheme.secondary
-        )
+        ),
+        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
     ) {
         Text(
             text = text,
-            fontSize = 16.sp,
+            fontSize = fontSize,
             fontWeight = FontWeight.Bold,
-            color = RpgTheme.textPrimary
+            color = RpgTheme.textPrimary,
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+            softWrap = false
         )
     }
 }
