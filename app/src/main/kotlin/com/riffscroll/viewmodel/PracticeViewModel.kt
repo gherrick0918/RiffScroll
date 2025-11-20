@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 class PracticeViewModel : ViewModel() {
     
     private val repository = ExerciseRepository()
+    private val routineRepository = RoutineRepository()
     
     private val _currentRoutine = MutableStateFlow<PracticeRoutine?>(null)
     val currentRoutine: StateFlow<PracticeRoutine?> = _currentRoutine.asStateFlow()
@@ -42,6 +43,13 @@ class PracticeViewModel : ViewModel() {
     
     private val _isMetronomeActive = MutableStateFlow(false)
     val isMetronomeActive: StateFlow<Boolean> = _isMetronomeActive.asStateFlow()
+    
+    // Saved routines and schedules
+    private val _savedRoutines = MutableStateFlow<List<SavedRoutine>>(emptyList())
+    val savedRoutines: StateFlow<List<SavedRoutine>> = _savedRoutines.asStateFlow()
+    
+    private val _schedules = MutableStateFlow<List<Schedule>>(emptyList())
+    val schedules: StateFlow<List<Schedule>> = _schedules.asStateFlow()
     
     private var timerJob: Job? = null
     private var metronomeJob: Job? = null
@@ -276,6 +284,95 @@ class PracticeViewModel : ViewModel() {
             stopMetronome()
             startMetronome()
         }
+    }
+    
+    // Saved Routines Management
+    
+    /**
+     * Save the current routine with a name
+     */
+    fun saveCurrentRoutine(name: String): SavedRoutine? {
+        val routine = _currentRoutine.value ?: return null
+        val savedRoutine = routineRepository.saveRoutine(name, routine)
+        refreshSavedRoutines()
+        return savedRoutine
+    }
+    
+    /**
+     * Load a saved routine as the current routine
+     */
+    fun loadSavedRoutine(id: String) {
+        val savedRoutine = routineRepository.getSavedRoutine(id)
+        if (savedRoutine != null) {
+            _currentRoutine.value = savedRoutine.routine
+        }
+    }
+    
+    /**
+     * Delete a saved routine
+     */
+    fun deleteSavedRoutine(id: String) {
+        routineRepository.deleteSavedRoutine(id)
+        refreshSavedRoutines()
+        refreshSchedules()
+    }
+    
+    /**
+     * Refresh the list of saved routines
+     */
+    fun refreshSavedRoutines() {
+        _savedRoutines.value = routineRepository.getSavedRoutines()
+    }
+    
+    // Schedule Management
+    
+    /**
+     * Create a new schedule
+     */
+    fun createSchedule(name: String, description: String = ""): Schedule {
+        val schedule = routineRepository.createSchedule(name, description)
+        refreshSchedules()
+        return schedule
+    }
+    
+    /**
+     * Add a routine to a schedule
+     */
+    fun addRoutineToSchedule(scheduleId: String, routineId: String): Boolean {
+        val result = routineRepository.addRoutineToSchedule(scheduleId, routineId)
+        if (result) refreshSchedules()
+        return result
+    }
+    
+    /**
+     * Remove a routine from a schedule
+     */
+    fun removeRoutineFromSchedule(scheduleId: String, routineId: String): Boolean {
+        val result = routineRepository.removeRoutineFromSchedule(scheduleId, routineId)
+        if (result) refreshSchedules()
+        return result
+    }
+    
+    /**
+     * Delete a schedule
+     */
+    fun deleteSchedule(id: String) {
+        routineRepository.deleteSchedule(id)
+        refreshSchedules()
+    }
+    
+    /**
+     * Get routines in a schedule
+     */
+    fun getRoutinesInSchedule(scheduleId: String): List<SavedRoutine> {
+        return routineRepository.getRoutinesInSchedule(scheduleId)
+    }
+    
+    /**
+     * Refresh the list of schedules
+     */
+    fun refreshSchedules() {
+        _schedules.value = routineRepository.getSchedules()
     }
     
     override fun onCleared() {
