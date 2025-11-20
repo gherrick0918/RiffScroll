@@ -296,6 +296,259 @@ Starting position walks up
                 "This builds endurance for fast passages",
                 "Gradually increase duration as stamina improves"
             )
+        ),
+        // Additional exercises from speed training resources
+        Exercise(
+            id = "tech_13",
+            name = "Economy Picking Across Strings",
+            description = "Practice economy picking to reduce pick movement and increase speed",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Economy picking combines alternate picking with sweep picking",
+                "When moving to a new string in the same direction, continue that stroke",
+                "Example: Down on string 1, down on string 2 (economy), up on string 2",
+                "Practice three-note-per-string scales using economy picking",
+                "Start with a simple ascending pattern across two strings",
+                "Focus on smooth transitions between strings",
+                "Gradually increase speed while maintaining clean notes",
+                "Common in jazz, fusion, and shred guitar styles"
+            ),
+            tablature = """
+e|7-8-10-|
+B|8-10-12| (use economy motion)
+Pattern: ∏ ∨ ∏ ∏ ∨ ∏
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_14",
+            name = "Trill Exercise",
+            description = "Rapid hammer-on and pull-off between two notes for finger speed",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 100,
+            instructions = listOf(
+                "Trill means rapidly alternating between two notes",
+                "Pick the first note only, then hammer-on and pull-off repeatedly",
+                "Start with frets 5 and 7 on any string (two frets apart)",
+                "Practice: 5h7p5h7p5h7p5h7p... for 4 beats",
+                "Try different finger combinations: 1-3, 1-4, 2-4",
+                "Increase speed while maintaining even volume",
+                "Essential technique for fast passages and ornaments",
+                "Practice on all strings for complete finger development"
+            ),
+            tablature = """
+e|5h7p5h7p5h7p5h7p|
+(h=hammer-on, p=pull-off)
+Pick only the first note
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_15",
+            name = "String Skipping Arpeggio",
+            description = "Arpeggio patterns with string skipping for accuracy and speed",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 70,
+            instructions = listOf(
+                "Arpeggios across non-adjacent strings build pick accuracy",
+                "Example: A minor arpeggio skipping strings",
+                "Play: E string (5th fret), G string (7th fret), B string (5th fret)",
+                "Use strict alternate picking throughout",
+                "Focus on avoiding unwanted string noise",
+                "Mute unused strings with both hands",
+                "Start slowly, accuracy is more important than speed",
+                "Common in modern rock and metal guitar playing"
+            ),
+            tablature = """
+e|-------8----|
+B|----8-------|
+G|----------- |
+D|------------|
+A|5-----------|
+E|------------|
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_16",
+            name = "Descending Pull-Off Runs",
+            description = "Fast descending legato runs using pull-offs",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Place all four fingers on frets 5-6-7-8 before starting",
+                "Pick only the first note (8th fret)",
+                "Pull off rapidly: 8p7p6p5 in one smooth motion",
+                "Keep all fingers down until they need to pull off",
+                "Practice on each string separately",
+                "Move the pattern across all six strings",
+                "Combine with ascending hammer-ons for complete runs",
+                "Essential for fast legato playing and shred technique"
+            ),
+            tablature = """
+e|8p7p6p5-----|
+(Pick first note only)
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_17",
+            name = "Sweep Picking Triads",
+            description = "Basic sweep picking technique across three strings",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Sweep picking uses a single fluid motion across multiple strings",
+                "Start with a simple Am triad shape",
+                "Use one continuous downstroke across all three notes going down",
+                "Then one continuous upstroke coming back up",
+                "Keep pick angle consistent, let it glide across strings",
+                "Mute behind the pick with your fretting hand",
+                "Each note should ring clearly but not bleed together",
+                "Practice ascending and descending patterns separately first"
+            ),
+            tablature = """
+G|5------------|
+B|--5----------|
+e|----5--------|
+   ∏  ∏  ∏ (sweep down)
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_18",
+            name = "Single-String Scale Run",
+            description = "Complete scale played on a single string to build left-hand strength",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 70,
+            instructions = listOf(
+                "Play an entire scale on one string using position shifts",
+                "Example: G major on the G string: 0-2-4-5-7-9-11-12",
+                "Requires large stretches and position shifts",
+                "Use alternate picking throughout",
+                "Focus on clean fretting and minimal left-hand tension",
+                "Practice ascending and descending",
+                "Excellent for building finger independence and strength",
+                "Try different scales and different strings"
+            ),
+            tablature = """
+G|0-2-4-5-7-9-11-12-|
+(G major scale on G string)
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_19",
+            name = "Two-Hand Tapping Exercise",
+            description = "Basic two-hand tapping for extended range and speed",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 90,
+            instructions = listOf(
+                "Use your picking hand's index or middle finger to tap frets",
+                "Example pattern: Tap 12, pull-off to 5, hammer-on to 8",
+                "Notation: 12t 5 8h (t=tap with right hand)",
+                "Start slowly to develop coordination between hands",
+                "Tap firmly and pull off cleanly to sound the note",
+                "Practice on one string before moving to complex patterns",
+                "Keep fretting hand in position, minimize movement",
+                "Famous technique used by Eddie Van Halen, Steve Vai"
+            ),
+            tablature = """
+e|12t-5-8h-12t-5-8h|
+(t=tap with right hand)
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_20",
+            name = "Pentatonic Sequence Exercise",
+            description = "Sequenced patterns through pentatonic scale for speed and fluidity",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Use A minor pentatonic position 1 (5th position)",
+                "Play in sequences: groups of 3, 4, or 6 notes",
+                "Example sequence of 4: 5-7-8-5, 7-8-5-7, 8-5-7-8",
+                "Creates flowing, musical patterns rather than just scales",
+                "Practice with alternate picking throughout",
+                "Try different note groupings for variety",
+                "Essential for developing smooth, fast lead playing",
+                "Sequences help build muscle memory for improvisation"
+            ),
+            tablature = """
+A minor pentatonic (sequence of 4):
+e|5-7-8-5-7-8-5-8-|
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_21",
+            name = "Position Shifting Exercise",
+            description = "Practice smooth position shifts along the fretboard",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Play ascending chromatic pattern while shifting positions",
+                "Start at 1st position (1-2-3-4), shift to 2nd (2-3-4-5)",
+                "Continue shifting up the neck: 3-4-5-6, 4-5-6-7, etc.",
+                "Use the same finger pattern in each position",
+                "Focus on smooth, quick position changes",
+                "Minimize hesitation between positions",
+                "Slide your hand, don't jump awkwardly",
+                "Descend back down to starting position"
+            ),
+            tablature = """
+e|1-2-3-4-2-3-4-5-3-4-5-6-|
+Position shifts up the neck
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_22",
+            name = "Hybrid Picking Exercise",
+            description = "Combine pick and fingers for complex picking patterns",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 70,
+            instructions = listOf(
+                "Hold pick normally, use middle and ring fingers too",
+                "Pick bass notes with the pick, higher strings with fingers",
+                "Example: Pick low E, pluck G and B strings simultaneously",
+                "Common in country, bluegrass, and modern rock",
+                "Allows for wider interval jumps and faster patterns",
+                "Practice alternating between pick and finger plucks",
+                "Start with simple patterns before complex ones",
+                "Develops independence between pick and fingers"
+            ),
+            tablature = """
+e|-------5-----|
+B|-------5-----| (pluck with fingers)
+G|-----5-------| (pluck with fingers)
+D|-------------|
+A|--3----------| (pick)
+E|-------------|
+            """.trimIndent()
         )
     )
     
