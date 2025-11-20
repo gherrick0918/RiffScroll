@@ -54,7 +54,7 @@ fun RiffScrollApp() {
             HomeScreen(
                 userProgress = userProgress,
                 currentRoutine = currentRoutine,
-                onGenerateRoutine = { duration -> viewModel.generateRoutine(duration) },
+                onGenerateRoutine = { duration, difficulty -> viewModel.generateRoutine(duration, difficulty) },
                 onStartPractice = { viewModel.startPracticeSession() }
             )
         }

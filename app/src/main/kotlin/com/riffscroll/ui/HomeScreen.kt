@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.riffscroll.data.DifficultyLevel
 import com.riffscroll.data.Exercise
 import com.riffscroll.data.ExerciseCategory
 import com.riffscroll.data.PracticeRoutine
@@ -25,7 +26,7 @@ import com.riffscroll.data.UserProgress
 fun HomeScreen(
     userProgress: UserProgress,
     currentRoutine: PracticeRoutine?,
-    onGenerateRoutine: (Int) -> Unit,
+    onGenerateRoutine: (Int, DifficultyLevel?) -> Unit,
     onStartPractice: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -54,6 +55,48 @@ fun HomeScreen(
             )
             
             var selectedDuration by remember { mutableStateOf(45) }
+            var selectedDifficulty by remember { mutableStateOf<DifficultyLevel?>(null) }
+            
+            // Difficulty Selection
+            Text(
+                text = "Difficulty:",
+                color = RpgTheme.textPrimary,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                RpgButton(
+                    text = "All",
+                    onClick = { selectedDifficulty = null },
+                    modifier = Modifier.weight(1f),
+                    color = if (selectedDifficulty == null) RpgTheme.primary else RpgTheme.secondary
+                )
+                RpgButton(
+                    text = "Beginner",
+                    onClick = { selectedDifficulty = DifficultyLevel.BEGINNER },
+                    modifier = Modifier.weight(1f),
+                    color = if (selectedDifficulty == DifficultyLevel.BEGINNER) RpgTheme.primary else RpgTheme.secondary
+                )
+                RpgButton(
+                    text = "Intermediate",
+                    onClick = { selectedDifficulty = DifficultyLevel.INTERMEDIATE },
+                    modifier = Modifier.weight(1f),
+                    color = if (selectedDifficulty == DifficultyLevel.INTERMEDIATE) RpgTheme.primary else RpgTheme.secondary
+                )
+                RpgButton(
+                    text = "Advanced",
+                    onClick = { selectedDifficulty = DifficultyLevel.ADVANCED },
+                    modifier = Modifier.weight(1f),
+                    color = if (selectedDifficulty == DifficultyLevel.ADVANCED) RpgTheme.primary else RpgTheme.secondary
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
             
             Text(
                 text = "Duration: $selectedDuration minutes",
@@ -78,7 +121,7 @@ fun HomeScreen(
             
             RpgButton(
                 text = "🎲 Generate New Routine",
-                onClick = { onGenerateRoutine(selectedDuration) },
+                onClick = { onGenerateRoutine(selectedDuration, selectedDifficulty) },
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -243,6 +286,15 @@ fun ExerciseListItem(exercise: Exercise, index: Int) {
                         ExerciseCategory.TECHNIQUE -> RpgTheme.primary
                         ExerciseCategory.CREATIVITY -> RpgTheme.accent
                         ExerciseCategory.SONGS -> RpgTheme.success
+                    }
+                )
+                
+                RpgBadge(
+                    text = exercise.difficulty.displayName,
+                    color = when (exercise.difficulty) {
+                        DifficultyLevel.BEGINNER -> RpgTheme.success
+                        DifficultyLevel.INTERMEDIATE -> RpgTheme.warning
+                        DifficultyLevel.ADVANCED -> RpgTheme.danger
                     }
                 )
                 
