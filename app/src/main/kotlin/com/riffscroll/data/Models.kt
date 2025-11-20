@@ -10,6 +10,15 @@ enum class ExerciseCategory {
 }
 
 /**
+ * Difficulty level for exercises
+ */
+enum class DifficultyLevel(val displayName: String, val level: Int) {
+    BEGINNER("Beginner", 1),
+    INTERMEDIATE("Intermediate", 2),
+    ADVANCED("Advanced", 3)
+}
+
+/**
  * Represents a single guitar exercise
  */
 data class Exercise(
@@ -18,6 +27,7 @@ data class Exercise(
     val description: String,
     val category: ExerciseCategory,
     val durationMinutes: Int,
+    val difficulty: DifficultyLevel = DifficultyLevel.BEGINNER,
     val hasTiming: Boolean = false,
     val bpm: Int? = null,
     val instructions: List<String> = emptyList(),

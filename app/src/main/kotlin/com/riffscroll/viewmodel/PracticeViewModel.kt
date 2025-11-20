@@ -46,12 +46,13 @@ class PracticeViewModel : ViewModel() {
     private var timerJob: Job? = null
     private var metronomeJob: Job? = null
     private var toneGenerator: ToneGenerator? = null
+    private var beatCounter = 0  // Track beats for accenting first beat of measure
     
     /**
      * Generate a new practice routine
      */
-    fun generateRoutine(targetDurationMinutes: Int = 45) {
-        val routine = repository.generateBalancedRoutine(targetDurationMinutes)
+    fun generateRoutine(targetDurationMinutes: Int = 45, difficulty: DifficultyLevel? = null) {
+        val routine = repository.generateBalancedRoutine(targetDurationMinutes, difficulty)
         _currentRoutine.value = routine
     }
     
@@ -202,6 +203,7 @@ class PracticeViewModel : ViewModel() {
         if (_isMetronomeActive.value) return
         
         _isMetronomeActive.value = true
+        beatCounter = 0  // Reset beat counter when starting
         metronomeJob?.cancel()
         
         // Initialize ToneGenerator for metronome beeps
@@ -217,9 +219,16 @@ class PracticeViewModel : ViewModel() {
             val intervalMs = (60000.0 / bpm).toLong()
             
             while (_isMetronomeActive.value) {
-                // Play metronome beep
+                // Play metronome beep with accent on first beat (4/4 time)
                 try {
-                    toneGenerator?.startTone(ToneGenerator.TONE_PROP_BEEP, 100)
+                    if (beatCounter % 4 == 0) {
+                        // Accented first beat - higher pitch and louder
+                        toneGenerator?.startTone(ToneGenerator.TONE_DTMF_1, 100)
+                    } else {
+                        // Regular beats
+                        toneGenerator?.startTone(ToneGenerator.TONE_PROP_BEEP, 100)
+                    }
+                    beatCounter++
                 } catch (e: Exception) {
                     // Silently handle tone generation errors
                 }
@@ -233,6 +242,7 @@ class PracticeViewModel : ViewModel() {
      */
     fun stopMetronome() {
         _isMetronomeActive.value = false
+        beatCounter = 0  // Reset beat counter when stopping
         metronomeJob?.cancel()
         metronomeJob = null
         

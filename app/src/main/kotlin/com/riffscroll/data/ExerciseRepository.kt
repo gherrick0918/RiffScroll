@@ -14,6 +14,7 @@ class ExerciseRepository {
             description = "Practice chromatic scales to build finger strength and dexterity",
             category = ExerciseCategory.TECHNIQUE,
             durationMinutes = 5,
+            difficulty = DifficultyLevel.BEGINNER,
             hasTiming = true,
             bpm = 60,
             instructions = listOf(
@@ -39,6 +40,7 @@ E|------------------|
             description = "Master alternate picking technique for speed and precision",
             category = ExerciseCategory.TECHNIQUE,
             durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
             bpm = 80,
             instructions = listOf(
@@ -65,6 +67,7 @@ E|12-13-14-15-|
             description = "Develop accuracy and coordination with string skipping patterns",
             category = ExerciseCategory.TECHNIQUE,
             durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
             bpm = 70,
             instructions = listOf(
@@ -90,6 +93,7 @@ E|----------|----------|
             description = "Build legato technique with hammer-ons and pull-offs",
             category = ExerciseCategory.TECHNIQUE,
             durationMinutes = 5,
+            difficulty = DifficultyLevel.BEGINNER,
             hasTiming = true,
             bpm = 60,
             instructions = listOf(
@@ -113,6 +117,7 @@ Combined:    e|5h7h8p7p5|
             description = "Master string bending technique and pitch accuracy",
             category = ExerciseCategory.TECHNIQUE,
             durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = false,
             instructions = listOf(
                 "Start with half-step bends on the B string, 8th fret",
@@ -137,6 +142,7 @@ B|8b10r8-| (bend and release)
             description = "Free improvisation using pentatonic scale patterns",
             category = ExerciseCategory.CREATIVITY,
             durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
             bpm = 90,
             instructions = listOf(
@@ -164,6 +170,7 @@ E|5-8-------------|
             description = "Compose short melodic phrases and motifs",
             category = ExerciseCategory.CREATIVITY,
             durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = false,
             instructions = listOf(
                 "Create a simple 4-bar melody in one key",
@@ -181,6 +188,7 @@ E|5-8-------------|
             description = "Develop unique rhythm patterns and strumming",
             category = ExerciseCategory.CREATIVITY,
             durationMinutes = 8,
+            difficulty = DifficultyLevel.BEGINNER,
             hasTiming = true,
             bpm = 100,
             instructions = listOf(
@@ -207,6 +215,7 @@ Syncopated:     ∏ ∨ ∏ ∨ x ∨ ∏ ∨
             description = "Explore different modes and their unique flavors",
             category = ExerciseCategory.CREATIVITY,
             durationMinutes = 10,
+            difficulty = DifficultyLevel.ADVANCED,
             hasTiming = false,
             instructions = listOf(
                 "Choose a mode: Dorian (minor with major 6th)",
@@ -236,6 +245,7 @@ E|-----------------|
             description = "Work on a specific section of your current song",
             category = ExerciseCategory.SONGS,
             durationMinutes = 15,
+            difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = false,
             instructions = listOf(
                 "Choose the most challenging section (e.g., solo, bridge, difficult riff)",
@@ -254,6 +264,7 @@ E|-----------------|
             description = "Play through an entire song from start to finish",
             category = ExerciseCategory.SONGS,
             durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = false,
             instructions = listOf(
                 "Choose a song you know reasonably well",
@@ -272,6 +283,7 @@ E|-----------------|
             description = "Work on memorizing song structure and parts",
             category = ExerciseCategory.SONGS,
             durationMinutes = 10,
+            difficulty = DifficultyLevel.BEGINNER,
             hasTiming = false,
             instructions = listOf(
                 "Put away sheet music, tabs, and chord charts",
@@ -290,6 +302,7 @@ E|-----------------|
             description = "Learn a new song or section by ear",
             category = ExerciseCategory.SONGS,
             durationMinutes = 15,
+            difficulty = DifficultyLevel.ADVANCED,
             hasTiming = false,
             instructions = listOf(
                 "Choose a song slightly below your current skill level",
@@ -316,49 +329,99 @@ E|-----------------|
         }
     }
     
+    fun getExercisesByDifficulty(difficulty: DifficultyLevel?): List<Exercise> {
+        return if (difficulty == null) {
+            getAllExercises()
+        } else {
+            getAllExercises().filter { it.difficulty == difficulty }
+        }
+    }
+    
     /**
      * Generate a balanced practice routine
-     * Ensures variety across all three categories
+     * Ensures variety across all three categories and matches target duration more accurately
      */
-    fun generateBalancedRoutine(targetDurationMinutes: Int = 45): PracticeRoutine {
+    fun generateBalancedRoutine(
+        targetDurationMinutes: Int = 45,
+        difficulty: DifficultyLevel? = null
+    ): PracticeRoutine {
         val exercises = mutableListOf<Exercise>()
         var totalDuration = 0
         
-        // Get exercises from each category sorted by duration
-        val techByDuration = techniqueExercises.sortedBy { it.durationMinutes }
-        val creativeByDuration = creativityExercises.sortedBy { it.durationMinutes }
-        val songsByDuration = songExercises.sortedBy { it.durationMinutes }
+        // Filter exercises by difficulty if specified
+        val availableTech = if (difficulty != null) {
+            techniqueExercises.filter { it.difficulty == difficulty }
+        } else {
+            techniqueExercises
+        }
         
-        // Pick one from each category, preferring shorter exercises for short routines
-        val techExercise = if (targetDurationMinutes <= 20) 
-            techByDuration.first() else techByDuration.random()
-        val creativeExercise = if (targetDurationMinutes <= 20)
-            creativeByDuration.first() else creativeByDuration.random()
-        val songExercise = if (targetDurationMinutes <= 20)
-            songsByDuration.first() else songsByDuration.random()
+        val availableCreative = if (difficulty != null) {
+            creativityExercises.filter { it.difficulty == difficulty }
+        } else {
+            creativityExercises
+        }
         
-        exercises.add(techExercise)
-        exercises.add(creativeExercise)
-        exercises.add(songExercise)
-        totalDuration = techExercise.durationMinutes + 
-                       creativeExercise.durationMinutes + 
-                       songExercise.durationMinutes
+        val availableSongs = if (difficulty != null) {
+            songExercises.filter { it.difficulty == difficulty }
+        } else {
+            songExercises
+        }
         
-        // Fill remaining time with random exercises, but stay within target
-        val allExercises = getAllExercises().shuffled()
-        for (exercise in allExercises) {
-            if (!exercises.contains(exercise) &&
-                totalDuration + exercise.durationMinutes <= targetDurationMinutes) {
+        // Sort by duration to help with filling
+        val techByDuration = availableTech.sortedBy { it.durationMinutes }
+        val creativeByDuration = availableCreative.sortedBy { it.durationMinutes }
+        val songsByDuration = availableSongs.sortedBy { it.durationMinutes }
+        
+        // Select exercises that fit within the target duration
+        // Try to pick one from each category first
+        val techExercise = techByDuration.firstOrNull { 
+            totalDuration + it.durationMinutes <= targetDurationMinutes 
+        }
+        if (techExercise != null) {
+            exercises.add(techExercise)
+            totalDuration += techExercise.durationMinutes
+        }
+        
+        val creativeExercise = creativeByDuration.firstOrNull { 
+            totalDuration + it.durationMinutes <= targetDurationMinutes 
+        }
+        if (creativeExercise != null) {
+            exercises.add(creativeExercise)
+            totalDuration += creativeExercise.durationMinutes
+        }
+        
+        val songExercise = songsByDuration.firstOrNull { 
+            totalDuration + it.durationMinutes <= targetDurationMinutes 
+        }
+        if (songExercise != null) {
+            exercises.add(songExercise)
+            totalDuration += songExercise.durationMinutes
+        }
+        
+        // Fill remaining time with exercises that fit, prioritizing variety
+        val availableExercises = (availableTech + availableCreative + availableSongs)
+            .filter { !exercises.contains(it) }
+            .sortedBy { it.durationMinutes }
+        
+        for (exercise in availableExercises) {
+            if (totalDuration + exercise.durationMinutes <= targetDurationMinutes) {
                 exercises.add(exercise)
                 totalDuration += exercise.durationMinutes
             }
+        }
+        
+        // Calculate average difficulty level for the routine
+        val avgDifficulty = if (exercises.isNotEmpty()) {
+            exercises.map { it.difficulty.level }.average().toInt()
+        } else {
+            1
         }
         
         return PracticeRoutine(
             id = "routine_${System.currentTimeMillis()}",
             exercises = exercises,
             totalDurationMinutes = totalDuration,
-            difficulty = Random.nextInt(1, 4)
+            difficulty = avgDifficulty
         )
     }
 }
