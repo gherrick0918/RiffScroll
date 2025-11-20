@@ -65,7 +65,7 @@ class PracticeViewModel : ViewModel() {
             routine = routine,
             currentExerciseIndex = 0,
             isActive = true,
-            isPaused = false,
+            isPaused = true,  // Start paused so user can review exercise first
             elapsedSeconds = 0
         )
         
@@ -78,7 +78,7 @@ class PracticeViewModel : ViewModel() {
             _metronomeBpm.value = firstExercise.bpm
         }
         
-        startTimer()
+        // Timer will start when user clicks Resume button
     }
     
     /**
@@ -112,6 +112,7 @@ class PracticeViewModel : ViewModel() {
         val session = _currentSession.value ?: return
         val nextIndex = session.currentExerciseIndex + 1
         
+        stopTimer()
         stopMetronome()
         
         if (nextIndex >= session.routine.exercises.size) {
@@ -120,7 +121,10 @@ class PracticeViewModel : ViewModel() {
             return
         }
         
-        _currentSession.value = session.copy(currentExerciseIndex = nextIndex)
+        _currentSession.value = session.copy(
+            currentExerciseIndex = nextIndex,
+            isPaused = true  // Pause so user can review the new exercise
+        )
         _timerSeconds.value = 0
         
         // Update metronome for new exercise
