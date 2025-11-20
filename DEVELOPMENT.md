@@ -307,6 +307,161 @@ When adding new features:
 5. Ensure proper state management in ViewModel
 6. Use Jetpack Compose best practices
 
+### Adding New Exercises
+
+The app is designed to make adding new exercises straightforward. Here's how:
+
+#### 1. Define the Exercise
+
+Add a new `Exercise` object to the appropriate category in `ExerciseRepository.kt`:
+
+```kotlin
+// For technique exercises, add to techniqueExercises list:
+Exercise(
+    id = "tech_6",  // Use unique ID
+    name = "Sweep Picking Exercise",
+    description = "Develop smooth sweep picking technique",
+    category = ExerciseCategory.TECHNIQUE,
+    durationMinutes = 5,
+    hasTiming = true,
+    bpm = 80,
+    instructions = listOf(
+        "Start with a simple Am arpeggio pattern",
+        "Use one continuous pick motion across strings",
+        "Focus on muting strings after playing them",
+        "Practice slowly, ensuring each note rings clearly"
+    ),
+    tablature = """
+e|-----5----|
+B|---5------|
+G|-5--------|
+D|----------|
+A|----------|
+E|----------|
+    """.trimIndent()
+)
+```
+
+#### 2. Exercise Properties Explained
+
+- **id**: Unique identifier (e.g., "tech_6", "creative_5", "song_5")
+- **name**: Display name shown to users
+- **description**: Brief one-line description
+- **category**: One of `TECHNIQUE`, `CREATIVITY`, or `SONGS`
+- **durationMinutes**: How long the exercise should take (5-15 min typical)
+- **hasTiming**: Set to `true` if metronome is useful for this exercise
+- **bpm**: Suggested BPM if `hasTiming` is true (40-240 range), null otherwise
+- **instructions**: List of step-by-step instructions (4-8 steps recommended)
+- **tablature**: Optional guitar tab notation (use `"""...""".trimIndent()` for multi-line)
+
+#### 3. Exercise Categories
+
+**TECHNIQUE** - Mechanical skills and technical exercises:
+- Picking patterns
+- Scales and arpeggios
+- Finger exercises
+- String control
+- Fretting techniques
+
+**CREATIVITY** - Musical expression and composition:
+- Improvisation exercises
+- Songwriting prompts
+- Melody creation
+- Rhythm development
+- Theory application
+
+**SONGS** - Practical application with real music:
+- Song learning techniques
+- Performance practice
+- Memorization methods
+- Style studies
+
+#### 4. Best Practices
+
+- **Duration**: Keep exercises between 5-15 minutes
+  - Short exercises (5 min): Focused drills, warm-ups
+  - Medium exercises (8-10 min): Moderate complexity
+  - Long exercises (15 min): Complex work, song practice
+
+- **Instructions**: 
+  - Be specific and actionable
+  - Include 4-8 clear steps
+  - Start with setup/preparation
+  - Progress from basic to advanced
+
+- **Tablature**:
+  - Use standard ASCII tab notation
+  - Keep it simple and readable
+  - Include rhythm notation if helpful
+  - Add fingering hints (h=hammer, p=pull-off, b=bend, etc.)
+
+- **BPM Selection**:
+  - Beginner tempo: 60-80 BPM
+  - Intermediate: 80-120 BPM
+  - Advanced: 120-180 BPM
+  - Set `hasTiming = false` for non-rhythmic exercises
+
+#### 5. Testing Your Exercise
+
+After adding an exercise:
+
+1. Build and run the app
+2. Generate several routines to see if your exercise appears
+3. Verify all text displays correctly
+4. Check tablature formatting
+5. Test the metronome at the specified BPM
+6. Ensure instructions are clear and complete
+
+#### 6. Example Exercise Templates
+
+**Simple Technique Exercise:**
+```kotlin
+Exercise(
+    id = "tech_X",
+    name = "Exercise Name",
+    description = "One-line description",
+    category = ExerciseCategory.TECHNIQUE,
+    durationMinutes = 5,
+    hasTiming = true,
+    bpm = 60,
+    instructions = listOf(
+        "Step 1",
+        "Step 2",
+        "Step 3",
+        "Step 4"
+    ),
+    tablature = "e|--0--1--2--3--|"
+)
+```
+
+**Creativity Exercise (no tab):**
+```kotlin
+Exercise(
+    id = "creative_X",
+    name = "Creative Exercise",
+    description = "One-line description",
+    category = ExerciseCategory.CREATIVITY,
+    durationMinutes = 10,
+    hasTiming = false,
+    instructions = listOf(
+        "Step 1",
+        "Step 2",
+        "Step 3",
+        "Step 4"
+    )
+)
+```
+
+#### 7. Routine Generation
+
+The `generateBalancedRoutine()` algorithm automatically:
+- Ensures at least one exercise from each category
+- Randomizes exercise selection for variety
+- Respects the target duration
+- Prevents duplicate exercises in one routine
+
+No changes needed to the algorithm when adding exercises - they'll automatically be included in future routine generation!
+
 ## License
 
 Copyright 2024 RiffScroll

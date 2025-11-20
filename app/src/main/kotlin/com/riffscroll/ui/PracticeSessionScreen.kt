@@ -96,6 +96,7 @@ fun PracticeSessionScreen(
         // Control buttons
         PracticeControls(
             isPaused = session.isPaused,
+            timerSeconds = timerSeconds,
             onPause = onPause,
             onResume = onResume,
             onNext = onNext
@@ -341,6 +342,7 @@ fun MetronomeCard(
 @Composable
 fun PracticeControls(
     isPaused: Boolean,
+    timerSeconds: Int,
     onPause: () -> Unit,
     onResume: () -> Unit,
     onNext: () -> Unit
@@ -350,8 +352,9 @@ fun PracticeControls(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         if (isPaused) {
+            val buttonText = if (timerSeconds == 0) "▶ Start" else "▶ Resume"
             RpgButton(
-                text = "▶ Resume",
+                text = buttonText,
                 onClick = onResume,
                 modifier = Modifier.weight(1f),
                 color = RpgTheme.success
