@@ -74,25 +74,29 @@ fun HomeScreen(
                     text = "All",
                     onClick = { selectedDifficulty = null },
                     modifier = Modifier.weight(1f),
-                    color = if (selectedDifficulty == null) RpgTheme.primary else RpgTheme.secondary
+                    color = if (selectedDifficulty == null) RpgTheme.primary else RpgTheme.secondary,
+                    fontSize = 13.sp
                 )
                 RpgButton(
                     text = "Beginner",
                     onClick = { selectedDifficulty = DifficultyLevel.BEGINNER },
                     modifier = Modifier.weight(1f),
-                    color = if (selectedDifficulty == DifficultyLevel.BEGINNER) RpgTheme.primary else RpgTheme.secondary
+                    color = if (selectedDifficulty == DifficultyLevel.BEGINNER) RpgTheme.primary else RpgTheme.secondary,
+                    fontSize = 13.sp
                 )
                 RpgButton(
                     text = "Intermediate",
                     onClick = { selectedDifficulty = DifficultyLevel.INTERMEDIATE },
                     modifier = Modifier.weight(1f),
-                    color = if (selectedDifficulty == DifficultyLevel.INTERMEDIATE) RpgTheme.primary else RpgTheme.secondary
+                    color = if (selectedDifficulty == DifficultyLevel.INTERMEDIATE) RpgTheme.primary else RpgTheme.secondary,
+                    fontSize = 13.sp
                 )
                 RpgButton(
                     text = "Advanced",
                     onClick = { selectedDifficulty = DifficultyLevel.ADVANCED },
                     modifier = Modifier.weight(1f),
-                    color = if (selectedDifficulty == DifficultyLevel.ADVANCED) RpgTheme.primary else RpgTheme.secondary
+                    color = if (selectedDifficulty == DifficultyLevel.ADVANCED) RpgTheme.primary else RpgTheme.secondary,
+                    fontSize = 13.sp
                 )
             }
             
