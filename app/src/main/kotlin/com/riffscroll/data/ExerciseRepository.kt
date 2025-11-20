@@ -549,6 +549,83 @@ D|-------------|
 A|--3----------| (pick)
 E|-------------|
             """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_23",
+            name = "Pinkie Anchor Training",
+            description = "Reversed chromatic pattern using pinky as anchor point (from 10 Guitar Speed Training Exercises)",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "This is the reversed form of standard chromatic exercises",
+                "Start with pinky on 4th fret, work backwards: 4-3-2-1",
+                "The pinky becomes the anchor point instead of the index finger",
+                "Pattern: pinky, ring, middle, index on each string",
+                "This strengthens the weakest fingers (pinky and ring)",
+                "Start slowly - this is much harder than forward chromatic",
+                "Take breaks if you feel burning in your fretting hand",
+                "Excellent for developing pinky independence and strength"
+            ),
+            tablature = """
+e|4-3-2-1------|
+B|------4-3-2-1|
+G|4-3-2-1------|
+D|------4-3-2-1|
+(Reversed pattern)
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_24",
+            name = "Chromatic Slide Extension",
+            description = "Chromatic pattern with pinky slides to extend range (from 10 Guitar Speed Training Exercises)",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Similar to standard chromatic but adds a slide at the peak",
+                "Pattern: 1-2-3-4, then slide pinky from 4 to 5",
+                "Descend from the 5th fret: 5-4-3-2-1",
+                "This creates an uneven 5-fret pattern vs standard 4-fret",
+                "Develops coordination between left and right hands",
+                "Teaches smooth fretboard gliding technique",
+                "Continue the pattern up the neck as far as comfortable",
+                "Start at even tempo and gradually increase speed"
+            ),
+            tablature = """
+e|1-2-3-4s5-4-3-2-1-|
+(s = slide from 4 to 5)
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_25",
+            name = "Neo-Classical Step-Up Pattern",
+            description = "Ascending linear pattern for coordination and neo-classical style (from 10 Guitar Speed Training Exercises)",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 70,
+            instructions = listOf(
+                "Neo-classical exercise pattern for hand coordination",
+                "Breaks out of the typical 'box' patterns",
+                "Linear series of notes across the fretboard",
+                "Focus on coordination between picking and fretting hands",
+                "Start very slow - this is technically demanding",
+                "Sounds musical even at slow speeds",
+                "Study classical composers for arrangement ideas",
+                "Great for developing fluid, connected playing across positions"
+            ),
+            tablature = """
+e|-----5-6-7-8-9---|
+B|---5-6-7-8-------|
+G|-5-6-7-----------|
+(Diagonal ascending pattern)
+            """.trimIndent()
         )
     )
     
@@ -679,6 +756,84 @@ G|-5-7------------|
 D|5-7-------------|
 A|5-7-------------|
 E|5-8-------------|
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "creative_6",
+            name = "Major Scale Position Practice",
+            description = "Practice major scales in different positions across the fretboard (from Berklee Guitar Handbook)",
+            category = ExerciseCategory.CREATIVITY,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Major scale follows the pattern: W-W-H-W-W-W-H",
+                "Practice C major in first position (open position)",
+                "Move to second position, then fifth, then seventh",
+                "A position is defined by where your first finger plays",
+                "Practice the same scale in multiple positions",
+                "This helps organize the fretboard visually",
+                "Essential for understanding keys and tonal music",
+                "Move slowly between positions, ensuring accuracy"
+            ),
+            tablature = """
+C Major (First Position):
+e|-----0-1-3-------|
+B|---0-1-3---------|
+G|-0-2-------------|
+(Continue pattern)
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "creative_7",
+            name = "Triad Practice Across String Sets",
+            description = "Practice major triads in all positions (from Berklee Guitar Handbook)",
+            category = ExerciseCategory.CREATIVITY,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 70,
+            instructions = listOf(
+                "A triad is a three-note chord: root, 3rd, and 5th",
+                "Practice C major triad: C-E-G",
+                "Play triads up the fretboard on strings 1-2-3",
+                "Move one fret at a time through all 12 keys",
+                "Major triad = major 3rd underneath a minor 3rd",
+                "Chordal playing and melodic playing are two sides of same coin",
+                "Understanding triads leads to thorough fretboard knowledge",
+                "Practice on all string sets: 1-2-3, 2-3-4, 3-4-5, etc."
+            ),
+            tablature = """
+C Major Triad (strings 1-2-3):
+e|--8--|
+B|--8--|
+G|--9--|
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "creative_8",
+            name = "Rhythmic Variation Development",
+            description = "Transform scales into musical solos using rhythmic variation (from Berklee Guitar Handbook)",
+            category = ExerciseCategory.CREATIVITY,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 90,
+            instructions = listOf(
+                "Playing scales note-by-note sounds like exercises, not music",
+                "Add rests to create space in your solos",
+                "Use uniform rhythmic modifications (quarter note + two eighths)",
+                "Add triplets at the beginning of measures for ornamentation",
+                "Repeat notes and sequences for melodic development",
+                "Displace notes by adding rests for syncopation",
+                "Add sustain on chord tones (1, 3, 5, 7) with tied notes",
+                "Make the process intuitive through practice"
+            ),
+            tablature = """
+Rhythmic pattern example:
+Quarter + 2 eighths:
+♩ ♪♪ ♩ ♪♪
             """.trimIndent()
         )
     )
