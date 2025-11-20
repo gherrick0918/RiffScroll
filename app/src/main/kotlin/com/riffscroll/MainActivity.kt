@@ -32,6 +32,14 @@ fun RiffScrollApp() {
     val timerSeconds by viewModel.timerSeconds.collectAsState()
     val metronomeBpm by viewModel.metronomeBpm.collectAsState()
     val isMetronomeActive by viewModel.isMetronomeActive.collectAsState()
+    val savedRoutines by viewModel.savedRoutines.collectAsState()
+    val schedules by viewModel.schedules.collectAsState()
+    
+    // Load initial data
+    LaunchedEffect(Unit) {
+        viewModel.refreshSavedRoutines()
+        viewModel.refreshSchedules()
+    }
     
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -54,8 +62,17 @@ fun RiffScrollApp() {
             HomeScreen(
                 userProgress = userProgress,
                 currentRoutine = currentRoutine,
+                savedRoutines = savedRoutines,
+                schedules = schedules,
                 onGenerateRoutine = { duration, difficulty -> viewModel.generateRoutine(duration, difficulty) },
-                onStartPractice = { viewModel.startPracticeSession() }
+                onStartPractice = { viewModel.startPracticeSession() },
+                onSaveRoutine = { name -> viewModel.saveCurrentRoutine(name) },
+                onLoadRoutine = { id -> viewModel.loadSavedRoutine(id) },
+                onDeleteRoutine = { id -> viewModel.deleteSavedRoutine(id) },
+                onCreateSchedule = { name, description -> viewModel.createSchedule(name, description) },
+                onDeleteSchedule = { id -> viewModel.deleteSchedule(id) },
+                onAddRoutineToSchedule = { scheduleId, routineId -> viewModel.addRoutineToSchedule(scheduleId, routineId) },
+                onRemoveRoutineFromSchedule = { scheduleId, routineId -> viewModel.removeRoutineFromSchedule(scheduleId, routineId) }
             )
         }
     }

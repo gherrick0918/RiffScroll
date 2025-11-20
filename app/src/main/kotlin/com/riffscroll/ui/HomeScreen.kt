@@ -17,6 +17,8 @@ import com.riffscroll.data.DifficultyLevel
 import com.riffscroll.data.Exercise
 import com.riffscroll.data.ExerciseCategory
 import com.riffscroll.data.PracticeRoutine
+import com.riffscroll.data.SavedRoutine
+import com.riffscroll.data.Schedule
 import com.riffscroll.data.UserProgress
 
 /**
@@ -26,8 +28,17 @@ import com.riffscroll.data.UserProgress
 fun HomeScreen(
     userProgress: UserProgress,
     currentRoutine: PracticeRoutine?,
+    savedRoutines: List<SavedRoutine>,
+    schedules: List<Schedule>,
     onGenerateRoutine: (Int, DifficultyLevel?) -> Unit,
     onStartPractice: () -> Unit,
+    onSaveRoutine: (String) -> Unit,
+    onLoadRoutine: (String) -> Unit,
+    onDeleteRoutine: (String) -> Unit,
+    onCreateSchedule: (String, String) -> Unit,
+    onDeleteSchedule: (String) -> Unit,
+    onAddRoutineToSchedule: (String, String) -> Unit,
+    onRemoveRoutineFromSchedule: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -136,9 +147,32 @@ fun HomeScreen(
         if (currentRoutine != null) {
             RoutinePreviewCard(
                 routine = currentRoutine,
-                onStartPractice = onStartPractice
+                onStartPractice = onStartPractice,
+                onSaveRoutine = onSaveRoutine
             )
+            Spacer(modifier = Modifier.height(16.dp))
         }
+        
+        // Saved Routines Section
+        if (savedRoutines.isNotEmpty()) {
+            SavedRoutinesSection(
+                savedRoutines = savedRoutines,
+                onLoadRoutine = onLoadRoutine,
+                onDeleteRoutine = onDeleteRoutine
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        
+        // Schedules Section
+        SchedulesSection(
+            schedules = schedules,
+            savedRoutines = savedRoutines,
+            onCreateSchedule = onCreateSchedule,
+            onDeleteSchedule = onDeleteSchedule,
+            onAddRoutineToSchedule = onAddRoutineToSchedule,
+            onRemoveRoutineFromSchedule = onRemoveRoutineFromSchedule,
+            onLoadRoutine = onLoadRoutine
+        )
     }
 }
 
@@ -200,8 +234,11 @@ fun UserProgressCard(userProgress: UserProgress) {
 @Composable
 fun RoutinePreviewCard(
     routine: PracticeRoutine,
-    onStartPractice: () -> Unit
+    onStartPractice: () -> Unit,
+    onSaveRoutine: ((String) -> Unit)? = null
 ) {
+    var showSaveDialog by remember { mutableStateOf(false) }
+    
     RpgCard {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -234,11 +271,72 @@ fun RoutinePreviewCard(
         
         Spacer(modifier = Modifier.height(16.dp))
         
-        RpgButton(
-            text = "⚔️ Start Practice",
-            onClick = onStartPractice,
-            modifier = Modifier.fillMaxWidth(),
-            color = RpgTheme.success
+        // Action buttons
+        if (onSaveRoutine != null) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                RpgButton(
+                    text = "💾 Save",
+                    onClick = { showSaveDialog = true },
+                    modifier = Modifier.weight(1f),
+                    color = RpgTheme.secondary
+                )
+                RpgButton(
+                    text = "⚔️ Start Practice",
+                    onClick = onStartPractice,
+                    modifier = Modifier.weight(1f),
+                    color = RpgTheme.success
+                )
+            }
+        } else {
+            RpgButton(
+                text = "⚔️ Start Practice",
+                onClick = onStartPractice,
+                modifier = Modifier.fillMaxWidth(),
+                color = RpgTheme.success
+            )
+        }
+    }
+    
+    // Save routine dialog
+    if (showSaveDialog && onSaveRoutine != null) {
+        var routineName by remember { mutableStateOf("") }
+        
+        AlertDialog(
+            onDismissRequest = { showSaveDialog = false },
+            title = { Text("Save Routine", color = RpgTheme.textPrimary) },
+            text = {
+                Column {
+                    Text("Enter a name for this routine:", color = RpgTheme.textSecondary)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextField(
+                        value = routineName,
+                        onValueChange = { routineName = it },
+                        placeholder = { Text("e.g., Morning Warm-up") },
+                        singleLine = true
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        if (routineName.isNotBlank()) {
+                            onSaveRoutine(routineName)
+                            showSaveDialog = false
+                        }
+                    },
+                    enabled = routineName.isNotBlank()
+                ) {
+                    Text("Save")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showSaveDialog = false }) {
+                    Text("Cancel")
+                }
+            }
         )
     }
 }
@@ -315,5 +413,705 @@ fun ExerciseListItem(exercise: Exercise, index: Int) {
                 }
             }
         }
+    }
+}
+
+/**
+ * Section showing saved routines
+ */
+@Composable
+fun SavedRoutinesSection(
+    savedRoutines: List<SavedRoutine>,
+    onLoadRoutine: (String) -> Unit,
+    onDeleteRoutine: (String) -> Unit
+) {
+    var expandedRoutineId by remember { mutableStateOf<String?>(null) }
+    
+    RpgCard {
+        RpgHeader(text = "📚 Saved Routines", modifier = Modifier.padding(bottom = 8.dp))
+        RpgText(
+            text = "${savedRoutines.size} saved routine(s)",
+            color = RpgTheme.textSecondary,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+        
+        savedRoutines.forEach { savedRoutine ->
+            val isExpanded = expandedRoutineId == savedRoutine.id
+            
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = savedRoutine.name,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = RpgTheme.textPrimary
+                        )
+                        Text(
+                            text = "${savedRoutine.routine.exercises.size} exercises • ${savedRoutine.routine.totalDurationMinutes} min",
+                            fontSize = 14.sp,
+                            color = RpgTheme.textSecondary
+                        )
+                    }
+                    
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        IconButton(onClick = { expandedRoutineId = if (isExpanded) null else savedRoutine.id }) {
+                            Icon(
+                                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                contentDescription = if (isExpanded) "Collapse" else "Expand",
+                                tint = RpgTheme.textPrimary
+                            )
+                        }
+                        IconButton(onClick = { onLoadRoutine(savedRoutine.id) }) {
+                            Icon(
+                                imageVector = Icons.Default.PlayArrow,
+                                contentDescription = "Load",
+                                tint = RpgTheme.success
+                            )
+                        }
+                        IconButton(onClick = { onDeleteRoutine(savedRoutine.id) }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Delete",
+                                tint = RpgTheme.danger
+                            )
+                        }
+                    }
+                }
+                
+                if (isExpanded) {
+                    Column(modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp)) {
+                        savedRoutine.routine.exercises.forEachIndexed { index, exercise ->
+                            Text(
+                                text = "${index + 1}. ${exercise.name} (${exercise.durationMinutes} min)",
+                                fontSize = 14.sp,
+                                color = RpgTheme.textSecondary,
+                                modifier = Modifier.padding(vertical = 2.dp)
+                            )
+                        }
+                    }
+                }
+                
+                if (savedRoutine != savedRoutines.last()) {
+                    Divider(
+                        color = RpgTheme.border,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Section for managing schedules
+ */
+@Composable
+fun SchedulesSection(
+    schedules: List<Schedule>,
+    savedRoutines: List<SavedRoutine>,
+    onCreateSchedule: (String, String) -> Unit,
+    onDeleteSchedule: (String) -> Unit,
+    onAddRoutineToSchedule: (String, String) -> Unit,
+    onRemoveRoutineFromSchedule: (String, String) -> Unit,
+    onLoadRoutine: (String) -> Unit
+) {
+    var showCreateDialog by remember { mutableStateOf(false) }
+    var expandedScheduleId by remember { mutableStateOf<String?>(null) }
+    var showAddRoutineDialog by remember { mutableStateOf<String?>(null) }
+    
+    RpgCard {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            RpgHeader(text = "🗓️ Schedules", modifier = Modifier.padding(bottom = 8.dp))
+            IconButton(onClick = { showCreateDialog = true }) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Create Schedule",
+                    tint = RpgTheme.accent
+                )
+            }
+        }
+        
+        if (schedules.isEmpty()) {
+            RpgText(
+                text = "No schedules yet. Create one to organize your routines!",
+                color = RpgTheme.textSecondary,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        } else {
+            RpgText(
+                text = "${schedules.size} schedule(s)",
+                color = RpgTheme.textSecondary,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+            
+            schedules.forEach { schedule ->
+                val isExpanded = expandedScheduleId == schedule.id
+                val routinesInSchedule = savedRoutines.filter { schedule.routineIds.contains(it.id) }
+                
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = schedule.name,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = RpgTheme.textPrimary
+                            )
+                            if (schedule.description.isNotBlank()) {
+                                Text(
+                                    text = schedule.description,
+                                    fontSize = 14.sp,
+                                    color = RpgTheme.textSecondary
+                                )
+                            }
+                            Text(
+                                text = "${routinesInSchedule.size} routine(s)",
+                                fontSize = 14.sp,
+                                color = RpgTheme.textSecondary
+                            )
+                        }
+                        
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            IconButton(onClick = { expandedScheduleId = if (isExpanded) null else schedule.id }) {
+                                Icon(
+                                    imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                                    tint = RpgTheme.textPrimary
+                                )
+                            }
+                            IconButton(onClick = { showAddRoutineDialog = schedule.id }) {
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = "Add Routine",
+                                    tint = RpgTheme.success
+                                )
+                            }
+                            IconButton(onClick = { onDeleteSchedule(schedule.id) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Delete",
+                                    tint = RpgTheme.danger
+                                )
+                            }
+                        }
+                    }
+                    
+                    if (isExpanded) {
+                        Column(modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp)) {
+                            if (routinesInSchedule.isEmpty()) {
+                                Text(
+                                    text = "No routines in this schedule",
+                                    fontSize = 14.sp,
+                                    color = RpgTheme.textSecondary,
+                                    modifier = Modifier.padding(vertical = 8.dp)
+                                )
+                            } else {
+                                routinesInSchedule.forEach { routine ->
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 4.dp),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Text(
+                                                text = routine.name,
+                                                fontSize = 14.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = RpgTheme.textPrimary
+                                            )
+                                            Text(
+                                                text = "${routine.routine.exercises.size} exercises • ${routine.routine.totalDurationMinutes} min",
+                                                fontSize = 12.sp,
+                                                color = RpgTheme.textSecondary
+                                            )
+                                        }
+                                        Row {
+                                            IconButton(onClick = { onLoadRoutine(routine.id) }) {
+                                                Icon(
+                                                    imageVector = Icons.Default.PlayArrow,
+                                                    contentDescription = "Load",
+                                                    tint = RpgTheme.success,
+                                                    modifier = Modifier.size(20.dp)
+                                                )
+                                            }
+                                            IconButton(onClick = { onRemoveRoutineFromSchedule(schedule.id, routine.id) }) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Close,
+                                                    contentDescription = "Remove",
+                                                    tint = RpgTheme.danger,
+                                                    modifier = Modifier.size(20.dp)
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (schedule != schedules.last()) {
+                        Divider(
+                            color = RpgTheme.border,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+    
+    // Create schedule dialog
+    if (showCreateDialog) {
+        var scheduleName by remember { mutableStateOf("") }
+        var scheduleDescription by remember { mutableStateOf("") }
+        
+        AlertDialog(
+            onDismissRequest = { showCreateDialog = false },
+            title = { Text("Create Schedule", color = RpgTheme.textPrimary) },
+            text = {
+                Column {
+                    Text("Enter schedule details:", color = RpgTheme.textSecondary)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextField(
+                        value = scheduleName,
+                        onValueChange = { scheduleName = it },
+                        placeholder = { Text("Schedule name") },
+                        singleLine = true
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextField(
+                        value = scheduleDescription,
+                        onValueChange = { scheduleDescription = it },
+                        placeholder = { Text("Description (optional)") },
+                        singleLine = true
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        if (scheduleName.isNotBlank()) {
+                            onCreateSchedule(scheduleName, scheduleDescription)
+                            showCreateDialog = false
+                        }
+                    },
+                    enabled = scheduleName.isNotBlank()
+                ) {
+                    Text("Create")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showCreateDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+    
+    // Add routine to schedule dialog
+    showAddRoutineDialog?.let { scheduleId ->
+        AlertDialog(
+            onDismissRequest = { showAddRoutineDialog = null },
+            title = { Text("Add Routine to Schedule", color = RpgTheme.textPrimary) },
+            text = {
+                Column {
+                    Text("Select a routine to add:", color = RpgTheme.textSecondary)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    if (savedRoutines.isEmpty()) {
+                        Text("No saved routines available", color = RpgTheme.textSecondary)
+                    } else {
+                        savedRoutines.forEach { routine ->
+                            TextButton(
+                                onClick = {
+                                    onAddRoutineToSchedule(scheduleId, routine.id)
+                                    showAddRoutineDialog = null
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text(
+                                    text = "${routine.name} (${routine.routine.totalDurationMinutes} min)",
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {},
+            dismissButton = {
+                TextButton(onClick = { showAddRoutineDialog = null }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+}
+
+/**
+ * Section showing saved routines
+ */
+@Composable
+fun SavedRoutinesSection(
+    savedRoutines: List<SavedRoutine>,
+    onLoadRoutine: (String) -> Unit,
+    onDeleteRoutine: (String) -> Unit
+) {
+    var expandedRoutineId by remember { mutableStateOf<String?>(null) }
+    
+    RpgCard {
+        RpgHeader(text = "📚 Saved Routines", modifier = Modifier.padding(bottom = 8.dp))
+        RpgText(
+            text = "${savedRoutines.size} saved routine(s)",
+            color = RpgTheme.textSecondary,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+        
+        savedRoutines.forEach { savedRoutine ->
+            val isExpanded = expandedRoutineId == savedRoutine.id
+            
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = savedRoutine.name,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = RpgTheme.textPrimary
+                        )
+                        Text(
+                            text = "${savedRoutine.routine.exercises.size} exercises • ${savedRoutine.routine.totalDurationMinutes} min",
+                            fontSize = 14.sp,
+                            color = RpgTheme.textSecondary
+                        )
+                    }
+                    
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        IconButton(onClick = { expandedRoutineId = if (isExpanded) null else savedRoutine.id }) {
+                            Icon(
+                                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                contentDescription = if (isExpanded) "Collapse" else "Expand",
+                                tint = RpgTheme.textPrimary
+                            )
+                        }
+                        IconButton(onClick = { onLoadRoutine(savedRoutine.id) }) {
+                            Icon(
+                                imageVector = Icons.Default.PlayArrow,
+                                contentDescription = "Load",
+                                tint = RpgTheme.success
+                            )
+                        }
+                        IconButton(onClick = { onDeleteRoutine(savedRoutine.id) }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Delete",
+                                tint = RpgTheme.danger
+                            )
+                        }
+                    }
+                }
+                
+                if (isExpanded) {
+                    Column(modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp)) {
+                        savedRoutine.routine.exercises.forEachIndexed { index, exercise ->
+                            Text(
+                                text = "${index + 1}. ${exercise.name} (${exercise.durationMinutes} min)",
+                                fontSize = 14.sp,
+                                color = RpgTheme.textSecondary,
+                                modifier = Modifier.padding(vertical = 2.dp)
+                            )
+                        }
+                    }
+                }
+                
+                if (savedRoutine != savedRoutines.last()) {
+                    Divider(
+                        color = RpgTheme.border,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Section for managing schedules
+ */
+@Composable
+fun SchedulesSection(
+    schedules: List<Schedule>,
+    savedRoutines: List<SavedRoutine>,
+    onCreateSchedule: (String, String) -> Unit,
+    onDeleteSchedule: (String) -> Unit,
+    onAddRoutineToSchedule: (String, String) -> Unit,
+    onRemoveRoutineFromSchedule: (String, String) -> Unit,
+    onLoadRoutine: (String) -> Unit
+) {
+    var showCreateDialog by remember { mutableStateOf(false) }
+    var expandedScheduleId by remember { mutableStateOf<String?>(null) }
+    var showAddRoutineDialog by remember { mutableStateOf<String?>(null) }
+    
+    RpgCard {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            RpgHeader(text = "🗓️ Schedules", modifier = Modifier.padding(bottom = 8.dp))
+            IconButton(onClick = { showCreateDialog = true }) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Create Schedule",
+                    tint = RpgTheme.accent
+                )
+            }
+        }
+        
+        if (schedules.isEmpty()) {
+            RpgText(
+                text = "No schedules yet. Create one to organize your routines!",
+                color = RpgTheme.textSecondary,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        } else {
+            RpgText(
+                text = "${schedules.size} schedule(s)",
+                color = RpgTheme.textSecondary,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+            
+            schedules.forEach { schedule ->
+                val isExpanded = expandedScheduleId == schedule.id
+                val routinesInSchedule = savedRoutines.filter { schedule.routineIds.contains(it.id) }
+                
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = schedule.name,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = RpgTheme.textPrimary
+                            )
+                            if (schedule.description.isNotBlank()) {
+                                Text(
+                                    text = schedule.description,
+                                    fontSize = 14.sp,
+                                    color = RpgTheme.textSecondary
+                                )
+                            }
+                            Text(
+                                text = "${routinesInSchedule.size} routine(s)",
+                                fontSize = 14.sp,
+                                color = RpgTheme.textSecondary
+                            )
+                        }
+                        
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            IconButton(onClick = { expandedScheduleId = if (isExpanded) null else schedule.id }) {
+                                Icon(
+                                    imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                                    tint = RpgTheme.textPrimary
+                                )
+                            }
+                            IconButton(onClick = { showAddRoutineDialog = schedule.id }) {
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = "Add Routine",
+                                    tint = RpgTheme.success
+                                )
+                            }
+                            IconButton(onClick = { onDeleteSchedule(schedule.id) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Delete",
+                                    tint = RpgTheme.danger
+                                )
+                            }
+                        }
+                    }
+                    
+                    if (isExpanded) {
+                        Column(modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp)) {
+                            if (routinesInSchedule.isEmpty()) {
+                                Text(
+                                    text = "No routines in this schedule",
+                                    fontSize = 14.sp,
+                                    color = RpgTheme.textSecondary,
+                                    modifier = Modifier.padding(vertical = 8.dp)
+                                )
+                            } else {
+                                routinesInSchedule.forEach { routine ->
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 4.dp),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Column(modifier = Modifier.weight(1f)) {
+                                            Text(
+                                                text = routine.name,
+                                                fontSize = 14.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = RpgTheme.textPrimary
+                                            )
+                                            Text(
+                                                text = "${routine.routine.exercises.size} exercises • ${routine.routine.totalDurationMinutes} min",
+                                                fontSize = 12.sp,
+                                                color = RpgTheme.textSecondary
+                                            )
+                                        }
+                                        Row {
+                                            IconButton(onClick = { onLoadRoutine(routine.id) }) {
+                                                Icon(
+                                                    imageVector = Icons.Default.PlayArrow,
+                                                    contentDescription = "Load",
+                                                    tint = RpgTheme.success,
+                                                    modifier = Modifier.size(20.dp)
+                                                )
+                                            }
+                                            IconButton(onClick = { onRemoveRoutineFromSchedule(schedule.id, routine.id) }) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Close,
+                                                    contentDescription = "Remove",
+                                                    tint = RpgTheme.danger,
+                                                    modifier = Modifier.size(20.dp)
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (schedule != schedules.last()) {
+                        Divider(
+                            color = RpgTheme.border,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+    
+    // Create schedule dialog
+    if (showCreateDialog) {
+        var scheduleName by remember { mutableStateOf("") }
+        var scheduleDescription by remember { mutableStateOf("") }
+        
+        AlertDialog(
+            onDismissRequest = { showCreateDialog = false },
+            title = { Text("Create Schedule", color = RpgTheme.textPrimary) },
+            text = {
+                Column {
+                    Text("Enter schedule details:", color = RpgTheme.textSecondary)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextField(
+                        value = scheduleName,
+                        onValueChange = { scheduleName = it },
+                        placeholder = { Text("Schedule name") },
+                        singleLine = true
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextField(
+                        value = scheduleDescription,
+                        onValueChange = { scheduleDescription = it },
+                        placeholder = { Text("Description (optional)") },
+                        singleLine = true
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        if (scheduleName.isNotBlank()) {
+                            onCreateSchedule(scheduleName, scheduleDescription)
+                            showCreateDialog = false
+                        }
+                    },
+                    enabled = scheduleName.isNotBlank()
+                ) {
+                    Text("Create")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showCreateDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+    
+    // Add routine to schedule dialog
+    showAddRoutineDialog?.let { scheduleId ->
+        AlertDialog(
+            onDismissRequest = { showAddRoutineDialog = null },
+            title = { Text("Add Routine to Schedule", color = RpgTheme.textPrimary) },
+            text = {
+                Column {
+                    Text("Select a routine to add:", color = RpgTheme.textSecondary)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    if (savedRoutines.isEmpty()) {
+                        Text("No saved routines available", color = RpgTheme.textSecondary)
+                    } else {
+                        savedRoutines.forEach { routine ->
+                            TextButton(
+                                onClick = {
+                                    onAddRoutineToSchedule(scheduleId, routine.id)
+                                    showAddRoutineDialog = null
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text(
+                                    text = "${routine.name} (${routine.routine.totalDurationMinutes} min)",
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {},
+            dismissButton = {
+                TextButton(onClick = { showAddRoutineDialog = null }) {
+                    Text("Cancel")
+                }
+            }
+        )
     }
 }

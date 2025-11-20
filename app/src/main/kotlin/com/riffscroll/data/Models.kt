@@ -65,3 +65,24 @@ data class UserProgress(
     val totalPracticeMinutes: Int = 0,
     val completedRoutines: Int = 0
 )
+
+/**
+ * Represents a saved practice routine
+ */
+data class SavedRoutine(
+    val id: String,
+    val name: String,
+    val routine: PracticeRoutine,
+    val createdAt: Long = System.currentTimeMillis()
+)
+
+/**
+ * Represents a schedule that groups multiple saved routines
+ */
+data class Schedule(
+    val id: String,
+    val name: String,
+    val description: String = "",
+    val routineIds: List<String> = emptyList(),
+    val createdAt: Long = System.currentTimeMillis()
+)
