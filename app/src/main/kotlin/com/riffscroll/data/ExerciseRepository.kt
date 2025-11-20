@@ -132,6 +132,170 @@ B|8b9----| (half-step bend)
 B|8b10---| (whole-step bend)
 B|8b10r8-| (bend and release)
             """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_6",
+            name = "Four-Fret Chromatic Run",
+            description = "Chromatic run up the first 4 frets on each string for warm-up and speed building",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.BEGINNER,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Start on the low E string, 1st fret",
+                "Play one finger per fret: Index(1)-Middle(2)-Ring(3)-Pinky(4)",
+                "Move to the next string and repeat: 1-2-3-4",
+                "Continue across all six strings",
+                "Use alternate picking throughout: down-up-down-up",
+                "Keep your fingers close to the fretboard",
+                "Great warm-up exercise to start practice sessions"
+            ),
+            tablature = """
+e|1-2-3-4----------|
+B|------1-2-3-4----|
+G|----------1-2-3-4|
+D|1-2-3-4----------|
+A|------1-2-3-4----|
+E|----------1-2-3-4|
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_7",
+            name = "Three-Note Pattern Exercise",
+            description = "Three-note ascending pattern for building alternate picking and finger independence",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 70,
+            instructions = listOf(
+                "Play a repeating three-note pattern: 1-2-3, 2-3-4, 3-4-5...",
+                "Use strict alternate picking throughout",
+                "The pattern shifts against the beat in 4/4 time",
+                "Keep notes clean and even",
+                "Start slowly and build speed gradually",
+                "Excellent for developing rhythmic independence"
+            ),
+            tablature = """
+e|1-2-3-2-3-4-3-4-5-4-5-6-|
+Pattern continues...
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_8",
+            name = "Finger Isolation 1-2",
+            description = "Isolation exercise for index and middle fingers to build strength and coordination",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.BEGINNER,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Use only your 1st (index) and 2nd (middle) fingers",
+                "Play on frets 1 and 2 only",
+                "Pattern: 1-2-1-2 on each string",
+                "Focus on even volume and timing",
+                "Use alternate picking throughout",
+                "Great for warming up responsive fingers"
+            ),
+            tablature = """
+e|1-2-1-2-1-2-1-2-|
+B|1-2-1-2-1-2-1-2-|
+G|1-2-1-2-1-2-1-2-|
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_9",
+            name = "Finger Isolation 3-4",
+            description = "Isolation exercise for ring and pinky fingers to strengthen weak fingers",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Use only your 3rd (ring) and 4th (pinky) fingers",
+                "Play on frets 3 and 4 (or 3 and 5 for stretch)",
+                "Pattern: 3-4-3-4 on each string",
+                "This is very challenging - the 3rd finger is actually the weakest",
+                "Start slow and focus on clean notes",
+                "Builds strength in the most difficult finger combination",
+                "Take breaks if you feel cramping"
+            ),
+            tablature = """
+e|3-4-3-4-3-4-3-4-|
+B|3-4-3-4-3-4-3-4-|
+G|3-4-3-4-3-4-3-4-|
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_10",
+            name = "Legato Hammer-On Exercise",
+            description = "Smooth hammer-on patterns for legato technique without picking",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Pick only the first note of each string",
+                "Hammer-on the remaining notes: 1h2h3h4",
+                "Focus on making hammer-ons as loud as picked notes",
+                "Keep smooth, connected sound (legato)",
+                "Build finger strength in your fretting hand",
+                "Practice on each string separately first",
+                "Gradually increase speed once even volume is achieved"
+            ),
+            tablature = """
+e|1h2h3h4---------|
+B|------1h2h3h4---|
+G|------------1h2h3h4|
+(h=hammer-on)
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_11",
+            name = "Spider Walk Exercise",
+            description = "Wide stretch exercise ascending the fretboard to build finger span",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Start at the 1st fret, one finger per fret (1-2-3-4)",
+                "After completing a string, move up one fret",
+                "Continue: frets 2-3-4-5, then 3-4-5-6, etc.",
+                "Descend back down the fretboard",
+                "This \"walks\" your hand up and down the neck",
+                "Excellent for building stretch and flexibility",
+                "Stop at the 15th fret or wherever comfortable"
+            ),
+            tablature = """
+e|1-2-3-4-2-3-4-5-3-4-5-6...|
+Starting position walks up
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "tech_12",
+            name = "Tremolo Picking Endurance",
+            description = "Single-note tremolo picking to build stamina and speed",
+            category = ExerciseCategory.TECHNIQUE,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 120,
+            instructions = listOf(
+                "Pick a single note as fast as possible with alternate picking",
+                "Start on an open string or any fretted note",
+                "Maintain steady, even picking motion",
+                "Focus on relaxed wrist, minimal arm movement",
+                "Practice for 30-60 seconds without stopping",
+                "Take breaks to avoid cramping",
+                "This builds endurance for fast passages",
+                "Gradually increase duration as stamina improves"
+            )
         )
     )
     
@@ -234,6 +398,34 @@ G|--9-10-12--------|
 D|10-12-14---------|
 A|----------------- |
 E|-----------------|
+            """.trimIndent()
+        ),
+        Exercise(
+            id = "creative_5",
+            name = "Pentatonic Scale Patterns",
+            description = "Practice all five positions of the pentatonic scale across the fretboard",
+            category = ExerciseCategory.CREATIVITY,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Learn all 5 positions of the minor pentatonic scale",
+                "Start with position 1 (root note on 6th string)",
+                "Practice each position separately until fluid",
+                "Connect positions by moving up the fretboard",
+                "Try improvising using different positions",
+                "Explore different keys: Am, Em, Dm, etc.",
+                "Essential foundation for lead guitar playing"
+            ),
+            tablature = """
+Position 1 (A minor):
+e|-----5-8--------|
+B|---5-8----------|
+G|-5-7------------|
+D|5-7-------------|
+A|5-7-------------|
+E|5-8-------------|
             """.trimIndent()
         )
     )
