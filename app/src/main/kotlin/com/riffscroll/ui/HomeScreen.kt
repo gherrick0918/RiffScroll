@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.riffscroll.data.DifficultyLevel
 import com.riffscroll.data.Exercise
 import com.riffscroll.data.ExerciseCategory
+import com.riffscroll.data.InstrumentType
 import com.riffscroll.data.PracticeRoutine
 import com.riffscroll.data.SavedRoutine
 import com.riffscroll.data.Schedule
