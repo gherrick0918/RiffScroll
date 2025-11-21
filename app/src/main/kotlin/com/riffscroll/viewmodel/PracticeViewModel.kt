@@ -475,9 +475,6 @@ class PracticeViewModel : ViewModel() {
             loadSavedRoutine(calendarSchedule.routineId)
         }
     }
-    fun refreshSchedules() {
-        _schedules.value = routineRepository.getSchedules()
-    }
     
     override fun onCleared() {
         super.onCleared()

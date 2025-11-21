@@ -1,5 +1,8 @@
 package com.riffscroll.data
 
+import java.text.SimpleDateFormat
+import java.util.Locale
+
 /**
  * Repository for managing saved routines and schedules
  * Currently stores data in-memory. Future enhancement: add persistent storage
@@ -225,8 +228,9 @@ class RoutineRepository {
             )
             
             // Save the routine
+            val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.US)
             val savedRoutine = saveRoutine(
-                name = "Auto-generated for ${java.text.SimpleDateFormat("MMM dd, yyyy").format(calendar.time)}",
+                name = "Auto-generated for ${dateFormat.format(calendar.time)}",
                 routine = routine
             )
             
