@@ -40,6 +40,7 @@ fun HomeScreen(
     onDeleteSchedule: (String) -> Unit,
     onAddRoutineToSchedule: (String, String) -> Unit,
     onRemoveRoutineFromSchedule: (String, String) -> Unit,
+    onNavigateToSchedulePlanner: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -54,6 +55,54 @@ fun HomeScreen(
         
         // User Progress Card
         UserProgressCard(userProgress = userProgress)
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        // Auto Schedule Planner Button - Prominent!
+        RpgCard {
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "📅",
+                                fontSize = 24.sp,
+                                modifier = Modifier.padding(end = 8.dp)
+                            )
+                            Text(
+                                text = "Auto Schedule Planner",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = RpgTheme.textPrimary
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        RpgText(
+                            text = "Create automatic practice schedules for multiple days",
+                            color = RpgTheme.textSecondary,
+                            fontSize = 13.sp
+                        )
+                    }
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowRight,
+                        contentDescription = "Open",
+                        tint = RpgTheme.accent,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                RpgButton(
+                    text = "✨ Open Schedule Planner",
+                    onClick = onNavigateToSchedulePlanner,
+                    modifier = Modifier.fillMaxWidth(),
+                    color = RpgTheme.accent
+                )
+            }
+        }
         
         Spacer(modifier = Modifier.height(16.dp))
         

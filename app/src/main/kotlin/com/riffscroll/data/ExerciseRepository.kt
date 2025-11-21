@@ -1290,14 +1290,14 @@ Quarter + 2 eighths:
             .filter { it.category == ExerciseCategory.SONGS }
             .let { if (difficulty != null) it.filter { ex -> ex.difficulty == difficulty } else it }
         
-        // Sort by duration to help with filling
-        val techByDuration = availableTech.sortedBy { it.durationMinutes }
-        val creativeByDuration = availableCreative.sortedBy { it.durationMinutes }
-        val songsByDuration = availableSongs.sortedBy { it.durationMinutes }
+        // Shuffle exercises for variety on each generation
+        val techShuffled = availableTech.shuffled()
+        val creativeShuffled = availableCreative.shuffled()
+        val songsShuffled = availableSongs.shuffled()
         
         // Select exercises that fit within the target duration
         // Try to pick one from each category first
-        val techExercise = techByDuration.firstOrNull { 
+        val techExercise = techShuffled.firstOrNull { 
             totalDuration + it.durationMinutes <= targetDurationMinutes 
         }
         if (techExercise != null) {
@@ -1305,7 +1305,7 @@ Quarter + 2 eighths:
             totalDuration += techExercise.durationMinutes
         }
         
-        val creativeExercise = creativeByDuration.firstOrNull { 
+        val creativeExercise = creativeShuffled.firstOrNull { 
             totalDuration + it.durationMinutes <= targetDurationMinutes 
         }
         if (creativeExercise != null) {
@@ -1313,7 +1313,7 @@ Quarter + 2 eighths:
             totalDuration += creativeExercise.durationMinutes
         }
         
-        val songExercise = songsByDuration.firstOrNull { 
+        val songExercise = songsShuffled.firstOrNull { 
             totalDuration + it.durationMinutes <= targetDurationMinutes 
         }
         if (songExercise != null) {
@@ -1324,7 +1324,7 @@ Quarter + 2 eighths:
         // Fill remaining time with exercises that fit, prioritizing variety
         val availableExercises = (availableTech + availableCreative + availableSongs)
             .filter { !exercises.contains(it) }
-            .sortedBy { it.durationMinutes }
+            .shuffled()
         
         for (exercise in availableExercises) {
             if (totalDuration + exercise.durationMinutes <= targetDurationMinutes) {
