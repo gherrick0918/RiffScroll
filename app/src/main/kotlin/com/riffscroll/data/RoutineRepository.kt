@@ -1,5 +1,8 @@
 package com.riffscroll.data
 
+import java.text.SimpleDateFormat
+import java.util.Locale
+
 /**
  * Repository for managing saved routines and schedules
  * Currently stores data in-memory. Future enhancement: add persistent storage
@@ -8,6 +11,8 @@ class RoutineRepository {
     
     private val savedRoutines = mutableMapOf<String, SavedRoutine>()
     private val schedules = mutableMapOf<String, Schedule>()
+    private val calendarSchedules = mutableMapOf<String, CalendarSchedule>()
+    private val practiceSchedulePlans = mutableMapOf<String, PracticeSchedulePlan>()
     
     // Saved Routines operations
     
@@ -136,5 +141,151 @@ class RoutineRepository {
     fun getRoutinesInSchedule(scheduleId: String): List<SavedRoutine> {
         val schedule = schedules[scheduleId] ?: return emptyList()
         return schedule.routineIds.mapNotNull { savedRoutines[it] }
+    }
+    
+    // Calendar Scheduling operations
+    
+    /**
+     * Create a calendar schedule entry for a specific date
+     */
+    fun createCalendarSchedule(date: Long, routineId: String): CalendarSchedule {
+        val calendarSchedule = CalendarSchedule(
+            id = "cal_${System.currentTimeMillis()}",
+            date = date,
+            routineId = routineId
+        )
+        calendarSchedules[calendarSchedule.id] = calendarSchedule
+        return calendarSchedule
+    }
+    
+    /**
+     * Get all calendar schedules
+     */
+    fun getCalendarSchedules(): List<CalendarSchedule> {
+        return calendarSchedules.values.sortedBy { it.date }
+    }
+    
+    /**
+     * Get calendar schedules for a specific date range
+     */
+    fun getCalendarSchedulesByDateRange(startDate: Long, endDate: Long): List<CalendarSchedule> {
+        return calendarSchedules.values.filter { it.date in startDate..endDate }.sortedBy { it.date }
+    }
+    
+    /**
+     * Get calendar schedule for a specific date
+     */
+    fun getCalendarScheduleByDate(date: Long): CalendarSchedule? {
+        // Extract year and day of year from search date once
+        val searchDate = java.util.Calendar.getInstance().apply { timeInMillis = date }
+        val searchYear = searchDate.get(java.util.Calendar.YEAR)
+        val searchDayOfYear = searchDate.get(java.util.Calendar.DAY_OF_YEAR)
+        
+        return calendarSchedules.values.firstOrNull { 
+            // Compare just the date part (ignore time)
+            val scheduleDate = java.util.Calendar.getInstance().apply { timeInMillis = it.date }
+            scheduleDate.get(java.util.Calendar.YEAR) == searchYear &&
+            scheduleDate.get(java.util.Calendar.DAY_OF_YEAR) == searchDayOfYear
+        }
+    }
+    
+    /**
+     * Mark a calendar schedule as completed
+     */
+    fun markCalendarScheduleCompleted(id: String): Boolean {
+        val schedule = calendarSchedules[id] ?: return false
+        calendarSchedules[id] = schedule.copy(isCompleted = true)
+        return true
+    }
+    
+    /**
+     * Delete a calendar schedule
+     */
+    fun deleteCalendarSchedule(id: String): Boolean {
+        return calendarSchedules.remove(id) != null
+    }
+    
+    /**
+     * Create an auto-generated practice schedule plan
+     */
+    fun createPracticeSchedulePlan(
+        name: String,
+        startDate: Long,
+        endDate: Long,
+        instrument: InstrumentType?,
+        targetDurationMinutes: Int,
+        difficulty: DifficultyLevel?,
+        exerciseRepository: ExerciseRepository
+    ): PracticeSchedulePlan {
+        val scheduleEntries = mutableListOf<CalendarSchedule>()
+        
+        // Create date formatter once, outside the loop
+        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.US)
+        
+        // Generate routines for each day in the date range
+        val calendar = java.util.Calendar.getInstance()
+        calendar.timeInMillis = startDate
+        
+        while (calendar.timeInMillis <= endDate) {
+            // Generate a routine for this day
+            val routine = exerciseRepository.generateBalancedRoutine(
+                targetDurationMinutes = targetDurationMinutes,
+                difficulty = difficulty,
+                instrument = instrument
+            )
+            
+            // Save the routine
+            val savedRoutine = saveRoutine(
+                name = "Auto-generated for ${dateFormat.format(calendar.time)}",
+                routine = routine
+            )
+            
+            // Create calendar schedule entry
+            val calendarSchedule = createCalendarSchedule(
+                date = calendar.timeInMillis,
+                routineId = savedRoutine.id
+            )
+            
+            scheduleEntries.add(calendarSchedule)
+            
+            // Move to next day
+            calendar.add(java.util.Calendar.DAY_OF_MONTH, 1)
+        }
+        
+        // Create the practice schedule plan
+        val plan = PracticeSchedulePlan(
+            id = "plan_${System.currentTimeMillis()}",
+            name = name,
+            startDate = startDate,
+            endDate = endDate,
+            scheduleEntries = scheduleEntries,
+            instrument = instrument,
+            targetDurationMinutes = targetDurationMinutes,
+            difficulty = difficulty
+        )
+        
+        practiceSchedulePlans[plan.id] = plan
+        return plan
+    }
+    
+    /**
+     * Get all practice schedule plans
+     */
+    fun getPracticeSchedulePlans(): List<PracticeSchedulePlan> {
+        return practiceSchedulePlans.values.sortedByDescending { it.createdAt }
+    }
+    
+    /**
+     * Delete a practice schedule plan and its associated calendar schedules
+     */
+    fun deletePracticeSchedulePlan(id: String): Boolean {
+        val plan = practiceSchedulePlans[id] ?: return false
+        
+        // Delete associated calendar schedules
+        plan.scheduleEntries.forEach { entry ->
+            calendarSchedules.remove(entry.id)
+        }
+        
+        return practiceSchedulePlans.remove(id) != null
     }
 }

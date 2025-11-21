@@ -1,14 +1,17 @@
 # RiffScroll
 
-⚔️ **A Guitar Practice Routine App with Old School RPG Theme**
+⚔️ **A Music Practice Routine App with Old School RPG Theme**
 
 ## Overview
 
-RiffScroll is an Android app that dynamically generates balanced guitar practice routines with an old school RPG theme. The app helps guitarists structure their practice sessions across techniques, creativity, and song learning.
+RiffScroll is an Android app that dynamically generates balanced practice routines for guitar and piano with an old school RPG theme. The app helps musicians structure their practice sessions across techniques, creativity, and song learning, with support for both instruments.
 
 ## Features
 
+- **Multi-Instrument Support**: Practice routines for both guitar 🎸 and piano 🎹
 - **Dynamic Routine Generation**: Creates balanced practice routines covering techniques, creativity, and songs
+- **Instrument Filtering**: Generate routines for guitar only, piano only, or both instruments
+- **Calendar Scheduling**: Auto-generate practice schedules tied to calendar dates
 - **Exercise Display**: Shows detailed instructions for each exercise
 - **Timer Integration**: Built-in timer for practice segments
 - **Metronome Support**: Adjustable metronome (40-240 BPM) for timing-based exercises
@@ -42,24 +45,55 @@ app/src/main/kotlin/com/riffscroll/
 
 ## Exercise Categories
 
-### Techniques
+### Guitar Exercises
+
+#### Techniques (25 exercises)
 - Chromatic scale practice
 - Alternate picking drills
 - String skipping exercises
 - Hammer-on & pull-off practice
 - Bending accuracy
+- Economy picking
+- Trills and tremolo picking
+- Sweep picking
+- And more...
 
-### Creativity
+#### Creativity (8 exercises)
 - Improvisation in pentatonic
 - Melodic composition
 - Rhythm creation
 - Modal exploration
+- Scale patterns and sequences
+- Triad practice
+- And more...
 
-### Songs
+#### Songs (4 exercises)
 - Song section practice
 - Full song play-through
 - Song memorization
 - Cover song learning
+
+### Piano Exercises
+
+#### Techniques (6 exercises)
+- C Major scale practice
+- Hanon finger exercises
+- Broken chord arpeggios
+- Contrary motion scales
+- Trills and ornaments
+- Octave practice
+
+#### Creativity (4 exercises)
+- Chord progression exploration
+- Blues scale improvisation
+- Voicing practice
+- Modal exploration
+
+#### Songs (4 exercises)
+- Difficult passage practice
+- Piece performance run-through
+- Memorization practice
+- Sight reading practice
 
 ## Building the App
 

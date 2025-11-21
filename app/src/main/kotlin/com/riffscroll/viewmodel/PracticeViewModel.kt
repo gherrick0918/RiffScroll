@@ -51,6 +51,13 @@ class PracticeViewModel : ViewModel() {
     private val _schedules = MutableStateFlow<List<Schedule>>(emptyList())
     val schedules: StateFlow<List<Schedule>> = _schedules.asStateFlow()
     
+    // Calendar scheduling
+    private val _calendarSchedules = MutableStateFlow<List<CalendarSchedule>>(emptyList())
+    val calendarSchedules: StateFlow<List<CalendarSchedule>> = _calendarSchedules.asStateFlow()
+    
+    private val _practiceSchedulePlans = MutableStateFlow<List<PracticeSchedulePlan>>(emptyList())
+    val practiceSchedulePlans: StateFlow<List<PracticeSchedulePlan>> = _practiceSchedulePlans.asStateFlow()
+    
     private var timerJob: Job? = null
     private var metronomeJob: Job? = null
     private var toneGenerator: ToneGenerator? = null
@@ -59,8 +66,12 @@ class PracticeViewModel : ViewModel() {
     /**
      * Generate a new practice routine
      */
-    fun generateRoutine(targetDurationMinutes: Int = 45, difficulty: DifficultyLevel? = null) {
-        val routine = repository.generateBalancedRoutine(targetDurationMinutes, difficulty)
+    fun generateRoutine(
+        targetDurationMinutes: Int = 45, 
+        difficulty: DifficultyLevel? = null,
+        instrument: InstrumentType? = null
+    ) {
+        val routine = repository.generateBalancedRoutine(targetDurationMinutes, difficulty, instrument)
         _currentRoutine.value = routine
     }
     
@@ -373,6 +384,96 @@ class PracticeViewModel : ViewModel() {
      */
     fun refreshSchedules() {
         _schedules.value = routineRepository.getSchedules()
+    }
+    
+    // Calendar Scheduling Management
+    
+    /**
+     * Create a practice schedule plan with auto-generated routines
+     */
+    fun createPracticeSchedulePlan(
+        name: String,
+        startDate: Long,
+        endDate: Long,
+        instrument: InstrumentType?,
+        targetDurationMinutes: Int,
+        difficulty: DifficultyLevel?
+    ): PracticeSchedulePlan {
+        val plan = routineRepository.createPracticeSchedulePlan(
+            name = name,
+            startDate = startDate,
+            endDate = endDate,
+            instrument = instrument,
+            targetDurationMinutes = targetDurationMinutes,
+            difficulty = difficulty,
+            exerciseRepository = repository
+        )
+        refreshCalendarSchedules()
+        refreshPracticeSchedulePlans()
+        return plan
+    }
+    
+    /**
+     * Get calendar schedule for a specific date
+     */
+    fun getCalendarScheduleByDate(date: Long): CalendarSchedule? {
+        return routineRepository.getCalendarScheduleByDate(date)
+    }
+    
+    /**
+     * Get calendar schedules for a date range
+     */
+    fun getCalendarSchedulesByDateRange(startDate: Long, endDate: Long): List<CalendarSchedule> {
+        return routineRepository.getCalendarSchedulesByDateRange(startDate, endDate)
+    }
+    
+    /**
+     * Mark a calendar schedule as completed
+     */
+    fun markCalendarScheduleCompleted(id: String) {
+        routineRepository.markCalendarScheduleCompleted(id)
+        refreshCalendarSchedules()
+    }
+    
+    /**
+     * Delete a calendar schedule
+     */
+    fun deleteCalendarSchedule(id: String) {
+        routineRepository.deleteCalendarSchedule(id)
+        refreshCalendarSchedules()
+    }
+    
+    /**
+     * Delete a practice schedule plan
+     */
+    fun deletePracticeSchedulePlan(id: String) {
+        routineRepository.deletePracticeSchedulePlan(id)
+        refreshCalendarSchedules()
+        refreshPracticeSchedulePlans()
+    }
+    
+    /**
+     * Refresh calendar schedules
+     */
+    fun refreshCalendarSchedules() {
+        _calendarSchedules.value = routineRepository.getCalendarSchedules()
+    }
+    
+    /**
+     * Refresh practice schedule plans
+     */
+    fun refreshPracticeSchedulePlans() {
+        _practiceSchedulePlans.value = routineRepository.getPracticeSchedulePlans()
+    }
+    
+    /**
+     * Load routine from calendar schedule
+     */
+    fun loadRoutineFromCalendarSchedule(calendarScheduleId: String) {
+        val calendarSchedule = _calendarSchedules.value.find { it.id == calendarScheduleId }
+        if (calendarSchedule != null) {
+            loadSavedRoutine(calendarSchedule.routineId)
+        }
     }
     
     override fun onCleared() {

@@ -1,7 +1,15 @@
 package com.riffscroll.data
 
 /**
- * Category of guitar practice exercises
+ * Type of musical instrument
+ */
+enum class InstrumentType(val displayName: String, val emoji: String) {
+    GUITAR("Guitar", "🎸"),
+    PIANO("Piano", "🎹")
+}
+
+/**
+ * Category of practice exercises
  */
 enum class ExerciseCategory {
     TECHNIQUE,
@@ -19,19 +27,20 @@ enum class DifficultyLevel(val displayName: String, val level: Int) {
 }
 
 /**
- * Represents a single guitar exercise
+ * Represents a single practice exercise for an instrument
  */
 data class Exercise(
     val id: String,
     val name: String,
     val description: String,
     val category: ExerciseCategory,
+    val instrument: InstrumentType,
     val durationMinutes: Int,
     val difficulty: DifficultyLevel = DifficultyLevel.BEGINNER,
     val hasTiming: Boolean = false,
     val bpm: Int? = null,
     val instructions: List<String> = emptyList(),
-    val tablature: String? = null  // Optional tablature notation
+    val tablature: String? = null  // Optional tablature/notation
 )
 
 /**
@@ -84,5 +93,31 @@ data class Schedule(
     val name: String,
     val description: String = "",
     val routineIds: List<String> = emptyList(),
+    val createdAt: Long = System.currentTimeMillis()
+)
+
+/**
+ * Represents a calendar-based schedule entry for a specific date
+ */
+data class CalendarSchedule(
+    val id: String,
+    val date: Long,  // Date in milliseconds since epoch
+    val routineId: String,
+    val isCompleted: Boolean = false,
+    val createdAt: Long = System.currentTimeMillis()
+)
+
+/**
+ * Represents an auto-generated practice schedule for multiple days
+ */
+data class PracticeSchedulePlan(
+    val id: String,
+    val name: String,
+    val startDate: Long,
+    val endDate: Long,
+    val scheduleEntries: List<CalendarSchedule> = emptyList(),
+    val instrument: InstrumentType? = null,  // null means both instruments
+    val targetDurationMinutes: Int = 45,
+    val difficulty: DifficultyLevel? = null,
     val createdAt: Long = System.currentTimeMillis()
 )

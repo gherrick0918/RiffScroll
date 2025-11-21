@@ -69,7 +69,7 @@ fun RiffScrollApp() {
                 currentRoutine = currentRoutine,
                 savedRoutines = savedRoutines,
                 schedules = schedules,
-                onGenerateRoutine = { duration, difficulty -> viewModel.generateRoutine(duration, difficulty) },
+                onGenerateRoutine = { duration, difficulty, instrument -> viewModel.generateRoutine(duration, difficulty, instrument) },
                 onStartPractice = { viewModel.startPracticeSession() },
                 onSaveRoutine = { name -> viewModel.saveCurrentRoutine(name) },
                 onLoadRoutine = { id -> viewModel.loadSavedRoutine(id) },
