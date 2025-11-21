@@ -176,12 +176,16 @@ class RoutineRepository {
      * Get calendar schedule for a specific date
      */
     fun getCalendarScheduleByDate(date: Long): CalendarSchedule? {
+        // Extract year and day of year from search date once
+        val searchDate = java.util.Calendar.getInstance().apply { timeInMillis = date }
+        val searchYear = searchDate.get(java.util.Calendar.YEAR)
+        val searchDayOfYear = searchDate.get(java.util.Calendar.DAY_OF_YEAR)
+        
         return calendarSchedules.values.firstOrNull { 
             // Compare just the date part (ignore time)
             val scheduleDate = java.util.Calendar.getInstance().apply { timeInMillis = it.date }
-            val searchDate = java.util.Calendar.getInstance().apply { timeInMillis = date }
-            scheduleDate.get(java.util.Calendar.YEAR) == searchDate.get(java.util.Calendar.YEAR) &&
-            scheduleDate.get(java.util.Calendar.DAY_OF_YEAR) == searchDate.get(java.util.Calendar.DAY_OF_YEAR)
+            scheduleDate.get(java.util.Calendar.YEAR) == searchYear &&
+            scheduleDate.get(java.util.Calendar.DAY_OF_YEAR) == searchDayOfYear
         }
     }
     
@@ -215,6 +219,9 @@ class RoutineRepository {
     ): PracticeSchedulePlan {
         val scheduleEntries = mutableListOf<CalendarSchedule>()
         
+        // Create date formatter once, outside the loop
+        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.US)
+        
         // Generate routines for each day in the date range
         val calendar = java.util.Calendar.getInstance()
         calendar.timeInMillis = startDate
@@ -228,7 +235,6 @@ class RoutineRepository {
             )
             
             // Save the routine
-            val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.US)
             val savedRoutine = saveRoutine(
                 name = "Auto-generated for ${dateFormat.format(calendar.time)}",
                 routine = routine

@@ -179,7 +179,8 @@ class InstrumentAndSchedulingTest {
         )
         
         val scheduleCountBefore = repository.getCalendarSchedules().size
-        assertTrue("Should have calendar schedules", scheduleCountBefore > 0)
+        val expectedScheduleCount = 4  // 3 days inclusive = 4 days
+        assertTrue("Should have calendar schedules", scheduleCountBefore >= expectedScheduleCount)
         
         val deleted = repository.deletePracticeSchedulePlan(plan.id)
         assertTrue("Should successfully delete plan", deleted)
@@ -188,7 +189,8 @@ class InstrumentAndSchedulingTest {
         assertFalse("Plan should be removed", plansAfter.any { it.id == plan.id })
         
         val scheduleCountAfter = repository.getCalendarSchedules().size
-        assertEquals("Calendar schedules should be removed", 0, scheduleCountAfter)
+        assertEquals("Only the plan's calendar schedules should be removed", 
+            scheduleCountBefore - expectedScheduleCount, scheduleCountAfter)
     }
     
     @Test
