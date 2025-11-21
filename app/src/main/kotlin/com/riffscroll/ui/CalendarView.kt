@@ -33,7 +33,6 @@ fun CalendarView(
     modifier: Modifier = Modifier
 ) {
     var currentMonth by remember { mutableStateOf(Calendar.getInstance()) }
-    val calendar = Calendar.getInstance()
     
     Column(
         modifier = modifier

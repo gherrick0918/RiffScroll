@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
@@ -145,7 +146,7 @@ fun SchedulePlanItem(
     val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.US)
     val startDateStr = dateFormat.format(Date(plan.startDate))
     val endDateStr = dateFormat.format(Date(plan.endDate))
-    var selectedDate by remember { mutableStateOf<Long?>(null) }
+    var selectedDate by rememberSaveable { mutableStateOf<Long?>(null) }
     
     Column {
         Row(
