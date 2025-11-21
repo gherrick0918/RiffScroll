@@ -33,3 +33,5 @@ node_modules/
 captures/
 .externalNativeBuild/
 .cxx/
+*.kotlin_module
+META-INF/
