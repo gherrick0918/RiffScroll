@@ -3,6 +3,7 @@ package com.riffscroll.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -143,6 +144,7 @@ fun SchedulePlanItem(
     val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.US)
     val startDateStr = dateFormat.format(Date(plan.startDate))
     val endDateStr = dateFormat.format(Date(plan.endDate))
+    var selectedDate by remember { mutableStateOf<Long?>(null) }
     
     Column {
         Row(
@@ -219,56 +221,120 @@ fun SchedulePlanItem(
         }
         
         if (isExpanded) {
-            Spacer(modifier = Modifier.height(12.dp))
-            Column(modifier = Modifier.padding(start = 16.dp)) {
-                Text(
-                    text = "Daily Routines:",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = RpgTheme.textPrimary,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Calendar View
+            CalendarView(
+                calendarSchedules = plan.scheduleEntries,
+                selectedDate = selectedDate,
+                onDateSelected = { date -> selectedDate = date }
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Selected date details or list of routines
+            if (selectedDate != null) {
+                val selectedEntry = plan.scheduleEntries.find { entry ->
+                    val entryCal = Calendar.getInstance().apply { timeInMillis = entry.date }
+                    val selectedCal = Calendar.getInstance().apply { timeInMillis = selectedDate!! }
+                    entryCal.get(Calendar.YEAR) == selectedCal.get(Calendar.YEAR) &&
+                    entryCal.get(Calendar.DAY_OF_YEAR) == selectedCal.get(Calendar.DAY_OF_YEAR)
+                }
                 
-                plan.scheduleEntries.forEach { entry ->
-                    val routine = savedRoutines.find { it.id == entry.routineId }
+                if (selectedEntry != null) {
+                    val routine = savedRoutines.find { it.id == selectedEntry.routineId }
                     if (routine != null) {
-                        Row(
+                        Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 4.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                                .background(RpgTheme.background, RoundedCornerShape(8.dp))
+                                .padding(12.dp)
                         ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = dateFormat.format(Date(entry.date)),
-                                    fontSize = 13.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = RpgTheme.textPrimary
-                                )
-                                Text(
-                                    text = "${routine.routine.exercises.size} exercises • ${routine.routine.totalDurationMinutes} min",
-                                    fontSize = 12.sp,
-                                    color = RpgTheme.textSecondary
-                                )
-                                if (entry.isCompleted) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
                                     Text(
-                                        text = "✓ Completed",
-                                        fontSize = 11.sp,
-                                        color = RpgTheme.success
+                                        text = dateFormat.format(Date(selectedEntry.date)),
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = RpgTheme.accent
+                                    )
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text(
+                                        text = "${routine.routine.exercises.size} exercises • ${routine.routine.totalDurationMinutes} min",
+                                        fontSize = 14.sp,
+                                        color = RpgTheme.textSecondary
+                                    )
+                                    if (selectedEntry.isCompleted) {
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text(
+                                            text = "✓ Completed",
+                                            fontSize = 13.sp,
+                                            color = RpgTheme.success,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    }
+                                }
+                                RpgButton(
+                                    text = "Start",
+                                    onClick = { onLoadRoutine(routine.id) },
+                                    color = RpgTheme.success,
+                                    fontSize = 14.sp
+                                )
+                            }
+                            
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Divider(color = RpgTheme.border)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            
+                            Text(
+                                text = "Exercises:",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = RpgTheme.textPrimary
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            
+                            routine.routine.exercises.forEachIndexed { index, exercise ->
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 2.dp)
+                                ) {
+                                    Text(
+                                        text = "${index + 1}. ",
+                                        fontSize = 12.sp,
+                                        color = RpgTheme.accent,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Text(
+                                        text = "${exercise.name} (${exercise.durationMinutes} min)",
+                                        fontSize = 12.sp,
+                                        color = RpgTheme.textSecondary
                                     )
                                 }
                             }
-                            IconButton(onClick = { onLoadRoutine(routine.id) }) {
-                                Icon(
-                                    imageVector = Icons.Default.PlayArrow,
-                                    contentDescription = "Load",
-                                    tint = RpgTheme.success,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                            }
                         }
                     }
+                } else {
+                    Text(
+                        text = "No routine scheduled for this date",
+                        fontSize = 14.sp,
+                        color = RpgTheme.textSecondary,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
+            } else {
+                Column(modifier = Modifier.padding(start = 16.dp)) {
+                    Text(
+                        text = "Click a date on the calendar to view details",
+                        fontSize = 13.sp,
+                        color = RpgTheme.textSecondary,
+                        fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                    )
                 }
             }
         }
