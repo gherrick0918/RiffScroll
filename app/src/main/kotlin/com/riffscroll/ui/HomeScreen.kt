@@ -30,7 +30,7 @@ fun HomeScreen(
     currentRoutine: PracticeRoutine?,
     savedRoutines: List<SavedRoutine>,
     schedules: List<Schedule>,
-    onGenerateRoutine: (Int, DifficultyLevel?) -> Unit,
+    onGenerateRoutine: (Int, DifficultyLevel?, InstrumentType?) -> Unit,
     onStartPractice: () -> Unit,
     onSaveRoutine: (String) -> Unit,
     onLoadRoutine: (String) -> Unit,
@@ -67,6 +67,45 @@ fun HomeScreen(
             
             var selectedDuration by remember { mutableStateOf(45) }
             var selectedDifficulty by remember { mutableStateOf<DifficultyLevel?>(null) }
+            var selectedInstrument by remember { mutableStateOf<InstrumentType?>(null) }
+            
+            // Instrument Selection
+            Text(
+                text = "Instrument:",
+                color = RpgTheme.textPrimary,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                RpgButton(
+                    text = "Both",
+                    onClick = { selectedInstrument = null },
+                    modifier = Modifier.weight(1f),
+                    color = if (selectedInstrument == null) RpgTheme.primary else RpgTheme.secondary,
+                    fontSize = 13.sp
+                )
+                RpgButton(
+                    text = "${InstrumentType.GUITAR.emoji} Guitar",
+                    onClick = { selectedInstrument = InstrumentType.GUITAR },
+                    modifier = Modifier.weight(1f),
+                    color = if (selectedInstrument == InstrumentType.GUITAR) RpgTheme.primary else RpgTheme.secondary,
+                    fontSize = 13.sp
+                )
+                RpgButton(
+                    text = "${InstrumentType.PIANO.emoji} Piano",
+                    onClick = { selectedInstrument = InstrumentType.PIANO },
+                    modifier = Modifier.weight(1f),
+                    color = if (selectedInstrument == InstrumentType.PIANO) RpgTheme.primary else RpgTheme.secondary,
+                    fontSize = 13.sp
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
             
             // Difficulty Selection
             Text(
@@ -136,7 +175,7 @@ fun HomeScreen(
             
             RpgButton(
                 text = "🎲 Generate New Routine",
-                onClick = { onGenerateRoutine(selectedDuration, selectedDifficulty) },
+                onClick = { onGenerateRoutine(selectedDuration, selectedDifficulty, selectedInstrument) },
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -378,6 +417,11 @@ fun ExerciseListItem(exercise: Exercise, index: Int) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                RpgBadge(
+                    text = "${exercise.instrument.emoji} ${exercise.instrument.displayName}",
+                    color = RpgTheme.info
+                )
+                
                 RpgBadge(
                     text = when (exercise.category) {
                         ExerciseCategory.TECHNIQUE -> "⚡ Technique"

@@ -13,6 +13,7 @@ class ExerciseRepository {
             name = "Chromatic Scale Practice",
             description = "Practice chromatic scales to build finger strength and dexterity",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.BEGINNER,
             hasTiming = true,
@@ -39,6 +40,7 @@ E|------------------|
             name = "Alternate Picking Drill",
             description = "Master alternate picking technique for speed and precision",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
@@ -66,6 +68,7 @@ E|12-13-14-15-|
             name = "String Skipping Exercise",
             description = "Develop accuracy and coordination with string skipping patterns",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
@@ -92,6 +95,7 @@ E|----------|----------|
             name = "Hammer-On & Pull-Off Practice",
             description = "Build legato technique with hammer-ons and pull-offs",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.BEGINNER,
             hasTiming = true,
@@ -116,6 +120,7 @@ Combined:    e|5h7h8p7p5|
             name = "Bending Accuracy",
             description = "Master string bending technique and pitch accuracy",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = false,
@@ -138,6 +143,7 @@ B|8b10r8-| (bend and release)
             name = "Four-Fret Chromatic Run",
             description = "Chromatic run up the first 4 frets on each string for warm-up and speed building",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.BEGINNER,
             hasTiming = true,
@@ -165,6 +171,7 @@ E|----------1-2-3-4|
             name = "Three-Note Pattern Exercise",
             description = "Three-note ascending pattern for building alternate picking and finger independence",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
@@ -187,6 +194,7 @@ Pattern continues...
             name = "Finger Isolation 1-2",
             description = "Isolation exercise for index and middle fingers to build strength and coordination",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.BEGINNER,
             hasTiming = true,
@@ -210,6 +218,7 @@ G|1-2-1-2-1-2-1-2-|
             name = "Finger Isolation 3-4",
             description = "Isolation exercise for ring and pinky fingers to strengthen weak fingers",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.ADVANCED,
             hasTiming = true,
@@ -234,6 +243,7 @@ G|3-4-3-4-3-4-3-4-|
             name = "Legato Hammer-On Exercise",
             description = "Smooth hammer-on patterns for legato technique without picking",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
@@ -259,6 +269,7 @@ G|------------1h2h3h4|
             name = "Spider Walk Exercise",
             description = "Wide stretch exercise ascending the fretboard to build finger span",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
@@ -282,6 +293,7 @@ Starting position walks up
             name = "Tremolo Picking Endurance",
             description = "Single-note tremolo picking to build stamina and speed",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.ADVANCED,
             hasTiming = true,
@@ -303,6 +315,7 @@ Starting position walks up
             name = "Economy Picking Across Strings",
             description = "Practice economy picking to reduce pick movement and increase speed",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.ADVANCED,
             hasTiming = true,
@@ -328,6 +341,7 @@ Pattern: ∏ ∨ ∏ ∏ ∨ ∏
             name = "Trill Exercise",
             description = "Rapid hammer-on and pull-off between two notes for finger speed",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
@@ -353,6 +367,7 @@ Pick only the first note
             name = "String Skipping Arpeggio",
             description = "Arpeggio patterns with string skipping for accuracy and speed",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.ADVANCED,
             hasTiming = true,
@@ -381,6 +396,7 @@ E|------------|
             name = "Descending Pull-Off Runs",
             description = "Fast descending legato runs using pull-offs",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.ADVANCED,
             hasTiming = true,
@@ -405,6 +421,7 @@ e|8p7p6p5-----|
             name = "Sweep Picking Triads",
             description = "Basic sweep picking technique across three strings",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.ADVANCED,
             hasTiming = true,
@@ -431,6 +448,7 @@ e|----5--------|
             name = "Single-String Scale Run",
             description = "Complete scale played on a single string to build left-hand strength",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
@@ -455,6 +473,7 @@ G|0-2-4-5-7-9-11-12-|
             name = "Two-Hand Tapping Exercise",
             description = "Basic two-hand tapping for extended range and speed",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.ADVANCED,
             hasTiming = true,
@@ -479,6 +498,7 @@ e|12t-5-8h-12t-5-8h|
             name = "Pentatonic Sequence Exercise",
             description = "Sequenced patterns through pentatonic scale for speed and fluidity",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
@@ -503,6 +523,7 @@ e|5-7-8-5-7-8-5-8-|
             name = "Position Shifting Exercise",
             description = "Practice smooth position shifts along the fretboard",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
@@ -527,6 +548,7 @@ Position shifts up the neck
             name = "Hybrid Picking Exercise",
             description = "Combine pick and fingers for complex picking patterns",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.ADVANCED,
             hasTiming = true,
@@ -555,6 +577,7 @@ E|-------------|
             name = "Pinkie Anchor Training",
             description = "Reversed chromatic pattern using pinky as anchor point (from 10 Guitar Speed Training Exercises)",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.ADVANCED,
             hasTiming = true,
@@ -582,6 +605,7 @@ D|------4-3-2-1|
             name = "Chromatic Slide Extension",
             description = "Chromatic pattern with pinky slides to extend range (from 10 Guitar Speed Training Exercises)",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
@@ -606,6 +630,7 @@ e|1-2-3-4s5-4-3-2-1-|
             name = "Neo-Classical Step-Up Pattern",
             description = "Ascending linear pattern for coordination and neo-classical style (from 10 Guitar Speed Training Exercises)",
             category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 5,
             difficulty = DifficultyLevel.ADVANCED,
             hasTiming = true,
@@ -635,6 +660,7 @@ G|-5-6-7-----------|
             name = "Improvisation in Pentatonic",
             description = "Free improvisation using pentatonic scale patterns",
             category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 10,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
@@ -663,6 +689,7 @@ E|5-8-------------|
             name = "Melodic Composition",
             description = "Compose short melodic phrases and motifs",
             category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 10,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = false,
@@ -681,6 +708,7 @@ E|5-8-------------|
             name = "Rhythm Creation",
             description = "Develop unique rhythm patterns and strumming",
             category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 8,
             difficulty = DifficultyLevel.BEGINNER,
             hasTiming = true,
@@ -708,6 +736,7 @@ Syncopated:     ∏ ∨ ∏ ∨ x ∨ ∏ ∨
             name = "Modal Exploration",
             description = "Explore different modes and their unique flavors",
             category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 10,
             difficulty = DifficultyLevel.ADVANCED,
             hasTiming = false,
@@ -735,6 +764,7 @@ E|-----------------|
             name = "Pentatonic Scale Patterns",
             description = "Practice all five positions of the pentatonic scale across the fretboard",
             category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 10,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
@@ -763,6 +793,7 @@ E|5-8-------------|
             name = "Major Scale Position Practice",
             description = "Practice major scales in different positions across the fretboard (from Berklee Guitar Handbook)",
             category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 10,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
@@ -790,6 +821,7 @@ G|-0-2-------------|
             name = "Triad Practice Across String Sets",
             description = "Practice major triads in all positions (from Berklee Guitar Handbook)",
             category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 8,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = true,
@@ -816,6 +848,7 @@ G|--9--|
             name = "Rhythmic Variation Development",
             description = "Transform scales into musical solos using rhythmic variation (from Berklee Guitar Handbook)",
             category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 10,
             difficulty = DifficultyLevel.ADVANCED,
             hasTiming = true,
@@ -844,6 +877,7 @@ Quarter + 2 eighths:
             name = "Song Section Practice",
             description = "Work on a specific section of your current song",
             category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 15,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = false,
@@ -863,6 +897,7 @@ Quarter + 2 eighths:
             name = "Full Song Play-Through",
             description = "Play through an entire song from start to finish",
             category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 10,
             difficulty = DifficultyLevel.INTERMEDIATE,
             hasTiming = false,
@@ -882,6 +917,7 @@ Quarter + 2 eighths:
             name = "Song Memorization",
             description = "Work on memorizing song structure and parts",
             category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 10,
             difficulty = DifficultyLevel.BEGINNER,
             hasTiming = false,
@@ -901,6 +937,7 @@ Quarter + 2 eighths:
             name = "Cover Song Learning",
             description = "Learn a new song or section by ear",
             category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.GUITAR,
             durationMinutes = 15,
             difficulty = DifficultyLevel.ADVANCED,
             hasTiming = false,
@@ -917,16 +954,300 @@ Quarter + 2 eighths:
         )
     )
     
+    // Piano Exercises
+    private val pianoTechniqueExercises = listOf(
+        Exercise(
+            id = "piano_tech_1",
+            name = "C Major Scale - Hands Separate",
+            description = "Practice C major scale with proper fingering, hands separately",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.BEGINNER,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Right hand: C(1) D(2) E(3) F(1) G(2) A(3) B(4) C(5)",
+                "Thumb under after E, cross over middle finger on F",
+                "Left hand: C(5) D(4) E(3) F(2) G(1) A(3) B(2) C(1)",
+                "Cross over middle finger after G in left hand",
+                "Practice each hand separately first",
+                "Focus on even tone and smooth transitions",
+                "Gradually increase tempo by 5 BPM when comfortable"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_2",
+            name = "Hanon Exercise #1",
+            description = "Classic Hanon finger independence exercise",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.BEGINNER,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Play the ascending pattern: 12345 13245 14235 15234",
+                "Each finger gets a workout in different positions",
+                "Keep fingers curved and wrists level",
+                "Play with even volume across all fingers",
+                "Start slowly, focus on accuracy and finger independence",
+                "Use a metronome to maintain steady tempo",
+                "Practice hands together once each hand is comfortable"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_3",
+            name = "Broken Chord Arpeggios",
+            description = "Practice broken chord patterns for hand coordination",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 72,
+            instructions = listOf(
+                "Start with C major arpeggio: C-E-G-C (ascending)",
+                "Right hand fingering: 1-2-3-5",
+                "Left hand fingering: 5-3-2-1",
+                "Practice in all keys, moving through the circle of fifths",
+                "Keep wrist relaxed and fluid motion",
+                "Add minor arpeggios once major is comfortable",
+                "Focus on even timing and smooth transitions"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_4",
+            name = "Contrary Motion Scales",
+            description = "Play scales with both hands moving in opposite directions",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Start with both thumbs on middle C",
+                "Both hands play outward: RH ascending, LH descending",
+                "Mirror image fingering creates symmetry",
+                "Excellent for coordination and hand independence",
+                "Practice in C major first, then other keys",
+                "Keep both hands perfectly synchronized",
+                "Focus on matching dynamics between hands"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_5",
+            name = "Trills and Ornaments",
+            description = "Develop speed and control with trills between adjacent notes",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Trill between two adjacent notes (e.g., C-D-C-D rapidly)",
+                "Use fingers 2-3 or 1-2 for most trills",
+                "Keep motion in fingers only, not from wrist or arm",
+                "Start slowly and build up speed gradually",
+                "Maintain even volume throughout the trill",
+                "Practice trills on different note pairs",
+                "Add mordents and turns for variety"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_6",
+            name = "Octave Practice",
+            description = "Build strength and accuracy playing octaves",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Play octaves using fingers 1 and 5 (thumb and pinky)",
+                "Keep hand in a comfortable arch, not stretched flat",
+                "Practice ascending and descending octave scales",
+                "Add chromatic octave passages",
+                "Use arm weight, not just finger strength",
+                "Keep wrist flexible and loose",
+                "Essential technique for romantic and virtuosic repertoire"
+            )
+        )
+    )
+    
+    private val pianoCreativityExercises = listOf(
+        Exercise(
+            id = "piano_creative_1",
+            name = "Chord Progression Exploration",
+            description = "Improvise melodies over common chord progressions",
+            category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = false,
+            instructions = listOf(
+                "Choose a common progression (e.g., I-IV-V-I in C major: C-F-G-C)",
+                "Play the progression in the left hand",
+                "Improvise melodies in the right hand using chord tones",
+                "Add passing tones and neighbor tones for interest",
+                "Experiment with different rhythmic patterns",
+                "Try inversions to create smoother bass lines",
+                "Record yourself to capture interesting ideas"
+            )
+        ),
+        Exercise(
+            id = "piano_creative_2",
+            name = "Blues Scale Improvisation",
+            description = "Explore blues scale patterns and improvisation",
+            category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 90,
+            instructions = listOf(
+                "Use C blues scale: C-Eb-F-F#-G-Bb-C",
+                "Play a 12-bar blues progression in left hand",
+                "Improvise using the blues scale in right hand",
+                "Add bends (grace notes) and slides for expression",
+                "Experiment with call and response phrases",
+                "Use triplet rhythms and syncopation",
+                "Listen to blues pianists for inspiration"
+            )
+        ),
+        Exercise(
+            id = "piano_creative_3",
+            name = "Voicing Practice",
+            description = "Experiment with different chord voicings and colors",
+            category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = false,
+            instructions = listOf(
+                "Take a simple chord (e.g., C major: C-E-G)",
+                "Play it in root position, then first and second inversions",
+                "Spread the notes across two hands",
+                "Add extensions: 7ths, 9ths, 11ths, 13ths",
+                "Experiment with open vs. closed voicings",
+                "Try drop-2 and drop-3 voicings",
+                "Listen to how each voicing changes the color and feel"
+            )
+        ),
+        Exercise(
+            id = "piano_creative_4",
+            name = "Modal Exploration",
+            description = "Explore different modes and their unique characteristics",
+            category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = false,
+            instructions = listOf(
+                "Choose a mode (e.g., D Dorian: D-E-F-G-A-B-C-D)",
+                "Play the scale ascending and descending",
+                "Improvise phrases emphasizing the characteristic notes",
+                "For Dorian, emphasize the raised 6th degree",
+                "Create vamps using modal chords",
+                "Try different modes: Mixolydian, Phrygian, Lydian",
+                "Compare the mood and color of each mode"
+            )
+        )
+    )
+    
+    private val pianoSongExercises = listOf(
+        Exercise(
+            id = "piano_song_1",
+            name = "Difficult Passage Practice",
+            description = "Work on challenging sections of your current piece",
+            category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 15,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = false,
+            instructions = listOf(
+                "Identify the most challenging 4-8 measures",
+                "Practice hands separately first",
+                "Slow down to 50% tempo, focus on accuracy",
+                "Use rhythmic variations (dotted, reverse dotted)",
+                "Practice with different articulations",
+                "Gradually increase tempo by 5 BPM increments",
+                "Once comfortable at full tempo, add back into full piece"
+            )
+        ),
+        Exercise(
+            id = "piano_song_2",
+            name = "Piece Performance Run-Through",
+            description = "Play through entire piece without stopping",
+            category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = false,
+            instructions = listOf(
+                "Choose a piece you know well",
+                "Play from beginning to end without stopping",
+                "Don't stop for mistakes - keep going",
+                "Focus on musicality and expression",
+                "Record yourself to evaluate performance",
+                "Note sections that need more work",
+                "Practice performing under pressure"
+            )
+        ),
+        Exercise(
+            id = "piano_song_3",
+            name = "Memorization Practice",
+            description = "Work on memorizing pieces without sheet music",
+            category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.BEGINNER,
+            hasTiming = false,
+            instructions = listOf(
+                "Choose a short section (4-8 measures)",
+                "Analyze the harmony and structure",
+                "Memorize one hand at a time",
+                "Play from memory, checking against score as needed",
+                "Visualize the score away from the piano",
+                "Practice starting from different points in the piece",
+                "Test your memory by playing in different tempos"
+            )
+        ),
+        Exercise(
+            id = "piano_song_4",
+            name = "Sight Reading Practice",
+            description = "Improve reading skills with new material",
+            category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 15,
+            difficulty = DifficultyLevel.BEGINNER,
+            hasTiming = false,
+            instructions = listOf(
+                "Choose music slightly below your current level",
+                "Scan the piece before playing: key, time signature, tempo",
+                "Look for patterns and familiar elements",
+                "Keep your eyes on the music, not your hands",
+                "Don't stop for mistakes, keep steady tempo",
+                "Practice reading hands separately if needed",
+                "Read a little ahead of what you're playing"
+            )
+        )
+    )
+    
     fun getAllExercises(): List<Exercise> {
-        return techniqueExercises + creativityExercises + songExercises
+        return techniqueExercises + creativityExercises + songExercises + 
+               pianoTechniqueExercises + pianoCreativityExercises + pianoSongExercises
     }
     
     fun getExercisesByCategory(category: ExerciseCategory): List<Exercise> {
-        return when (category) {
-            ExerciseCategory.TECHNIQUE -> techniqueExercises
-            ExerciseCategory.CREATIVITY -> creativityExercises
-            ExerciseCategory.SONGS -> songExercises
-        }
+        return getAllExercises().filter { it.category == category }
+    }
+    
+    fun getExercisesByInstrument(instrument: InstrumentType): List<Exercise> {
+        return getAllExercises().filter { it.instrument == instrument }
     }
     
     fun getExercisesByDifficulty(difficulty: DifficultyLevel?): List<Exercise> {
@@ -943,29 +1264,31 @@ Quarter + 2 eighths:
      */
     fun generateBalancedRoutine(
         targetDurationMinutes: Int = 45,
-        difficulty: DifficultyLevel? = null
+        difficulty: DifficultyLevel? = null,
+        instrument: InstrumentType? = null
     ): PracticeRoutine {
         val exercises = mutableListOf<Exercise>()
         var totalDuration = 0
         
+        // Get all exercises, filter by instrument if specified
+        val allExercises = if (instrument != null) {
+            getAllExercises().filter { it.instrument == instrument }
+        } else {
+            getAllExercises()
+        }
+        
         // Filter exercises by difficulty if specified
-        val availableTech = if (difficulty != null) {
-            techniqueExercises.filter { it.difficulty == difficulty }
-        } else {
-            techniqueExercises
-        }
+        val availableTech = allExercises
+            .filter { it.category == ExerciseCategory.TECHNIQUE }
+            .let { if (difficulty != null) it.filter { ex -> ex.difficulty == difficulty } else it }
         
-        val availableCreative = if (difficulty != null) {
-            creativityExercises.filter { it.difficulty == difficulty }
-        } else {
-            creativityExercises
-        }
+        val availableCreative = allExercises
+            .filter { it.category == ExerciseCategory.CREATIVITY }
+            .let { if (difficulty != null) it.filter { ex -> ex.difficulty == difficulty } else it }
         
-        val availableSongs = if (difficulty != null) {
-            songExercises.filter { it.difficulty == difficulty }
-        } else {
-            songExercises
-        }
+        val availableSongs = allExercises
+            .filter { it.category == ExerciseCategory.SONGS }
+            .let { if (difficulty != null) it.filter { ex -> ex.difficulty == difficulty } else it }
         
         // Sort by duration to help with filling
         val techByDuration = availableTech.sortedBy { it.durationMinutes }

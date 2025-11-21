@@ -31,6 +31,7 @@ object RpgTheme {
     val success = Color(0xFF27ae60)
     val warning = Color(0xFFf39c12)
     val danger = Color(0xFFe74c3c)
+    val info = Color(0xFF3498db)
 }
 
 /**
