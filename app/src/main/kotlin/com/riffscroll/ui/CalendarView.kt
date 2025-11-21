@@ -32,7 +32,12 @@ fun CalendarView(
     onDateSelected: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var currentMonth by remember { mutableStateOf(Calendar.getInstance()) }
+    // Use current time as initial value for saveable state
+    val initialMonth = remember { Calendar.getInstance().timeInMillis }
+    var currentMonthMillis by rememberSaveable { mutableStateOf(initialMonth) }
+    val currentMonth = remember(currentMonthMillis) {
+        Calendar.getInstance().apply { timeInMillis = currentMonthMillis }
+    }
     
     Column(
         modifier = modifier
@@ -49,10 +54,10 @@ fun CalendarView(
         ) {
             IconButton(onClick = {
                 val newMonth = Calendar.getInstance().apply {
-                    timeInMillis = currentMonth.timeInMillis
+                    timeInMillis = currentMonthMillis
                     add(Calendar.MONTH, -1)
                 }
-                currentMonth = newMonth
+                currentMonthMillis = newMonth.timeInMillis
             }) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowLeft,

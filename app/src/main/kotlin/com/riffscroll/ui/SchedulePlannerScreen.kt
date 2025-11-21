@@ -235,10 +235,10 @@ fun SchedulePlanItem(
             Spacer(modifier = Modifier.height(16.dp))
             
             // Selected date details or list of routines
-            if (selectedDate != null) {
+            selectedDate?.let { selectedDateValue ->
                 val selectedEntry = plan.scheduleEntries.find { entry ->
                     val entryCal = Calendar.getInstance().apply { timeInMillis = entry.date }
-                    val selectedCal = Calendar.getInstance().apply { timeInMillis = selectedDate!! }
+                    val selectedCal = Calendar.getInstance().apply { timeInMillis = selectedDateValue }
                     entryCal.get(Calendar.YEAR) == selectedCal.get(Calendar.YEAR) &&
                     entryCal.get(Calendar.DAY_OF_YEAR) == selectedCal.get(Calendar.DAY_OF_YEAR)
                 }
@@ -329,7 +329,7 @@ fun SchedulePlanItem(
                         modifier = Modifier.padding(12.dp)
                     )
                 }
-            } else {
+            } ?: run {
                 Column(modifier = Modifier.padding(start = 16.dp)) {
                     Text(
                         text = "Click a date on the calendar to view details",
