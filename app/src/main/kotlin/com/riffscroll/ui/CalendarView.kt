@@ -38,7 +38,7 @@ fun CalendarView(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(RpgTheme.cardBackground, RoundedCornerShape(8.dp))
+            .background(RpgTheme.surface, RoundedCornerShape(8.dp))
             .border(2.dp, RpgTheme.border, RoundedCornerShape(8.dp))
             .padding(16.dp)
     ) {
