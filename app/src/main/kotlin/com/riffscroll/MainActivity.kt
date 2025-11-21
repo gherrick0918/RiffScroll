@@ -38,6 +38,7 @@ fun RiffScrollApp() {
     val savedRoutines by viewModel.savedRoutines.collectAsState()
     val schedules by viewModel.schedules.collectAsState()
     val practiceSchedulePlans by viewModel.practiceSchedulePlans.collectAsState()
+    val calendarSchedules by viewModel.calendarSchedules.collectAsState()
     
     var currentScreen by remember { mutableStateOf("home") }
     
@@ -46,6 +47,7 @@ fun RiffScrollApp() {
         viewModel.refreshSavedRoutines()
         viewModel.refreshSchedules()
         viewModel.refreshPracticeSchedulePlans()
+        viewModel.refreshCalendarSchedules()
     }
     
     Surface(
@@ -90,6 +92,7 @@ fun RiffScrollApp() {
                     currentRoutine = currentRoutine,
                     savedRoutines = savedRoutines,
                     schedules = schedules,
+                    calendarSchedules = calendarSchedules,
                     onGenerateRoutine = { duration, difficulty, instrument -> viewModel.generateRoutine(duration, difficulty, instrument) },
                     onStartPractice = { viewModel.startPracticeSession() },
                     onSaveRoutine = { name -> viewModel.saveCurrentRoutine(name) },

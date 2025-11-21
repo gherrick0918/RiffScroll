@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.riffscroll.data.CalendarSchedule
 import com.riffscroll.data.DifficultyLevel
 import com.riffscroll.data.Exercise
 import com.riffscroll.data.ExerciseCategory
@@ -31,6 +32,7 @@ fun HomeScreen(
     currentRoutine: PracticeRoutine?,
     savedRoutines: List<SavedRoutine>,
     schedules: List<Schedule>,
+    calendarSchedules: List<CalendarSchedule>,
     onGenerateRoutine: (Int, DifficultyLevel?, InstrumentType?) -> Unit,
     onStartPractice: () -> Unit,
     onSaveRoutine: (String) -> Unit,
@@ -43,6 +45,18 @@ fun HomeScreen(
     onNavigateToSchedulePlanner: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Find today's scheduled routine
+    val today = System.currentTimeMillis()
+    val todaySchedule = calendarSchedules.find { schedule ->
+        val scheduleCal = java.util.Calendar.getInstance().apply { timeInMillis = schedule.date }
+        val todayCal = java.util.Calendar.getInstance().apply { timeInMillis = today }
+        scheduleCal.get(java.util.Calendar.YEAR) == todayCal.get(java.util.Calendar.YEAR) &&
+        scheduleCal.get(java.util.Calendar.DAY_OF_YEAR) == todayCal.get(java.util.Calendar.DAY_OF_YEAR)
+    }
+    val todayRoutine = todaySchedule?.let { schedule ->
+        savedRoutines.find { it.id == schedule.routineId }
+    }
+    
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -57,6 +71,19 @@ fun HomeScreen(
         UserProgressCard(userProgress = userProgress)
         
         Spacer(modifier = Modifier.height(16.dp))
+        
+        // Today's Scheduled Practice (if available)
+        if (todayRoutine != null && todaySchedule != null) {
+            TodaysPracticeCard(
+                routine = todayRoutine,
+                isCompleted = todaySchedule.isCompleted,
+                onStartPractice = { 
+                    onLoadRoutine(todayRoutine.id)
+                    onStartPractice()
+                }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
         
         // Auto Schedule Planner Button - Prominent!
         RpgCard {
@@ -857,5 +884,83 @@ fun SchedulesSection(
                 }
             }
         )
+    }
+}
+
+/**
+ * Display today's scheduled practice routine
+ */
+@Composable
+fun TodaysPracticeCard(
+    routine: SavedRoutine,
+    isCompleted: Boolean,
+    onStartPractice: () -> Unit
+) {
+    RpgCard {
+        Column {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = "🌟",
+                        fontSize = 28.sp,
+                        modifier = Modifier.padding(end = 12.dp)
+                    )
+                    Column {
+                        Text(
+                            text = "Today's Practice",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = RpgTheme.accent
+                        )
+                        Text(
+                            text = if (isCompleted) "Completed ✓" else "Ready to practice",
+                            fontSize = 13.sp,
+                            color = if (isCompleted) RpgTheme.success else RpgTheme.textSecondary
+                        )
+                    }
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            Divider(color = RpgTheme.border)
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            Text(
+                text = routine.name,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = RpgTheme.textPrimary
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "${routine.routine.exercises.size} exercises • ${routine.routine.totalDurationMinutes} minutes",
+                fontSize = 14.sp,
+                color = RpgTheme.textSecondary
+            )
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            if (!isCompleted) {
+                RpgButton(
+                    text = "⚔️ Start Today's Practice",
+                    onClick = onStartPractice,
+                    modifier = Modifier.fillMaxWidth(),
+                    color = RpgTheme.success,
+                    fontSize = 16.sp
+                )
+            } else {
+                RpgButton(
+                    text = "✓ Practice Again",
+                    onClick = onStartPractice,
+                    modifier = Modifier.fillMaxWidth(),
+                    color = RpgTheme.secondary,
+                    fontSize = 16.sp
+                )
+            }
+        }
     }
 }
