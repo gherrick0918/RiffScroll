@@ -116,7 +116,7 @@ fun ExerciseBrowserScreen(
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = RpgTheme.cardBackground
+                containerColor = RpgTheme.surface
             )
         )
 
@@ -152,8 +152,8 @@ fun ExerciseBrowserScreen(
                     }
                 },
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = RpgTheme.cardBackground,
-                    unfocusedContainerColor = RpgTheme.cardBackground,
+                    focusedContainerColor = RpgTheme.surface,
+                    unfocusedContainerColor = RpgTheme.surface,
                     focusedTextColor = RpgTheme.textPrimary,
                     unfocusedTextColor = RpgTheme.textPrimary
                 ),
