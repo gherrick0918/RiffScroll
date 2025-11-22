@@ -101,6 +101,13 @@ fun RiffScrollApp() {
                     onBack = { currentScreen = "home" }
                 )
             }
+            currentScreen == "exercise_browser" -> {
+                ExerciseBrowserScreen(
+                    allExercises = viewModel.getAllExercises(),
+                    onBack = { currentScreen = "home" },
+                    onAddToRoutine = null  // Can be enhanced later to add exercises to custom routines
+                )
+            }
             else -> {
                 HomeScreen(
                     userProgress = userProgress,
@@ -118,6 +125,7 @@ fun RiffScrollApp() {
                     onRemoveRoutineFromSchedule = { scheduleId, routineId -> viewModel.removeRoutineFromSchedule(scheduleId, routineId) },
                     onNavigateToSchedulePlanner = { currentScreen = "schedule_planner" },
                     onNavigateToHistory = { currentScreen = "history" },
+                    onNavigateToExerciseBrowser = { currentScreen = "exercise_browser" },
                     calendarSchedules = calendarSchedules,
                     currentViewingDate = currentViewingDate,
                     onNavigatePreviousDay = { viewModel.navigateToPreviousDay() },
