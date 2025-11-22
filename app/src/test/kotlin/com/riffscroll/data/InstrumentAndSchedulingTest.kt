@@ -271,7 +271,8 @@ class InstrumentAndSchedulingTest {
         val exerciseRepo = ExerciseRepository()
         
         val startDate = System.currentTimeMillis()
-        val endDate = startDate + (6 * 24 * 60 * 60 * 1000L) // 7 days (0-6)
+        // 6 days after start = 7 total days inclusive (days 0-6)
+        val endDate = startDate + (6 * 24 * 60 * 60 * 1000L)
         
         // Create plan with both instruments (instrument = null)
         val plan = repository.createPracticeSchedulePlan(
@@ -301,6 +302,7 @@ class InstrumentAndSchedulingTest {
                 exercises.all { it.instrument == instrument })
             
             // Check alternating pattern: even indices = guitar, odd indices = piano
+            // This pattern matches the logic in RoutineRepository.createPracticeSchedulePlan
             val expectedInstrument = if (index % 2 == 0) InstrumentType.GUITAR else InstrumentType.PIANO
             assertEquals("Day $index should have $expectedInstrument exercises", 
                 expectedInstrument, instrument)

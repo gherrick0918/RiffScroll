@@ -229,7 +229,7 @@ class RoutineRepository {
         
         var practiceCount = 0
         var weekStart = calendar.clone() as java.util.Calendar
-        var dayIndex = 0  // Track which day we're generating for alternating instruments
+        var instrumentCycleIndex = 0  // Track index for alternating between instruments
         
         while (calendar.timeInMillis <= endDate) {
             // Check if we're starting a new week (Monday)
@@ -241,8 +241,10 @@ class RoutineRepository {
             // Only create routine if we haven't reached the weekly limit
             if (practiceCount < daysPerWeek) {
                 // When both instruments are selected (instrument == null), alternate between them
+                // Pattern: Guitar on even days (0, 2, 4...), Piano on odd days (1, 3, 5...)
+                // This ensures even distribution and variety across the practice schedule
                 val dailyInstrument = if (instrument == null) {
-                    if (dayIndex % 2 == 0) InstrumentType.GUITAR else InstrumentType.PIANO
+                    if (instrumentCycleIndex % 2 == 0) InstrumentType.GUITAR else InstrumentType.PIANO
                 } else {
                     instrument
                 }
@@ -268,7 +270,7 @@ class RoutineRepository {
                 
                 scheduleEntries.add(calendarSchedule)
                 practiceCount++
-                dayIndex++  // Increment day index for alternating instruments
+                instrumentCycleIndex++  // Increment for alternating instruments
             }
             
             // Move to next day
