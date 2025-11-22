@@ -694,8 +694,8 @@ class PracticeViewModel(
             hasTiming = hasTiming,
             bpm = bpm,
             instructions = instructions,
-            tablature = tablature,
-            isCustom = true
+            tablature = tablature
+            // isCustom will be set by repository's addCustomExercise method
         )
         val addedExercise = repository.addCustomExercise(exercise)
         saveCustomExercises()

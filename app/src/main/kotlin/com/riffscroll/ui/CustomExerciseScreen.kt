@@ -483,7 +483,8 @@ fun CustomExerciseScreen(
                         showValidationError = true
                         return@RpgButton
                     }
-                    if (durationMinutes.toIntOrNull() == null || durationMinutes.toInt() < 1) {
+                    val durationInt = durationMinutes.toIntOrNull()
+                    if (durationInt == null || durationInt < 1) {
                         validationMessage = "Duration must be at least 1 minute"
                         showValidationError = true
                         return@RpgButton
@@ -493,7 +494,8 @@ fun CustomExerciseScreen(
                         showValidationError = true
                         return@RpgButton
                     }
-                    if (hasTiming && (bpm.toIntOrNull() == null || bpm.toInt() !in 40..240)) {
+                    val bpmInt = bpm.toIntOrNull()
+                    if (hasTiming && (bpmInt == null || bpmInt !in 40..240)) {
                         validationMessage = "BPM must be between 40 and 240"
                         showValidationError = true
                         return@RpgButton
@@ -515,10 +517,10 @@ fun CustomExerciseScreen(
                         description,
                         category,
                         instrument,
-                        durationMinutes.toInt(),
+                        durationInt,
                         difficulty,
                         hasTiming,
-                        if (hasTiming) bpm.toIntOrNull() else null,
+                        if (hasTiming) bpmInt else null,
                         instructions,
                         tablature.takeIf { it.isNotBlank() }
                     )

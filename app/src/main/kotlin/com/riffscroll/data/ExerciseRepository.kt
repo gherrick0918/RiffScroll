@@ -1,5 +1,6 @@
 package com.riffscroll.data
 
+import java.util.UUID
 import kotlin.random.Random
 
 /**
@@ -3362,7 +3363,7 @@ D|--5--------|
      */
     fun addCustomExercise(exercise: Exercise): Exercise {
         val customExercise = exercise.copy(
-            id = "custom_${System.currentTimeMillis()}_${System.nanoTime()}",
+            id = "custom_${UUID.randomUUID()}",
             isCustom = true
         )
         customExercises.add(customExercise)
