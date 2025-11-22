@@ -38,6 +38,8 @@ fun RiffScrollApp() {
     val savedRoutines by viewModel.savedRoutines.collectAsState()
     val schedules by viewModel.schedules.collectAsState()
     val practiceSchedulePlans by viewModel.practiceSchedulePlans.collectAsState()
+    val calendarSchedules by viewModel.calendarSchedules.collectAsState()
+    val currentViewingDate by viewModel.currentViewingDate.collectAsState()
     
     var currentScreen by remember { mutableStateOf("home") }
     
@@ -46,6 +48,7 @@ fun RiffScrollApp() {
         viewModel.refreshSavedRoutines()
         viewModel.refreshSchedules()
         viewModel.refreshPracticeSchedulePlans()
+        viewModel.refreshCalendarSchedules()
     }
     
     Surface(
@@ -73,8 +76,8 @@ fun RiffScrollApp() {
                 SchedulePlannerScreen(
                     practiceSchedulePlans = practiceSchedulePlans,
                     savedRoutines = savedRoutines,
-                    onCreatePlan = { name, startDate, endDate, instrument, duration, difficulty ->
-                        viewModel.createPracticeSchedulePlan(name, startDate, endDate, instrument, duration, difficulty)
+                    onCreatePlan = { name, startDate, endDate, instrument, duration, difficulty, daysPerWeek ->
+                        viewModel.createPracticeSchedulePlan(name, startDate, endDate, instrument, duration, difficulty, daysPerWeek)
                     },
                     onDeletePlan = { id -> viewModel.deletePracticeSchedulePlan(id) },
                     onLoadRoutine = { id -> 
@@ -99,7 +102,14 @@ fun RiffScrollApp() {
                     onDeleteSchedule = { id -> viewModel.deleteSchedule(id) },
                     onAddRoutineToSchedule = { scheduleId, routineId -> viewModel.addRoutineToSchedule(scheduleId, routineId) },
                     onRemoveRoutineFromSchedule = { scheduleId, routineId -> viewModel.removeRoutineFromSchedule(scheduleId, routineId) },
-                    onNavigateToSchedulePlanner = { currentScreen = "schedule_planner" }
+                    onNavigateToSchedulePlanner = { currentScreen = "schedule_planner" },
+                    calendarSchedules = calendarSchedules,
+                    currentViewingDate = currentViewingDate,
+                    onNavigatePreviousDay = { viewModel.navigateToPreviousDay() },
+                    onNavigateNextDay = { viewModel.navigateToNextDay() },
+                    onNavigateToday = { viewModel.navigateToToday() },
+                    onLoadCalendarRoutine = { id -> viewModel.loadSavedRoutine(id) },
+                    onMarkScheduleCompleted = { id -> viewModel.markCalendarScheduleCompleted(id) }
                 )
             }
         }

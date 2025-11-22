@@ -58,6 +58,10 @@ class PracticeViewModel : ViewModel() {
     private val _practiceSchedulePlans = MutableStateFlow<List<PracticeSchedulePlan>>(emptyList())
     val practiceSchedulePlans: StateFlow<List<PracticeSchedulePlan>> = _practiceSchedulePlans.asStateFlow()
     
+    // Current viewing date for calendar schedules (defaults to today)
+    private val _currentViewingDate = MutableStateFlow(System.currentTimeMillis())
+    val currentViewingDate: StateFlow<Long> = _currentViewingDate.asStateFlow()
+    
     private var timerJob: Job? = null
     private var metronomeJob: Job? = null
     private var toneGenerator: ToneGenerator? = null
@@ -397,7 +401,8 @@ class PracticeViewModel : ViewModel() {
         endDate: Long,
         instrument: InstrumentType?,
         targetDurationMinutes: Int,
-        difficulty: DifficultyLevel?
+        difficulty: DifficultyLevel?,
+        daysPerWeek: Int
     ): PracticeSchedulePlan {
         val plan = routineRepository.createPracticeSchedulePlan(
             name = name,
@@ -406,6 +411,7 @@ class PracticeViewModel : ViewModel() {
             instrument = instrument,
             targetDurationMinutes = targetDurationMinutes,
             difficulty = difficulty,
+            daysPerWeek = daysPerWeek,
             exerciseRepository = repository
         )
         refreshSavedRoutines()
@@ -475,6 +481,40 @@ class PracticeViewModel : ViewModel() {
         if (calendarSchedule != null) {
             loadSavedRoutine(calendarSchedule.routineId)
         }
+    }
+    
+    /**
+     * Navigate to the previous day
+     */
+    fun navigateToPreviousDay() {
+        val calendar = java.util.Calendar.getInstance()
+        calendar.timeInMillis = _currentViewingDate.value
+        calendar.add(java.util.Calendar.DAY_OF_MONTH, -1)
+        _currentViewingDate.value = calendar.timeInMillis
+    }
+    
+    /**
+     * Navigate to the next day
+     */
+    fun navigateToNextDay() {
+        val calendar = java.util.Calendar.getInstance()
+        calendar.timeInMillis = _currentViewingDate.value
+        calendar.add(java.util.Calendar.DAY_OF_MONTH, 1)
+        _currentViewingDate.value = calendar.timeInMillis
+    }
+    
+    /**
+     * Navigate to today
+     */
+    fun navigateToToday() {
+        _currentViewingDate.value = System.currentTimeMillis()
+    }
+    
+    /**
+     * Get the calendar schedule for the current viewing date
+     */
+    fun getCurrentViewingSchedule(): CalendarSchedule? {
+        return routineRepository.getCalendarScheduleByDate(_currentViewingDate.value)
     }
     
     override fun onCleared() {

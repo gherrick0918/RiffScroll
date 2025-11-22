@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.riffscroll.data.CalendarSchedule
 import com.riffscroll.data.DifficultyLevel
 import com.riffscroll.data.Exercise
 import com.riffscroll.data.ExerciseCategory
@@ -21,6 +22,9 @@ import com.riffscroll.data.PracticeRoutine
 import com.riffscroll.data.SavedRoutine
 import com.riffscroll.data.Schedule
 import com.riffscroll.data.UserProgress
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 /**
  * Main home screen showing user progress and routine generation
@@ -41,6 +45,13 @@ fun HomeScreen(
     onAddRoutineToSchedule: (String, String) -> Unit,
     onRemoveRoutineFromSchedule: (String, String) -> Unit,
     onNavigateToSchedulePlanner: () -> Unit,
+    calendarSchedules: List<CalendarSchedule>,
+    currentViewingDate: Long,
+    onNavigatePreviousDay: () -> Unit,
+    onNavigateNextDay: () -> Unit,
+    onNavigateToday: () -> Unit,
+    onLoadCalendarRoutine: (String) -> Unit,
+    onMarkScheduleCompleted: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -103,6 +114,21 @@ fun HomeScreen(
                 )
             }
         }
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        // Today's Routine Section (from calendar schedules)
+        TodaysRoutineSection(
+            calendarSchedules = calendarSchedules,
+            savedRoutines = savedRoutines,
+            currentViewingDate = currentViewingDate,
+            onNavigatePreviousDay = onNavigatePreviousDay,
+            onNavigateNextDay = onNavigateNextDay,
+            onNavigateToday = onNavigateToday,
+            onLoadRoutine = onLoadCalendarRoutine,
+            onMarkCompleted = onMarkScheduleCompleted,
+            onStartPractice = onStartPractice
+        )
         
         Spacer(modifier = Modifier.height(16.dp))
         
@@ -857,5 +883,190 @@ fun SchedulesSection(
                 }
             }
         )
+    }
+}
+
+/**
+ * Section showing today's scheduled routine with day navigation
+ */
+@Composable
+fun TodaysRoutineSection(
+    calendarSchedules: List<CalendarSchedule>,
+    savedRoutines: List<SavedRoutine>,
+    currentViewingDate: Long,
+    onNavigatePreviousDay: () -> Unit,
+    onNavigateNextDay: () -> Unit,
+    onNavigateToday: () -> Unit,
+    onLoadRoutine: (String) -> Unit,
+    onMarkCompleted: (String) -> Unit,
+    onStartPractice: () -> Unit
+) {
+    val dateFormat = SimpleDateFormat("EEEE, MMM dd, yyyy", Locale.US)
+    val viewingDateStr = dateFormat.format(Date(currentViewingDate))
+    
+    // Check if viewing date is today
+    val todayCalendar = java.util.Calendar.getInstance()
+    val viewingCalendar = java.util.Calendar.getInstance().apply { timeInMillis = currentViewingDate }
+    val isToday = todayCalendar.get(java.util.Calendar.YEAR) == viewingCalendar.get(java.util.Calendar.YEAR) &&
+                  todayCalendar.get(java.util.Calendar.DAY_OF_YEAR) == viewingCalendar.get(java.util.Calendar.DAY_OF_YEAR)
+    
+    // Find schedule for current viewing date
+    val scheduleForDate = calendarSchedules.firstOrNull { schedule ->
+        val scheduleCalendar = java.util.Calendar.getInstance().apply { timeInMillis = schedule.date }
+        scheduleCalendar.get(java.util.Calendar.YEAR) == viewingCalendar.get(java.util.Calendar.YEAR) &&
+        scheduleCalendar.get(java.util.Calendar.DAY_OF_YEAR) == viewingCalendar.get(java.util.Calendar.DAY_OF_YEAR)
+    }
+    
+    val routine = scheduleForDate?.let { schedule ->
+        savedRoutines.find { it.id == schedule.routineId }
+    }
+    
+    RpgCard {
+        // Header with date navigation
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onNavigatePreviousDay) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowLeft,
+                    contentDescription = "Previous Day",
+                    tint = RpgTheme.textPrimary
+                )
+            }
+            
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = if (isToday) "📅 Today's Routine" else "📅 Scheduled Routine",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = RpgTheme.textPrimary
+                )
+                Text(
+                    text = viewingDateStr,
+                    fontSize = 13.sp,
+                    color = RpgTheme.textSecondary
+                )
+            }
+            
+            IconButton(onClick = onNavigateNextDay) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = "Next Day",
+                    tint = RpgTheme.textPrimary
+                )
+            }
+        }
+        
+        Spacer(modifier = Modifier.height(12.dp))
+        
+        if (!isToday) {
+            RpgButton(
+                text = "Go to Today",
+                onClick = onNavigateToday,
+                modifier = Modifier.fillMaxWidth(),
+                color = RpgTheme.secondary,
+                fontSize = 13.sp
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+        
+        if (routine != null && scheduleForDate != null) {
+            // Show routine details
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = routine.name,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = RpgTheme.textPrimary
+                    )
+                    if (scheduleForDate.isCompleted) {
+                        RpgBadge(
+                            text = "✓ Completed",
+                            color = RpgTheme.success
+                        )
+                    }
+                }
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                Text(
+                    text = "${routine.routine.exercises.size} exercises • ${routine.routine.totalDurationMinutes} minutes",
+                    fontSize = 14.sp,
+                    color = RpgTheme.textSecondary
+                )
+                
+                Spacer(modifier = Modifier.height(12.dp))
+                
+                // Show first few exercises
+                routine.routine.exercises.take(3).forEachIndexed { index, exercise ->
+                    Text(
+                        text = "${index + 1}. ${exercise.name} (${exercise.durationMinutes} min)",
+                        fontSize = 13.sp,
+                        color = RpgTheme.textSecondary,
+                        modifier = Modifier.padding(vertical = 2.dp)
+                    )
+                }
+                
+                if (routine.routine.exercises.size > 3) {
+                    Text(
+                        text = "... and ${routine.routine.exercises.size - 3} more",
+                        fontSize = 13.sp,
+                        color = RpgTheme.textSecondary,
+                        modifier = Modifier.padding(vertical = 2.dp)
+                    )
+                }
+                
+                Spacer(modifier = Modifier.height(12.dp))
+                
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    RpgButton(
+                        text = "View Details",
+                        onClick = { onLoadRoutine(routine.id) },
+                        modifier = Modifier.weight(1f),
+                        color = RpgTheme.secondary
+                    )
+                    RpgButton(
+                        text = "⚔️ Start",
+                        onClick = { 
+                            onLoadRoutine(routine.id)
+                            onStartPractice()
+                        },
+                        modifier = Modifier.weight(1f),
+                        color = RpgTheme.success
+                    )
+                }
+                
+                if (!scheduleForDate.isCompleted) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    RpgButton(
+                        text = "Mark as Completed",
+                        onClick = { onMarkCompleted(scheduleForDate.id) },
+                        modifier = Modifier.fillMaxWidth(),
+                        color = RpgTheme.info,
+                        fontSize = 13.sp
+                    )
+                }
+            }
+        } else {
+            // No routine scheduled for this day
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = "No routine scheduled for this day",
+                    fontSize = 14.sp,
+                    color = RpgTheme.textSecondary,
+                    modifier = Modifier.padding(vertical = 16.dp)
+                )
+            }
+        }
     }
 }

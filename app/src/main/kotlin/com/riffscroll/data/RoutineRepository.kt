@@ -215,6 +215,7 @@ class RoutineRepository {
         instrument: InstrumentType?,
         targetDurationMinutes: Int,
         difficulty: DifficultyLevel?,
+        daysPerWeek: Int,
         exerciseRepository: ExerciseRepository
     ): PracticeSchedulePlan {
         val scheduleEntries = mutableListOf<CalendarSchedule>()
@@ -226,27 +227,40 @@ class RoutineRepository {
         val calendar = java.util.Calendar.getInstance()
         calendar.timeInMillis = startDate
         
+        var practiceCount = 0
+        var weekStart = calendar.clone() as java.util.Calendar
+        
         while (calendar.timeInMillis <= endDate) {
-            // Generate a routine for this day
-            val routine = exerciseRepository.generateBalancedRoutine(
-                targetDurationMinutes = targetDurationMinutes,
-                difficulty = difficulty,
-                instrument = instrument
-            )
+            // Check if we're starting a new week (Monday)
+            if (calendar.get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.MONDAY) {
+                weekStart = calendar.clone() as java.util.Calendar
+                practiceCount = 0
+            }
             
-            // Save the routine
-            val savedRoutine = saveRoutine(
-                name = "Auto-generated for ${dateFormat.format(calendar.time)}",
-                routine = routine
-            )
-            
-            // Create calendar schedule entry
-            val calendarSchedule = createCalendarSchedule(
-                date = calendar.timeInMillis,
-                routineId = savedRoutine.id
-            )
-            
-            scheduleEntries.add(calendarSchedule)
+            // Only create routine if we haven't reached the weekly limit
+            if (practiceCount < daysPerWeek) {
+                // Generate a routine for this day
+                val routine = exerciseRepository.generateBalancedRoutine(
+                    targetDurationMinutes = targetDurationMinutes,
+                    difficulty = difficulty,
+                    instrument = instrument
+                )
+                
+                // Save the routine
+                val savedRoutine = saveRoutine(
+                    name = "Auto-generated for ${dateFormat.format(calendar.time)}",
+                    routine = routine
+                )
+                
+                // Create calendar schedule entry
+                val calendarSchedule = createCalendarSchedule(
+                    date = calendar.timeInMillis,
+                    routineId = savedRoutine.id
+                )
+                
+                scheduleEntries.add(calendarSchedule)
+                practiceCount++
+            }
             
             // Move to next day
             calendar.add(java.util.Calendar.DAY_OF_MONTH, 1)
@@ -261,7 +275,8 @@ class RoutineRepository {
             scheduleEntries = scheduleEntries,
             instrument = instrument,
             targetDurationMinutes = targetDurationMinutes,
-            difficulty = difficulty
+            difficulty = difficulty,
+            daysPerWeek = daysPerWeek
         )
         
         practiceSchedulePlans[plan.id] = plan
