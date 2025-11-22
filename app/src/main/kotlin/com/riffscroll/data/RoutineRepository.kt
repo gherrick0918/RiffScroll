@@ -9,6 +9,10 @@ import java.util.Locale
  */
 class RoutineRepository(private val persistenceManager: PersistenceManager? = null) {
     
+    companion object {
+        private const val MILLIS_PER_DAY = 24 * 60 * 60 * 1000L
+    }
+    
     private val savedRoutines = mutableMapOf<String, SavedRoutine>()
     private val schedules = mutableMapOf<String, Schedule>()
     private val calendarSchedules = mutableMapOf<String, CalendarSchedule>()
@@ -442,7 +446,7 @@ class RoutineRepository(private val persistenceManager: PersistenceManager? = nu
             if (lastDate == null) {
                 tempStreak = 1
             } else {
-                val daysDiff = ((date - lastDate) / (24 * 60 * 60 * 1000)).toInt()
+                val daysDiff = ((date - lastDate) / MILLIS_PER_DAY).toInt()
                 if (daysDiff == 1) {
                     tempStreak++
                 } else {
@@ -462,14 +466,23 @@ class RoutineRepository(private val persistenceManager: PersistenceManager? = nu
         
         // Calculate current streak (only if last practice was today or yesterday)
         if (lastDate != null) {
-            val daysSinceLastPractice = ((today - lastDate) / (24 * 60 * 60 * 1000)).toInt()
-            if (daysSinceLastPractice <= 1) {
+            // Use calendar comparison to avoid time-of-day issues
+            val todayCal = java.util.Calendar.getInstance().apply {
+                timeInMillis = today
+            }
+            val lastPracticeCal = java.util.Calendar.getInstance().apply {
+                timeInMillis = lastDate
+            }
+            
+            val daysDiff = ((todayCal.timeInMillis - lastPracticeCal.timeInMillis) / MILLIS_PER_DAY).toInt()
+            
+            if (daysDiff <= 1) {
                 // Count backwards from most recent date
                 currentStreak = 1
                 var prevDate = lastDate
                 for (i in sessionsByDate.size - 2 downTo 0) {
                     val date = sessionsByDate.elementAt(i)
-                    val daysDiff = ((prevDate - date) / (24 * 60 * 60 * 1000)).toInt()
+                    val daysDiff = ((prevDate - date) / MILLIS_PER_DAY).toInt()
                     if (daysDiff == 1) {
                         currentStreak++
                         prevDate = date
@@ -488,8 +501,8 @@ class RoutineRepository(private val persistenceManager: PersistenceManager? = nu
         val favoriteInstrument = instrumentCounts.maxByOrNull { it.value }?.key
         
         // Calculate sessions this week and month
-        val weekAgo = today - (7 * 24 * 60 * 60 * 1000)
-        val monthAgo = today - (30 * 24 * 60 * 60 * 1000)
+        val weekAgo = today - (7 * MILLIS_PER_DAY)
+        val monthAgo = today - (30 * MILLIS_PER_DAY)
         
         val sessionsThisWeek = practiceHistory.count { it.completedAt >= weekAgo }
         val sessionsThisMonth = practiceHistory.count { it.completedAt >= monthAgo }

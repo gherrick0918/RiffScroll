@@ -229,7 +229,7 @@ class PracticeViewModel(
         val maxDifficulty = session.routine.exercises.maxOfOrNull { it.difficulty }
         
         val historyEntry = PracticeHistoryEntry(
-            id = "history_${System.currentTimeMillis()}",
+            id = "history_${System.currentTimeMillis()}_${System.nanoTime()}",
             completedAt = System.currentTimeMillis(),
             durationMinutes = session.routine.totalDurationMinutes,
             xpEarned = xpGained,
