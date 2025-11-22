@@ -22,11 +22,14 @@ import kotlin.math.sin
  * - Practice session state and timing
  * - Metronome control
  * - User progress and XP tracking
+ * - Data persistence
  */
-class PracticeViewModel : ViewModel() {
+class PracticeViewModel(
+    private val persistenceManager: PersistenceManager? = null
+) : ViewModel() {
     
     private val repository = ExerciseRepository()
-    private val routineRepository = RoutineRepository()
+    private val routineRepository = RoutineRepository(persistenceManager)
     
     private val _currentRoutine = MutableStateFlow<PracticeRoutine?>(null)
     val currentRoutine: StateFlow<PracticeRoutine?> = _currentRoutine.asStateFlow()
@@ -195,6 +198,7 @@ class PracticeViewModel : ViewModel() {
             totalPracticeMinutes = progress.totalPracticeMinutes + session.routine.totalDurationMinutes,
             completedRoutines = progress.completedRoutines + 1
         )
+        saveUserProgress()
         
         stopTimer()
         stopMetronome()
