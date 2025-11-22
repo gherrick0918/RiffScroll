@@ -264,4 +264,75 @@ class InstrumentAndSchedulingTest {
                 allSavedRoutines.any { it.id == entry.routineId })
         }
     }
+    
+    @Test
+    fun `createPracticeSchedulePlan with both instruments should alternate between guitar and piano`() {
+        val repository = RoutineRepository()
+        val exerciseRepo = ExerciseRepository()
+        
+        val startDate = System.currentTimeMillis()
+        val endDate = startDate + (6 * 24 * 60 * 60 * 1000L) // 7 days (0-6)
+        
+        // Create plan with both instruments (instrument = null)
+        val plan = repository.createPracticeSchedulePlan(
+            name = "Alternating Instrument Plan",
+            startDate = startDate,
+            endDate = endDate,
+            instrument = null,  // Both instruments
+            targetDurationMinutes = 30,
+            difficulty = null,
+            daysPerWeek = 7,
+            exerciseRepository = exerciseRepo
+        )
+        
+        assertEquals("Should have 7 schedule entries", 7, plan.scheduleEntries.size)
+        
+        // Verify that the routines alternate between guitar and piano
+        plan.scheduleEntries.forEachIndexed { index, entry ->
+            val savedRoutine = repository.getSavedRoutine(entry.routineId)
+            assertNotNull("Routine should exist", savedRoutine)
+            
+            val exercises = savedRoutine!!.routine.exercises
+            assertTrue("Routine should have exercises", exercises.isNotEmpty())
+            
+            // All exercises in a routine should be for the same instrument
+            val instrument = exercises.first().instrument
+            assertTrue("All exercises should be same instrument", 
+                exercises.all { it.instrument == instrument })
+            
+            // Check alternating pattern: even indices = guitar, odd indices = piano
+            val expectedInstrument = if (index % 2 == 0) InstrumentType.GUITAR else InstrumentType.PIANO
+            assertEquals("Day $index should have $expectedInstrument exercises", 
+                expectedInstrument, instrument)
+        }
+    }
+    
+    @Test
+    fun `guitar exercises should have many technique exercises`() {
+        val repository = ExerciseRepository()
+        val guitarTechnique = repository.getExercisesByInstrument(InstrumentType.GUITAR)
+            .filter { it.category == ExerciseCategory.TECHNIQUE }
+        
+        assertTrue("Should have at least 40 guitar technique exercises", 
+            guitarTechnique.size >= 40)
+    }
+    
+    @Test
+    fun `piano exercises should have many technique exercises`() {
+        val repository = ExerciseRepository()
+        val pianoTechnique = repository.getExercisesByInstrument(InstrumentType.PIANO)
+            .filter { it.category == ExerciseCategory.TECHNIQUE }
+        
+        assertTrue("Should have at least 20 piano technique exercises", 
+            pianoTechnique.size >= 20)
+    }
+    
+    @Test
+    fun `should have significantly more total exercises than before`() {
+        val repository = ExerciseRepository()
+        val allExercises = repository.getAllExercises()
+        
+        assertTrue("Should have at least 100 total exercises", 
+            allExercises.size >= 100)
+    }
 }
