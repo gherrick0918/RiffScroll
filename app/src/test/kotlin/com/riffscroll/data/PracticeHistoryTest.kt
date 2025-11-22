@@ -8,6 +8,10 @@ import org.junit.Assert.*
  */
 class PracticeHistoryTest {
     
+    companion object {
+        private const val MILLIS_PER_DAY = 24 * 60 * 60 * 1000L
+    }
+    
     @Test
     fun `addPracticeHistoryEntry should add entry to history`() {
         val repository = RoutineRepository()
@@ -85,9 +89,9 @@ class PracticeHistoryTest {
     fun `getPracticeHistoryByDateRange should filter by date`() {
         val repository = RoutineRepository()
         val now = System.currentTimeMillis()
-        val oneDayAgo = now - (24 * 60 * 60 * 1000)
-        val twoDaysAgo = now - (2 * 24 * 60 * 60 * 1000)
-        val threeDaysAgo = now - (3 * 24 * 60 * 60 * 1000)
+        val oneDayAgo = now - MILLIS_PER_DAY
+        val twoDaysAgo = now - (2 * MILLIS_PER_DAY)
+        val threeDaysAgo = now - (3 * MILLIS_PER_DAY)
         
         repository.addPracticeHistoryEntry(
             PracticeHistoryEntry(
@@ -129,8 +133,9 @@ class PracticeHistoryTest {
         )
         
         // Get entries from last 2.5 days
+        val twoDaysHalfAgo = now - (5 * MILLIS_PER_DAY / 2)
         val history = repository.getPracticeHistoryByDateRange(
-            startDate = now - (3 * 24 * 60 * 60 * 1000) / 2,
+            startDate = twoDaysHalfAgo,
             endDate = now
         )
         
@@ -329,10 +334,10 @@ class PracticeHistoryTest {
     fun `calculateStatistics should count sessions this week and month`() {
         val repository = RoutineRepository()
         val now = System.currentTimeMillis()
-        val oneDayAgo = now - (24 * 60 * 60 * 1000)
-        val fiveDaysAgo = now - (5 * 24 * 60 * 60 * 1000)
-        val fifteenDaysAgo = now - (15 * 24 * 60 * 60 * 1000)
-        val fortyDaysAgo = now - (40L * 24 * 60 * 60 * 1000)
+        val oneDayAgo = now - MILLIS_PER_DAY
+        val fiveDaysAgo = now - (5 * MILLIS_PER_DAY)
+        val fifteenDaysAgo = now - (15 * MILLIS_PER_DAY)
+        val fortyDaysAgo = now - (40 * MILLIS_PER_DAY)
         
         // This week
         repository.addPracticeHistoryEntry(
