@@ -339,7 +339,8 @@ fun PracticeHistoryList(history: List<PracticeHistoryEntry>) {
                 history.take(20).forEachIndexed { index, entry ->
                     PracticeHistoryItem(entry = entry)
                     
-                    if (index < history.size - 1 && index < 19) {
+                    // Show divider between items (but not after the last one)
+                    if (index < 19 && index < history.size - 1) {
                         Divider(
                             color = RpgTheme.border,
                             modifier = Modifier.padding(vertical = 8.dp)

@@ -480,8 +480,9 @@ class RoutineRepository(private val persistenceManager: PersistenceManager? = nu
                 // Count backwards from most recent date
                 currentStreak = 1
                 var prevDate = lastDate
-                for (i in sessionsByDate.size - 2 downTo 0) {
-                    val date = sessionsByDate.elementAt(i)
+                val datesList = sessionsByDate.toList()
+                for (i in datesList.size - 2 downTo 0) {
+                    val date = datesList[i]
                     val daysDiff = ((prevDate - date) / MILLIS_PER_DAY).toInt()
                     if (daysDiff == 1) {
                         currentStreak++
