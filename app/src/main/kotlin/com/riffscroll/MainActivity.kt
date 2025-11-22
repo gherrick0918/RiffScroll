@@ -45,6 +45,8 @@ fun RiffScrollApp() {
     val practiceSchedulePlans by viewModel.practiceSchedulePlans.collectAsState()
     val calendarSchedules by viewModel.calendarSchedules.collectAsState()
     val currentViewingDate by viewModel.currentViewingDate.collectAsState()
+    val practiceHistory by viewModel.practiceHistory.collectAsState()
+    val practiceStatistics by viewModel.practiceStatistics.collectAsState()
     
     var currentScreen by remember { mutableStateOf("home") }
     
@@ -92,6 +94,13 @@ fun RiffScrollApp() {
                     onBack = { currentScreen = "home" }
                 )
             }
+            currentScreen == "history" -> {
+                PracticeHistoryScreen(
+                    practiceHistory = practiceHistory,
+                    practiceStatistics = practiceStatistics,
+                    onBack = { currentScreen = "home" }
+                )
+            }
             else -> {
                 HomeScreen(
                     userProgress = userProgress,
@@ -108,6 +117,7 @@ fun RiffScrollApp() {
                     onAddRoutineToSchedule = { scheduleId, routineId -> viewModel.addRoutineToSchedule(scheduleId, routineId) },
                     onRemoveRoutineFromSchedule = { scheduleId, routineId -> viewModel.removeRoutineFromSchedule(scheduleId, routineId) },
                     onNavigateToSchedulePlanner = { currentScreen = "schedule_planner" },
+                    onNavigateToHistory = { currentScreen = "history" },
                     calendarSchedules = calendarSchedules,
                     currentViewingDate = currentViewingDate,
                     onNavigatePreviousDay = { viewModel.navigateToPreviousDay() },

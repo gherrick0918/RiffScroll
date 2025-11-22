@@ -122,3 +122,32 @@ data class PracticeSchedulePlan(
     val daysPerWeek: Int = 7,  // Number of practice days per week (1-7)
     val createdAt: Long = System.currentTimeMillis()
 )
+
+/**
+ * Represents a completed practice session in history
+ */
+data class PracticeHistoryEntry(
+    val id: String,
+    val completedAt: Long,  // Timestamp when session was completed
+    val durationMinutes: Int,  // Actual duration of the session
+    val xpEarned: Int,  // XP gained from the session
+    val routineName: String,  // Name of the routine practiced
+    val exerciseCount: Int,  // Number of exercises completed
+    val instrument: InstrumentType?,  // Primary instrument used (null if both)
+    val difficulty: DifficultyLevel?  // Difficulty level of the routine
+)
+
+/**
+ * Calculated statistics from practice history
+ */
+data class PracticeStatistics(
+    val totalSessions: Int = 0,
+    val totalMinutes: Int = 0,
+    val currentStreak: Int = 0,  // Days with consecutive practice
+    val longestStreak: Int = 0,  // Longest streak ever achieved
+    val averageSessionMinutes: Int = 0,
+    val favoriteInstrument: InstrumentType? = null,  // Most practiced instrument
+    val sessionsThisWeek: Int = 0,
+    val sessionsThisMonth: Int = 0,
+    val lastPracticeDate: Long? = null  // Timestamp of last practice session
+)
