@@ -315,8 +315,8 @@ class InstrumentAndSchedulingTest {
         val guitarTechnique = repository.getExercisesByInstrument(InstrumentType.GUITAR)
             .filter { it.category == ExerciseCategory.TECHNIQUE }
         
-        assertTrue("Should have at least 40 guitar technique exercises", 
-            guitarTechnique.size >= 40)
+        assertTrue("Should have at least 60 guitar technique exercises", 
+            guitarTechnique.size >= 60)
     }
     
     @Test
@@ -325,8 +325,8 @@ class InstrumentAndSchedulingTest {
         val pianoTechnique = repository.getExercisesByInstrument(InstrumentType.PIANO)
             .filter { it.category == ExerciseCategory.TECHNIQUE }
         
-        assertTrue("Should have at least 20 piano technique exercises", 
-            pianoTechnique.size >= 20)
+        assertTrue("Should have at least 30 piano technique exercises", 
+            pianoTechnique.size >= 30)
     }
     
     @Test
@@ -334,7 +334,7 @@ class InstrumentAndSchedulingTest {
         val repository = ExerciseRepository()
         val allExercises = repository.getAllExercises()
         
-        assertTrue("Should have at least 100 total exercises", 
-            allExercises.size >= 100)
+        assertTrue("Should have at least 150 total exercises", 
+            allExercises.size >= 150)
     }
 }

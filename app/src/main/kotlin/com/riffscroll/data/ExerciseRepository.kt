@@ -1102,6 +1102,303 @@ G|----7----|----7----|
 E|--5----|--5------|
 (Cross-picking pattern)
             """.trimIndent()
+        ),
+        // Additional exercises for comprehensive guitar training
+        Exercise(
+            id = "tech_46",
+            name = "Major Scale - All 7 Positions",
+            description = "Master all 7 positions of the major scale across the fretboard",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Learn all 7 CAGED positions for major scales",
+                "Start with C major across all positions",
+                "Position 1: E shape, Position 2: D shape, etc.",
+                "Practice ascending and descending each position",
+                "Connect positions by sliding or shifting",
+                "Practice in all 12 keys",
+                "Essential for understanding the entire fretboard"
+            )
+        ),
+        Exercise(
+            id = "tech_47",
+            name = "Minor Pentatonic - All 5 Positions",
+            description = "Complete pentatonic scale system across the neck",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Master all 5 positions of minor pentatonic",
+                "Start with A minor pentatonic",
+                "Position 1 at 5th fret, Position 2 at 8th fret, etc.",
+                "Practice horizontal (across strings) and vertical (along neck)",
+                "Learn to connect all positions seamlessly",
+                "Foundation for rock, blues, and metal soloing",
+                "Practice in multiple keys"
+            )
+        ),
+        Exercise(
+            id = "tech_48",
+            name = "Fingerpicking Patterns",
+            description = "Classic fingerstyle patterns for accompaniment",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.BEGINNER,
+            hasTiming = true,
+            bpm = 70,
+            instructions = listOf(
+                "Use thumb (T) for bass notes, fingers (i,m,a) for treble",
+                "Pattern 1: T-i-m-a-m-i (classic Travis picking)",
+                "Pattern 2: T-i-T-m-T-a (alternating bass)",
+                "Keep steady tempo with thumb on beats",
+                "Practice with simple chords: C, Am, F, G",
+                "Essential for folk, country, and singer-songwriter styles",
+                "Build independence between thumb and fingers"
+            )
+        ),
+        Exercise(
+            id = "tech_49",
+            name = "Barre Chord Transitions",
+            description = "Smooth transitions between different barre chord shapes",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Practice E-shape and A-shape barre chords",
+                "Transition between F (E-shape) and Bb (A-shape)",
+                "Keep barre finger pressure consistent",
+                "Minimize hand movement between changes",
+                "Practice major, minor, and 7th variations",
+                "Essential for rock and pop rhythm guitar",
+                "Build hand strength and endurance"
+            )
+        ),
+        Exercise(
+            id = "tech_50",
+            name = "Rhythmic Strumming Patterns",
+            description = "Various strumming patterns for different styles",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.BEGINNER,
+            hasTiming = true,
+            bpm = 100,
+            instructions = listOf(
+                "Down-down-up-up-down-up (pop/rock)",
+                "Down-up-down-up with accents on 2 and 4 (funk)",
+                "All downstrokes (punk rock)",
+                "Muted strums for percussive effect (reggae)",
+                "Practice with chord progressions",
+                "Use metronome for steady timing",
+                "Vary dynamics for musical expression"
+            )
+        ),
+        Exercise(
+            id = "tech_51",
+            name = "Pinch Harmonics",
+            description = "Squealing harmonic technique for rock and metal",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = false,
+            instructions = listOf(
+                "Strike string with pick, immediately touch with thumb",
+                "Creates high-pitched squeal or scream",
+                "Find harmonic nodes by moving hand position",
+                "Use gain/distortion for easier execution",
+                "Common at 12th, 7th, and 5th frets above picked note",
+                "Zakk Wylde and Dimebag Darrell signature technique",
+                "Practice on power chords and single notes"
+            )
+        ),
+        Exercise(
+            id = "tech_52",
+            name = "Chicken Picking",
+            description = "Country-style hybrid picking technique",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 90,
+            instructions = listOf(
+                "Combine pick and fingers for fast, snappy attack",
+                "Pick bass notes, pluck treble strings with fingers",
+                "Add percussive 'snap' by pulling strings",
+                "Essential for country and bluegrass lead",
+                "Practice on major pentatonic and country licks",
+                "Study Brad Paisley, Brent Mason, Albert Lee",
+                "Mute aggressively for staccato effect"
+            )
+        ),
+        Exercise(
+            id = "tech_53",
+            name = "Whammy Bar Techniques",
+            description = "Tremolo arm dips, dives, and flutter effects",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = false,
+            instructions = listOf(
+                "Gentle dips for subtle vibrato effect",
+                "Dive bombs: press bar all the way down",
+                "Scoops: start flat, bend up to pitch",
+                "Flutter: rapid small movements for warble",
+                "Requires floating tremolo (Floyd Rose, Bigsby, etc.)",
+                "Famous users: Eddie Van Halen, Steve Vai, Jeff Beck",
+                "Return to pitch carefully for intonation"
+            )
+        ),
+        Exercise(
+            id = "tech_54",
+            name = "Volume Swells",
+            description = "Violin-like swells using volume knob",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = false,
+            instructions = listOf(
+                "Turn volume to zero, pick note, swell volume up",
+                "Creates smooth, violin-like attack",
+                "Use with delay/reverb for ambient sounds",
+                "Practice on chords and single notes",
+                "Timing is key: swell in rhythm",
+                "Allan Holdsworth and Joe Satriani technique",
+                "Great for atmospheric passages"
+            )
+        ),
+        Exercise(
+            id = "tech_55",
+            name = "String Bending Variations",
+            description = "Different types of string bends for expression",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = false,
+            instructions = listOf(
+                "Unison bends: bend one string to match adjacent string",
+                "Oblique bends: hold one note, bend another",
+                "Double-stop bends: bend two strings simultaneously",
+                "Quarter-tone bends for bluesy effect",
+                "Pre-bend and release",
+                "Bend behind the nut for unique sounds",
+                "Essential blues and rock technique"
+            )
+        ),
+        Exercise(
+            id = "tech_56",
+            name = "Palm-Muted Gallop Rhythm",
+            description = "Metal galloping rhythm pattern",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 140,
+            instructions = listOf(
+                "Palm mute, play: eighth, two sixteenths, eighth",
+                "Pattern: DOWN-down-up-DOWN (gallop rhythm)",
+                "Famous in Iron Maiden songs",
+                "Use all downstrokes for heavier sound",
+                "Practice on low E string (power chord root)",
+                "Keep palm mute consistent",
+                "Increase speed gradually"
+            )
+        ),
+        Exercise(
+            id = "tech_57",
+            name = "Travis Picking Pattern",
+            description = "Classic fingerstyle alternating bass pattern",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Thumb alternates bass notes on beats 1 and 3",
+                "Fingers pluck melody on beats 2 and 4",
+                "Creates self-accompanying style",
+                "Named after Merle Travis",
+                "Essential for country and folk guitar",
+                "Practice with C, Am, F, G progression",
+                "Thumb independence is key"
+            )
+        ),
+        Exercise(
+            id = "tech_58",
+            name = "Slap and Pop Bass Technique",
+            description = "Percussive slap bass technique adapted for guitar",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 90,
+            instructions = listOf(
+                "Thumb slaps the string against fretboard",
+                "Fingers pop strings by pulling up and releasing",
+                "Creates percussive, funky sound",
+                "Common in funk and modern fingerstyle",
+                "Requires precise muting technique",
+                "Study players like Victor Wooten (on bass)",
+                "Adapt technique for guitar applications"
+            )
+        ),
+        Exercise(
+            id = "tech_59",
+            name = "Pedal Point Exercises",
+            description = "Constant bass note with changing upper voices",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Keep one note constant (usually bass)",
+                "Change other notes around it",
+                "Common in drone-based music",
+                "Example: Open E string while moving patterns above",
+                "Creates modal, Eastern-influenced sounds",
+                "Used in rock, metal, and folk",
+                "Explore different pedal tones"
+            )
+        ),
+        Exercise(
+            id = "tech_60",
+            name = "Flamenco Rasgueado",
+            description = "Spanish flamenco strumming technique",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 120,
+            instructions = listOf(
+                "Fan out fingers in rapid succession",
+                "Pinky, ring, middle, index, thumb",
+                "Creates machine-gun strumming effect",
+                "Keep hand loose and relaxed",
+                "Traditional Spanish flamenco technique",
+                "Practice slowly, build speed gradually",
+                "Essential for flamenco and Latin guitar"
+            )
         )
     )
     
@@ -1460,6 +1757,104 @@ D|--5--------|
                 "This is how composers develop themes",
                 "Creates cohesive, memorable solos"
             )
+        ),
+        Exercise(
+            id = "creative_16",
+            name = "Call and Response Practice",
+            description = "Develop conversational phrasing in solos",
+            category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 90,
+            instructions = listOf(
+                "Play a 2-bar phrase (the 'call')",
+                "Answer with a different 2-bar phrase (the 'response')",
+                "Make response relate to the call melodically or rhythmically",
+                "Think of it as a musical conversation",
+                "Common in blues and jazz improvisation",
+                "Vary the dynamics between call and response",
+                "Practice over a 12-bar blues or simple vamp"
+            )
+        ),
+        Exercise(
+            id = "creative_17",
+            name = "Chord Substitution Exploration",
+            description = "Experiment with replacing chords in progressions",
+            category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = false,
+            instructions = listOf(
+                "Start with basic progression (e.g., C-Am-F-G)",
+                "Try substitute chords: Cmaj7, Am7, Fmaj7, G7",
+                "Use diminished chords as passing chords",
+                "Try tritone substitutions (Db7 for G7)",
+                "Experiment with modal interchange",
+                "Common in jazz reharmonization",
+                "Creates fresh takes on familiar songs"
+            )
+        ),
+        Exercise(
+            id = "creative_18",
+            name = "Looping and Layering",
+            description = "Create layered compositions using loop techniques",
+            category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 15,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = false,
+            instructions = listOf(
+                "Start with a simple bass line or rhythm",
+                "Layer a chord progression on top",
+                "Add a melody or lead line",
+                "Experiment with different textures",
+                "Common with loop pedals (Boss RC-series)",
+                "Ed Sheeran and KT Tunstall use this live",
+                "Builds understanding of song arrangement"
+            )
+        ),
+        Exercise(
+            id = "creative_19",
+            name = "Melodic Minor Scale Exploration",
+            description = "Explore the jazz melodic minor scale and its modes",
+            category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Melodic minor: natural minor with raised 6th and 7th",
+                "Creates unique jazz sound over minor chords",
+                "Practice in one key, then apply to improvisation",
+                "Explore modes: Dorian b2, Lydian augmented, Lydian dominant",
+                "Used extensively in modern jazz",
+                "Different from natural and harmonic minor",
+                "Adds sophisticated color to solos"
+            )
+        ),
+        Exercise(
+            id = "creative_20",
+            name = "Tempo Variation Practice",
+            description = "Play the same idea at different tempos for different feels",
+            category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Choose a simple melodic phrase or lick",
+                "Play it very slowly (ballad tempo, 60 BPM)",
+                "Play it medium tempo (100 BPM)",
+                "Play it fast (140+ BPM)",
+                "Notice how tempo changes the feel and expression",
+                "Slow = more emotional, fast = more energetic",
+                "Essential for versatile musical interpretation"
+            )
         )
     )
     
@@ -1659,6 +2054,103 @@ D|--5--------|
                 "Note sections that need more work",
                 "Builds confidence and stage readiness",
                 "Essential preparation for actual performances"
+            )
+        ),
+        Exercise(
+            id = "song_11",
+            name = "Backing Track Practice",
+            description = "Practice with professional backing tracks",
+            category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 15,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = false,
+            instructions = listOf(
+                "Find backing tracks on YouTube or apps",
+                "Practice chord progressions in different keys",
+                "Improvise solos over the changes",
+                "Work on timing and playing with others",
+                "Try different genres: blues, jazz, rock, funk",
+                "Excellent for developing ensemble skills",
+                "More fun than practicing alone"
+            )
+        ),
+        Exercise(
+            id = "song_12",
+            name = "Ear Training - Chord Recognition",
+            description = "Train your ear to recognize chord progressions",
+            category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = false,
+            instructions = listOf(
+                "Listen to a song and identify the chords by ear",
+                "Start with simple 3-chord songs",
+                "Identify if chords are major, minor, or 7th",
+                "Write down the progression",
+                "Check your answer with tabs or chord charts",
+                "Essential skill for playing by ear",
+                "Gradually work up to more complex songs"
+            )
+        ),
+        Exercise(
+            id = "song_13",
+            name = "Playing to a Click Track",
+            description = "Develop precise timing with metronome",
+            category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.BEGINNER,
+            hasTiming = true,
+            bpm = 100,
+            instructions = listOf(
+                "Set metronome to song tempo",
+                "Play along staying exactly on the beat",
+                "Don't rush or drag behind",
+                "Practice difficult sections with click",
+                "Essential for recording and live performance",
+                "Develops internal sense of time",
+                "Start slow, increase tempo gradually"
+            )
+        ),
+        Exercise(
+            id = "song_14",
+            name = "12-Bar Blues Variations",
+            description = "Learn and practice different 12-bar blues progressions",
+            category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 15,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 90,
+            instructions = listOf(
+                "Basic 12-bar: I-I-I-I-IV-IV-I-I-V-IV-I-V",
+                "Quick change: IV in bar 2",
+                "Practice in different keys (A, E, G)",
+                "Add 9th and 13th chord extensions",
+                "Learn turnarounds for the last 2 bars",
+                "Foundation of blues, rock, and jazz",
+                "Thousands of songs use this progression"
+            )
+        ),
+        Exercise(
+            id = "song_15",
+            name = "Dynamics and Articulation Study",
+            description = "Practice playing with varied dynamics in songs",
+            category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.GUITAR,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = false,
+            instructions = listOf(
+                "Play verse quietly, chorus loudly",
+                "Use dynamics to create contrast",
+                "Practice crescendos (getting louder) and diminuendos",
+                "Staccato (short) vs legato (smooth) articulation",
+                "Essential for expressive performance",
+                "Marks the difference between amateur and pro",
+                "Record yourself to hear the difference"
             )
         )
     )
@@ -2022,6 +2514,244 @@ D|--5--------|
                 "Common in classical and romantic piano music",
                 "Develops facility with chord tones"
             )
+        ),
+        Exercise(
+            id = "piano_tech_19",
+            name = "Hanon Exercise #3",
+            description = "Third Hanon exercise for finger dexterity",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.BEGINNER,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Continue the Hanon series with Exercise #3",
+                "Different pattern from #1 and #2",
+                "Focus on even rhythm and finger independence",
+                "Keep fingers curved, wrists level",
+                "Practice hands together after mastering separately",
+                "Excellent daily warm-up routine",
+                "Build gradually to faster tempos"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_20",
+            name = "Czerny Op. 599 - School of Velocity",
+            description = "Practice exercises from Czerny's beginner studies",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.BEGINNER,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Czerny exercises build technique and velocity",
+                "Start with Exercise 1 from Op. 599",
+                "Focus on evenness and clarity",
+                "Public domain exercises, widely available",
+                "Essential classical piano pedagogy",
+                "Progress through the series gradually",
+                "Complement to Hanon exercises"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_21",
+            name = "All Major Scales",
+            description = "Practice major scales in all 12 keys",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 15,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Practice all 12 major scales",
+                "Start with C, G, D, A, E (sharps)",
+                "Then F, Bb, Eb, Ab, Db (flats)",
+                "Use correct fingering for each scale",
+                "Practice 2 octaves ascending and descending",
+                "Hands together when comfortable",
+                "Essential foundation for piano playing"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_22",
+            name = "All Minor Scales",
+            description = "Practice natural, harmonic, and melodic minor scales",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 15,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Practice all three forms of minor scales",
+                "Natural minor: no alterations",
+                "Harmonic minor: raised 7th",
+                "Melodic minor: raised 6th and 7th ascending",
+                "Practice in all 12 keys",
+                "Learn the different characters of each form",
+                "Essential for classical and jazz piano"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_23",
+            name = "Thumb Crossing in Scales",
+            description = "Perfect the thumb-under technique in scale playing",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.BEGINNER,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Focus specifically on thumb passing under fingers",
+                "Practice C major scale very slowly",
+                "After finger 3, prepare thumb early",
+                "Rotate wrist slightly to facilitate thumb movement",
+                "Keep thumb relaxed, not sticking out",
+                "Critical technique for smooth scale playing",
+                "Practice with each hand separately"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_24",
+            name = "Voicing 7th Chords",
+            description = "Practice different voicings of 7th chords",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = false,
+            instructions = listOf(
+                "Major 7th, Dominant 7th, Minor 7th, Half-diminished",
+                "Practice in all inversions",
+                "Spread voicings across both hands",
+                "Drop-2 and drop-3 voicings for jazz",
+                "Essential for jazz piano comping",
+                "Practice ii-V-I progressions with 7th chords",
+                "Learn in all 12 keys"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_25",
+            name = "Left Hand Independence",
+            description = "Develop independent left hand technique",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 70,
+            instructions = listOf(
+                "Practice left hand-only exercises",
+                "Play bass lines from songs",
+                "Practice stride bass patterns",
+                "Work on left hand scales and arpeggios",
+                "Left hand is often neglected",
+                "Strong left hand crucial for solo piano",
+                "Build equal strength in both hands"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_26",
+            name = "Two-Note Slurs",
+            description = "Practice legato two-note slurs for expression",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.BEGINNER,
+            hasTiming = true,
+            bpm = 80,
+            instructions = listOf(
+                "Play first note slightly louder and longer",
+                "Second note softer and shorter",
+                "Creates natural phrasing gesture",
+                "Common in classical music notation",
+                "Practice on scales and simple melodies",
+                "Essential for musical expression",
+                "Develop sensitivity to touch"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_27",
+            name = "Finger Staccato vs Wrist Staccato",
+            description = "Master different types of staccato articulation",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 100,
+            instructions = listOf(
+                "Finger staccato: quick finger release",
+                "Wrist staccato: light wrist bounce",
+                "Use finger staccato for softer, lighter passages",
+                "Use wrist staccato for louder, more percussive",
+                "Practice scales with both types",
+                "Essential for varied articulation",
+                "Common in classical and contemporary piano"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_28",
+            name = "Crossing Hands Exercise",
+            description = "Practice coordination when hands cross over each other",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 5,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 70,
+            instructions = listOf(
+                "Practice simple patterns where hands cross",
+                "Left hand plays in treble, right in bass",
+                "Keep smooth, avoid collisions",
+                "Common in romantic piano music",
+                "Builds spatial awareness at keyboard",
+                "Start slowly, build confidence",
+                "Found in pieces by Chopin, Liszt"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_29",
+            name = "Rotation Technique",
+            description = "Master forearm rotation for fluid playing",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = false,
+            instructions = listOf(
+                "Rotate forearm naturally with note patterns",
+                "Essential for fast passages and jumps",
+                "Prevents tension and injury",
+                "Taubman technique advocates this approach",
+                "Practice on scales and arpeggios",
+                "Keep shoulder and upper arm relaxed",
+                "Modern piano pedagogy emphasizes rotation"
+            )
+        ),
+        Exercise(
+            id = "piano_tech_30",
+            name = "Quick Chord Changes",
+            description = "Practice rapid transitions between chord voicings",
+            category = ExerciseCategory.TECHNIQUE,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 8,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 60,
+            instructions = listOf(
+                "Practice quick changes between different chords",
+                "Start with simple progression: C-F-G-C",
+                "Lift hands together, land together",
+                "Prepare hand shape in the air",
+                "Minimize unnecessary motion",
+                "Essential for accompaniment and comping",
+                "Gradually increase tempo"
+            )
         )
     )
     
@@ -2220,6 +2950,104 @@ D|--5--------|
                 "Common in 20th century classical music",
                 "Study Debussy, Bartók, and Cowell"
             )
+        ),
+        Exercise(
+            id = "piano_creative_11",
+            name = "Gospel Piano Patterns",
+            description = "Learn traditional gospel piano techniques",
+            category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 85,
+            instructions = listOf(
+                "Use major 7th and add9 chords extensively",
+                "Practice typical gospel progressions",
+                "Add chromaticism and passing chords",
+                "Use rhythmic syncopation",
+                "Learn characteristic runs and fills",
+                "Essential for church musicians",
+                "Study traditional gospel pianists"
+            )
+        ),
+        Exercise(
+            id = "piano_creative_12",
+            name = "Ragtime Syncopation",
+            description = "Master ragtime's characteristic syncopated rhythms",
+            category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = true,
+            bpm = 100,
+            instructions = listOf(
+                "Steady stride bass in left hand",
+                "Syncopated melody in right hand",
+                "Right hand plays off the beat",
+                "Classic ragtime style (Scott Joplin)",
+                "Practice 'The Entertainer' patterns",
+                "Essential American piano tradition",
+                "Builds independence and rhythmic precision"
+            )
+        ),
+        Exercise(
+            id = "piano_creative_13",
+            name = "Impressionist Harmony",
+            description = "Explore Debussy-style impressionist harmonies",
+            category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = false,
+            instructions = listOf(
+                "Use whole tone and pentatonic scales",
+                "Experiment with parallel chord motion",
+                "Add 9th, 11th, and 13th extensions",
+                "Create wash of sound with pedal",
+                "Avoid traditional functional harmony",
+                "Study Debussy and Ravel",
+                "Creates dreamy, atmospheric sound"
+            )
+        ),
+        Exercise(
+            id = "piano_creative_14",
+            name = "Boogie-Woogie Bass Lines",
+            description = "Master classic boogie-woogie left hand patterns",
+            category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = true,
+            bpm = 120,
+            instructions = listOf(
+                "Classic pattern: octave, 5th, 6th, flatted 7th",
+                "Keep steady eighth note pulse",
+                "Practice in C, F, and G for blues",
+                "Right hand improvises blues phrases",
+                "Essential early jazz piano style",
+                "Study Meade Lux Lewis, Albert Ammons",
+                "Builds left hand strength and independence"
+            )
+        ),
+        Exercise(
+            id = "piano_creative_15",
+            name = "Block Chord Melody",
+            description = "Harmonize melodies with block chord style",
+            category = ExerciseCategory.CREATIVITY,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = false,
+            instructions = listOf(
+                "Play melody note on top of chord voicing",
+                "Use close voicings, all notes in right hand",
+                "Common in jazz piano (Red Garland, Wynton Kelly)",
+                "Practice with simple melodies first",
+                "Maintain smooth voice leading",
+                "Creates thick, full sound",
+                "Essential jazz piano technique"
+            )
         )
     )
     
@@ -2413,6 +3241,101 @@ D|--5--------|
                 "Add your own interpretation",
                 "Great for building repertoire people recognize",
                 "Makes practice enjoyable and rewarding"
+            )
+        ),
+        Exercise(
+            id = "piano_song_11",
+            name = "Ear Training with Songs",
+            description = "Develop ability to play songs by ear",
+            category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 15,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = false,
+            instructions = listOf(
+                "Choose a simple song you know well",
+                "Find the key by trial and error",
+                "Pick out the melody on piano",
+                "Figure out the chord progression",
+                "Add bass notes in left hand",
+                "Essential skill for all musicians",
+                "Start with children's songs, work up to pop songs"
+            )
+        ),
+        Exercise(
+            id = "piano_song_12",
+            name = "Scale and Arpeggio in Context",
+            description = "Apply technical exercises to actual pieces",
+            category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 10,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = false,
+            instructions = listOf(
+                "Identify scales and arpeggios within pieces",
+                "Practice those sections as technical exercises",
+                "Return them to the context of the piece",
+                "Understand how technique applies to music",
+                "Makes technical practice more meaningful",
+                "Bridges gap between exercises and repertoire",
+                "Essential pedagogical approach"
+            )
+        ),
+        Exercise(
+            id = "piano_song_13",
+            name = "Accompaniment Practice",
+            description = "Practice accompanying a singer or instrumentalist",
+            category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 15,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = false,
+            instructions = listOf(
+                "Learn accompaniment parts from sheet music",
+                "Practice staying in background, supporting soloist",
+                "Follow the melody, be flexible with tempo",
+                "Use appropriate dynamics and articulation",
+                "Essential skill for collaborative musicians",
+                "Practice with recordings or other musicians",
+                "Different from solo piano playing"
+            )
+        ),
+        Exercise(
+            id = "piano_song_14",
+            name = "Baroque Piece Study",
+            description = "Study Bach or other Baroque keyboard works",
+            category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 20,
+            difficulty = DifficultyLevel.ADVANCED,
+            hasTiming = false,
+            instructions = listOf(
+                "Choose a Bach invention or prelude",
+                "Analyze the counterpoint and voice leading",
+                "Practice each voice separately",
+                "Bring out different voices with dynamics",
+                "Study ornamentation (trills, mordents)",
+                "Essential for classical piano training",
+                "Builds finger independence and musicality"
+            )
+        ),
+        Exercise(
+            id = "piano_song_15",
+            name = "Contemporary Pop Arrangement",
+            description = "Create piano versions of current pop songs",
+            category = ExerciseCategory.SONGS,
+            instrument = InstrumentType.PIANO,
+            durationMinutes = 15,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            hasTiming = false,
+            instructions = listOf(
+                "Choose a current pop song you enjoy",
+                "Learn the chord progression and melody",
+                "Create a piano arrangement",
+                "Add rhythmic patterns that capture the feel",
+                "Simplify complex production to piano essence",
+                "Makes practice relevant and fun",
+                "Great for performers and social situations"
             )
         )
     )
