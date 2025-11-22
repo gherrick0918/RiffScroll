@@ -146,4 +146,57 @@ class RoutineRepositoryTest {
         val updatedSchedule = repository.getSchedule(schedule.id)
         assertTrue(updatedSchedule!!.routineIds.isEmpty())
     }
+    
+    @Test
+    fun `createPracticeSchedulePlan with daysPerWeek should create correct number of routines`() {
+        val repository = RoutineRepository()
+        val exerciseRepo = ExerciseRepository()
+        
+        // Create a 14-day plan with 5 days per week (should create 10 routines: 5 for week 1, 5 for week 2)
+        val startDate = System.currentTimeMillis()
+        val endDate = startDate + (13 * 24 * 60 * 60 * 1000L) // 14 days (2 weeks)
+        
+        val plan = repository.createPracticeSchedulePlan(
+            name = "Test Plan",
+            startDate = startDate,
+            endDate = endDate,
+            instrument = InstrumentType.GUITAR,
+            targetDurationMinutes = 45,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            daysPerWeek = 5,
+            exerciseRepository = exerciseRepo
+        )
+        
+        assertNotNull(plan)
+        assertEquals("Test Plan", plan.name)
+        assertEquals(5, plan.daysPerWeek)
+        // Should have routines for 5 days per week over 2 weeks, but actual count depends on start day
+        assertTrue(plan.scheduleEntries.size <= 10)
+        assertTrue(plan.scheduleEntries.size >= 8) // At least 8 routines
+    }
+    
+    @Test
+    fun `createPracticeSchedulePlan with 7 daysPerWeek should create routine for every day`() {
+        val repository = RoutineRepository()
+        val exerciseRepo = ExerciseRepository()
+        
+        // Create a 7-day plan with 7 days per week (should create 7 routines)
+        val startDate = System.currentTimeMillis()
+        val endDate = startDate + (6 * 24 * 60 * 60 * 1000L) // 7 days
+        
+        val plan = repository.createPracticeSchedulePlan(
+            name = "Daily Practice",
+            startDate = startDate,
+            endDate = endDate,
+            instrument = InstrumentType.PIANO,
+            targetDurationMinutes = 30,
+            difficulty = DifficultyLevel.BEGINNER,
+            daysPerWeek = 7,
+            exerciseRepository = exerciseRepo
+        )
+        
+        assertNotNull(plan)
+        assertEquals(7, plan.daysPerWeek)
+        assertEquals(7, plan.scheduleEntries.size)
+    }
 }
