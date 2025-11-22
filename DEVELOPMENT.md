@@ -166,6 +166,23 @@ Each exercise can have:
 
 The timer runs continuously during practice, while the metronome can be toggled on/off and adjusted as needed.
 
+#### Metronome Implementation
+
+The metronome uses Android's `AudioTrack` API to generate clean click sounds:
+
+- **Audio Generation**: Sine waves at 800Hz (regular beats) and 1200Hz (accented beats)
+- **Time Signature**: 4/4 time with accent on first beat of each measure
+- **Precision**: Millisecond-level timing to avoid drift
+- **Duration**: 50ms click sounds with linear decay envelope
+- **Sample Rate**: 44.1kHz (CD quality)
+- **Format**: 16-bit PCM mono audio
+
+The implementation provides:
+- Real-time BPM adjustment (40-240 BPM)
+- Smooth start/stop without clicks or pops
+- Low CPU usage with pre-generated audio buffers
+- Graceful error handling for audio initialization failures
+
 ### 5. Progress System
 
 RPG-style progression mechanics:
@@ -250,7 +267,7 @@ Potential features to add:
    - Custom exercise creation
 
 2. **Audio Integration**
-   - Actual metronome sound playback
+   - ✅ Metronome sound playback (implemented with AudioTrack)
    - Backing tracks for practice
    - Audio recording for self-evaluation
 
