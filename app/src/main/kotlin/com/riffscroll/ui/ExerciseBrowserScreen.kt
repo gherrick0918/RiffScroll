@@ -31,6 +31,9 @@ fun ExerciseBrowserScreen(
     allExercises: List<Exercise>,
     onBack: () -> Unit,
     onAddToRoutine: ((Exercise) -> Unit)? = null,
+    onEditExercise: ((String) -> Unit)? = null,
+    onDeleteExercise: ((String) -> Unit)? = null,
+    onCreateNew: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     var searchQuery by remember { mutableStateOf("") }
@@ -106,6 +109,16 @@ fun ExerciseBrowserScreen(
                 }
             },
             actions = {
+                // Add New Exercise Button
+                if (onCreateNew != null) {
+                    IconButton(onClick = onCreateNew) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Create New Exercise",
+                            tint = RpgTheme.accent
+                        )
+                    }
+                }
                 IconButton(onClick = { showFilters = !showFilters }) {
                     Icon(
                         imageVector = if (showFilters) Icons.Default.FilterAltOff else Icons.Default.FilterAlt,
@@ -250,7 +263,13 @@ fun ExerciseBrowserScreen(
                         ExerciseCard(
                             exercise = exercise,
                             onClick = { selectedExercise = exercise },
-                            onAddToRoutine = onAddToRoutine
+                            onAddToRoutine = onAddToRoutine,
+                            onEdit = if (exercise.isCustom && onEditExercise != null) {
+                                { onEditExercise(exercise.id) }
+                            } else null,
+                            onDelete = if (exercise.isCustom && onDeleteExercise != null) {
+                                { onDeleteExercise(exercise.id) }
+                            } else null
                         )
                     }
                     item {
@@ -469,7 +488,9 @@ fun FilterPanel(
 fun ExerciseCard(
     exercise: Exercise,
     onClick: () -> Unit,
-    onAddToRoutine: ((Exercise) -> Unit)?
+    onAddToRoutine: ((Exercise) -> Unit)?,
+    onEdit: (() -> Unit)? = null,
+    onDelete: (() -> Unit)? = null
 ) {
     RpgCard(
         modifier = Modifier.clickable(onClick = onClick)
@@ -545,16 +566,50 @@ fun ExerciseCard(
                             fontSize = 11.sp
                         )
                     }
+                    
+                    if (exercise.isCustom) {
+                        RpgBadge(
+                            text = "✏️ Custom",
+                            color = RpgTheme.primary,
+                            fontSize = 11.sp
+                        )
+                    }
                 }
             }
 
-            if (onAddToRoutine != null) {
-                IconButton(onClick = { onAddToRoutine(exercise) }) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Add to routine",
-                        tint = RpgTheme.success
-                    )
+            // Action buttons
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                if (onEdit != null) {
+                    IconButton(onClick = onEdit) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Edit exercise",
+                            tint = RpgTheme.accent
+                        )
+                    }
+                }
+                
+                if (onDelete != null) {
+                    IconButton(onClick = onDelete) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete exercise",
+                            tint = RpgTheme.danger
+                        )
+                    }
+                }
+                
+                if (onAddToRoutine != null) {
+                    IconButton(onClick = { onAddToRoutine(exercise) }) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Add to routine",
+                            tint = RpgTheme.success
+                        )
+                    }
                 }
             }
         }

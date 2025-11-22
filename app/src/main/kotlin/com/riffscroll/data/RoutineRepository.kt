@@ -61,6 +61,20 @@ class RoutineRepository(private val persistenceManager: PersistenceManager? = nu
         }
     }
     
+    /**
+     * Save custom exercises to persistence
+     */
+    fun saveCustomExercises(exercises: List<Exercise>) {
+        persistenceManager?.saveCustomExercises(exercises)
+    }
+    
+    /**
+     * Load custom exercises from persistence
+     */
+    fun loadCustomExercises(): List<Exercise> {
+        return persistenceManager?.loadCustomExercises() ?: emptyList()
+    }
+    
     // Saved Routines operations
     
     /**
