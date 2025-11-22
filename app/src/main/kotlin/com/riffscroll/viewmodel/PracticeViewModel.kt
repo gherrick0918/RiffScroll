@@ -20,11 +20,14 @@ import kotlinx.coroutines.launch
  * - Practice session state and timing
  * - Metronome control
  * - User progress and XP tracking
+ * - Data persistence
  */
-class PracticeViewModel : ViewModel() {
+class PracticeViewModel(
+    private val persistenceManager: PersistenceManager? = null
+) : ViewModel() {
     
     private val repository = ExerciseRepository()
-    private val routineRepository = RoutineRepository()
+    private val routineRepository = RoutineRepository(persistenceManager)
     
     private val _currentRoutine = MutableStateFlow<PracticeRoutine?>(null)
     val currentRoutine: StateFlow<PracticeRoutine?> = _currentRoutine.asStateFlow()
@@ -66,6 +69,20 @@ class PracticeViewModel : ViewModel() {
     private var metronomeJob: Job? = null
     private var toneGenerator: ToneGenerator? = null
     private var beatCounter = 0  // Track beats for accenting first beat of measure
+    
+    init {
+        // Load persisted user progress if available
+        persistenceManager?.loadUserProgress()?.let { progress ->
+            _userProgress.value = progress
+        }
+    }
+    
+    /**
+     * Save user progress to persistent storage
+     */
+    private fun saveUserProgress() {
+        persistenceManager?.saveUserProgress(_userProgress.value)
+    }
     
     /**
      * Generate a new practice routine
@@ -189,6 +206,7 @@ class PracticeViewModel : ViewModel() {
             totalPracticeMinutes = progress.totalPracticeMinutes + session.routine.totalDurationMinutes,
             completedRoutines = progress.completedRoutines + 1
         )
+        saveUserProgress()
         
         stopTimer()
         stopMetronome()

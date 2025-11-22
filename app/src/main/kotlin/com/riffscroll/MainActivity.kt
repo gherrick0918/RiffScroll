@@ -9,8 +9,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.platform.LocalContext
 import com.riffscroll.ui.*
 import com.riffscroll.viewmodel.PracticeViewModel
+import com.riffscroll.viewmodel.PracticeViewModelFactory
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -27,7 +29,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun RiffScrollApp() {
-    val viewModel: PracticeViewModel = viewModel()
+    val context = LocalContext.current
+    val viewModel: PracticeViewModel = viewModel(
+        factory = PracticeViewModelFactory(context)
+    )
     
     val currentRoutine by viewModel.currentRoutine.collectAsState()
     val currentSession by viewModel.currentSession.collectAsState()
