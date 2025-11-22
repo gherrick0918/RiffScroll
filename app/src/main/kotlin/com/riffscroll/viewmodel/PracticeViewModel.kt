@@ -71,6 +71,7 @@ class PracticeViewModel : ViewModel() {
     // Audio parameters for metronome
     private val sampleRate = 44100
     private val clickDurationMs = 50  // Duration of each click sound
+    private val metronomePollDelayMs = 5L  // Delay between timing checks to avoid busy-waiting
     
     /**
      * Generate a new practice routine
@@ -294,15 +295,15 @@ class PracticeViewModel : ViewModel() {
                     .build()
                 
                 audioTrack.play()
-                var lastBeatTime = System.currentTimeMillis()
+                var lastBeatTimeNanos = System.nanoTime()
                 
                 while (_isMetronomeActive.value) {
-                    val currentTime = System.currentTimeMillis()
+                    val currentTimeNanos = System.nanoTime()
                     val bpm = _metronomeBpm.value
-                    val intervalMs = (60000.0 / bpm).toLong()
+                    val intervalNanos = (60_000_000_000.0 / bpm).toLong()
                     
                     // Check if it's time for the next beat
-                    if (currentTime - lastBeatTime >= intervalMs) {
+                    if (currentTimeNanos - lastBeatTimeNanos >= intervalNanos) {
                         // Play the appropriate click sound
                         val clickData = if (beatCounter % 4 == 0) accentedClick else regularClick
                         
@@ -310,11 +311,11 @@ class PracticeViewModel : ViewModel() {
                         audioTrack.write(clickData, 0, clickData.size)
                         
                         beatCounter++
-                        lastBeatTime = currentTime
+                        lastBeatTimeNanos = currentTimeNanos
                     }
                     
                     // Small delay to avoid busy-waiting
-                    delay(5)
+                    delay(metronomePollDelayMs)
                 }
                 
                 // Clean up
