@@ -25,7 +25,7 @@ import java.util.*
 fun SchedulePlannerScreen(
     practiceSchedulePlans: List<PracticeSchedulePlan>,
     savedRoutines: List<SavedRoutine>,
-    onCreatePlan: (String, Long, Long, InstrumentType?, Int, DifficultyLevel?) -> Unit,
+    onCreatePlan: (String, Long, Long, InstrumentType?, Int, DifficultyLevel?, Int) -> Unit,
     onDeletePlan: (String) -> Unit,
     onLoadRoutine: (String) -> Unit,
     onBack: () -> Unit,
@@ -120,8 +120,8 @@ fun SchedulePlannerScreen(
     if (showCreateDialog) {
         CreateSchedulePlanDialog(
             onDismiss = { showCreateDialog = false },
-            onConfirm = { name, startDate, endDate, instrument, duration, difficulty ->
-                onCreatePlan(name, startDate, endDate, instrument, duration, difficulty)
+            onConfirm = { name, startDate, endDate, instrument, duration, difficulty, daysPerWeek ->
+                onCreatePlan(name, startDate, endDate, instrument, duration, difficulty, daysPerWeek)
                 showCreateDialog = false
             }
         )
@@ -172,6 +172,12 @@ fun SchedulePlanItem(
                         text = "${plan.scheduleEntries.size} days",
                         color = RpgTheme.info
                     )
+                    if (plan.daysPerWeek < 7) {
+                        RpgBadge(
+                            text = "${plan.daysPerWeek} days/week",
+                            color = RpgTheme.info
+                        )
+                    }
                     if (plan.instrument != null) {
                         RpgBadge(
                             text = "${plan.instrument.emoji} ${plan.instrument.displayName}",
@@ -282,13 +288,14 @@ fun SchedulePlanItem(
 @Composable
 fun CreateSchedulePlanDialog(
     onDismiss: () -> Unit,
-    onConfirm: (String, Long, Long, InstrumentType?, Int, DifficultyLevel?) -> Unit
+    onConfirm: (String, Long, Long, InstrumentType?, Int, DifficultyLevel?, Int) -> Unit
 ) {
     var planName by remember { mutableStateOf("") }
     var selectedInstrument by remember { mutableStateOf<InstrumentType?>(null) }
     var selectedDifficulty by remember { mutableStateOf<DifficultyLevel?>(null) }
     var selectedDuration by remember { mutableStateOf(45) }
     var numberOfDays by remember { mutableStateOf(7) }
+    var daysPerWeek by remember { mutableStateOf(7) }
     
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -325,6 +332,26 @@ fun CreateSchedulePlanDialog(
                     onValueChange = { numberOfDays = it.toInt() },
                     valueRange = 1f..30f,
                     steps = 28,
+                    colors = SliderDefaults.colors(
+                        thumbColor = RpgTheme.accent,
+                        activeTrackColor = RpgTheme.primary,
+                        inactiveTrackColor = RpgTheme.secondary
+                    )
+                )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                // Days Per Week
+                Text(
+                    "Days Per Week: $daysPerWeek",
+                    color = RpgTheme.textSecondary,
+                    fontSize = 14.sp
+                )
+                Slider(
+                    value = daysPerWeek.toFloat(),
+                    onValueChange = { daysPerWeek = it.toInt() },
+                    valueRange = 1f..7f,
+                    steps = 5,
                     colors = SliderDefaults.colors(
                         thumbColor = RpgTheme.accent,
                         activeTrackColor = RpgTheme.primary,
@@ -427,7 +454,11 @@ fun CreateSchedulePlanDialog(
                 
                 // Summary
                 Text(
-                    "This will create $numberOfDays unique routines, one for each day.",
+                    if (daysPerWeek == 7) {
+                        "This will create $numberOfDays unique routines, one for each day."
+                    } else {
+                        "This will create routines for $daysPerWeek days per week over $numberOfDays days."
+                    },
                     color = RpgTheme.textSecondary,
                     fontSize = 12.sp,
                     modifier = Modifier.padding(top = 8.dp)
@@ -440,7 +471,7 @@ fun CreateSchedulePlanDialog(
                     if (planName.isNotBlank()) {
                         val startDate = System.currentTimeMillis()
                         val endDate = startDate + ((numberOfDays - 1) * 24 * 60 * 60 * 1000L)
-                        onConfirm(planName, startDate, endDate, selectedInstrument, selectedDuration, selectedDifficulty)
+                        onConfirm(planName, startDate, endDate, selectedInstrument, selectedDuration, selectedDifficulty, daysPerWeek)
                     }
                 },
                 enabled = planName.isNotBlank()

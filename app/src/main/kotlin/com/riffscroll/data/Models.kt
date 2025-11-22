@@ -119,5 +119,6 @@ data class PracticeSchedulePlan(
     val instrument: InstrumentType? = null,  // null means both instruments
     val targetDurationMinutes: Int = 45,
     val difficulty: DifficultyLevel? = null,
+    val daysPerWeek: Int = 7,  // Number of practice days per week (1-7)
     val createdAt: Long = System.currentTimeMillis()
 )
