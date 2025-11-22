@@ -67,6 +67,13 @@ class PracticeViewModel(
     private val _currentViewingDate = MutableStateFlow(System.currentTimeMillis())
     val currentViewingDate: StateFlow<Long> = _currentViewingDate.asStateFlow()
     
+    // Practice history and statistics
+    private val _practiceHistory = MutableStateFlow<List<PracticeHistoryEntry>>(emptyList())
+    val practiceHistory: StateFlow<List<PracticeHistoryEntry>> = _practiceHistory.asStateFlow()
+    
+    private val _practiceStatistics = MutableStateFlow(PracticeStatistics())
+    val practiceStatistics: StateFlow<PracticeStatistics> = _practiceStatistics.asStateFlow()
+    
     private var timerJob: Job? = null
     private var metronomeJob: Job? = null
     private var beatCounter = 0  // Track beats for accenting first beat of measure
@@ -75,6 +82,14 @@ class PracticeViewModel(
     private val sampleRate = 44100
     private val clickDurationMs = 50  // Duration of each click sound
     private val metronomePollDelayMs = 5L  // Delay between timing checks to avoid busy-waiting
+    
+    init {
+        // Load user progress from persistence
+        loadUserProgress()
+        
+        // Load practice history and calculate statistics
+        refreshPracticeHistory()
+    }
     
     /**
      * Generate a new practice routine
@@ -199,6 +214,33 @@ class PracticeViewModel(
             completedRoutines = progress.completedRoutines + 1
         )
         saveUserProgress()
+        
+        // Add to practice history
+        val routineName = _currentRoutine.value?.let { routine ->
+            // Try to find a saved routine that matches this routine
+            _savedRoutines.value.find { it.routine.id == routine.id }?.name
+        } ?: "Practice Session"
+        
+        // Determine primary instrument (if all exercises use same instrument)
+        val instruments = session.routine.exercises.map { it.instrument }.distinct()
+        val primaryInstrument = if (instruments.size == 1) instruments.first() else null
+        
+        // Determine difficulty (use highest difficulty in routine)
+        val maxDifficulty = session.routine.exercises.maxOfOrNull { it.difficulty }
+        
+        val historyEntry = PracticeHistoryEntry(
+            id = "history_${System.currentTimeMillis()}",
+            completedAt = System.currentTimeMillis(),
+            durationMinutes = session.routine.totalDurationMinutes,
+            xpEarned = xpGained,
+            routineName = routineName,
+            exerciseCount = session.routine.exercises.size,
+            instrument = primaryInstrument,
+            difficulty = maxDifficulty
+        )
+        
+        routineRepository.addPracticeHistoryEntry(historyEntry)
+        refreshPracticeHistory()
         
         stopTimer()
         stopMetronome()
@@ -580,6 +622,44 @@ class PracticeViewModel(
      */
     fun getCurrentViewingSchedule(): CalendarSchedule? {
         return routineRepository.getCalendarScheduleByDate(_currentViewingDate.value)
+    }
+    
+    // Practice History Management
+    
+    /**
+     * Refresh practice history from repository
+     */
+    fun refreshPracticeHistory() {
+        _practiceHistory.value = routineRepository.getPracticeHistory()
+        _practiceStatistics.value = routineRepository.calculateStatistics()
+    }
+    
+    /**
+     * Get practice history for a date range
+     */
+    fun getPracticeHistoryByDateRange(startDate: Long, endDate: Long): List<PracticeHistoryEntry> {
+        return routineRepository.getPracticeHistoryByDateRange(startDate, endDate)
+    }
+    
+    // User Progress Persistence
+    
+    /**
+     * Load user progress from persistence
+     */
+    private fun loadUserProgress() {
+        persistenceManager?.let { pm ->
+            val savedProgress = pm.loadUserProgress()
+            if (savedProgress != null) {
+                _userProgress.value = savedProgress
+            }
+        }
+    }
+    
+    /**
+     * Save current user progress to persistence
+     */
+    private fun saveUserProgress() {
+        persistenceManager?.saveUserProgress(_userProgress.value)
     }
     
     override fun onCleared() {

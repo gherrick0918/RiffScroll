@@ -13,6 +13,7 @@ class RoutineRepository(private val persistenceManager: PersistenceManager? = nu
     private val schedules = mutableMapOf<String, Schedule>()
     private val calendarSchedules = mutableMapOf<String, CalendarSchedule>()
     private val practiceSchedulePlans = mutableMapOf<String, PracticeSchedulePlan>()
+    private val practiceHistory = mutableListOf<PracticeHistoryEntry>()
     
     init {
         // Load persisted data if persistence manager is available
@@ -37,6 +38,9 @@ class RoutineRepository(private val persistenceManager: PersistenceManager? = nu
             
             // Load practice schedule plans
             pm.loadPracticeSchedulePlans().forEach { practiceSchedulePlans[it.id] = it }
+            
+            // Load practice history
+            practiceHistory.addAll(pm.loadPracticeHistory())
         }
     }
     
@@ -49,6 +53,7 @@ class RoutineRepository(private val persistenceManager: PersistenceManager? = nu
             pm.saveSchedules(schedules.values.toList())
             pm.saveCalendarSchedules(calendarSchedules.values.toList())
             pm.savePracticeSchedulePlans(practiceSchedulePlans.values.toList())
+            pm.savePracticeHistory(practiceHistory.toList())
         }
     }
     
@@ -367,5 +372,140 @@ class RoutineRepository(private val persistenceManager: PersistenceManager? = nu
         val result = practiceSchedulePlans.remove(id) != null
         if (result) persistData()
         return result
+    }
+    
+    // Practice History operations
+    
+    /**
+     * Add a completed session to practice history
+     */
+    fun addPracticeHistoryEntry(entry: PracticeHistoryEntry) {
+        practiceHistory.add(entry)
+        persistData()
+    }
+    
+    /**
+     * Get all practice history entries, sorted by date (most recent first)
+     */
+    fun getPracticeHistory(): List<PracticeHistoryEntry> {
+        return practiceHistory.sortedByDescending { it.completedAt }
+    }
+    
+    /**
+     * Get practice history for a specific date range
+     */
+    fun getPracticeHistoryByDateRange(startDate: Long, endDate: Long): List<PracticeHistoryEntry> {
+        return practiceHistory.filter { it.completedAt in startDate..endDate }
+            .sortedByDescending { it.completedAt }
+    }
+    
+    /**
+     * Calculate practice statistics from history
+     */
+    fun calculateStatistics(): PracticeStatistics {
+        if (practiceHistory.isEmpty()) {
+            return PracticeStatistics()
+        }
+        
+        // Basic stats
+        val totalSessions = practiceHistory.size
+        val totalMinutes = practiceHistory.sumOf { it.durationMinutes }
+        val averageSessionMinutes = if (totalSessions > 0) totalMinutes / totalSessions else 0
+        
+        // Calculate current and longest streaks
+        val sortedHistory = practiceHistory.sortedBy { it.completedAt }
+        var currentStreak = 0
+        var longestStreak = 0
+        var tempStreak = 0
+        var lastDate: Long? = null
+        
+        // Group sessions by date (ignoring time)
+        val sessionsByDate = sortedHistory.groupBy { entry ->
+            val cal = java.util.Calendar.getInstance()
+            cal.timeInMillis = entry.completedAt
+            cal.set(java.util.Calendar.HOUR_OF_DAY, 0)
+            cal.set(java.util.Calendar.MINUTE, 0)
+            cal.set(java.util.Calendar.SECOND, 0)
+            cal.set(java.util.Calendar.MILLISECOND, 0)
+            cal.timeInMillis
+        }.keys.sorted()
+        
+        // Calculate streaks
+        val today = java.util.Calendar.getInstance().apply {
+            set(java.util.Calendar.HOUR_OF_DAY, 0)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }.timeInMillis
+        
+        for (date in sessionsByDate) {
+            if (lastDate == null) {
+                tempStreak = 1
+            } else {
+                val daysDiff = ((date - lastDate) / (24 * 60 * 60 * 1000)).toInt()
+                if (daysDiff == 1) {
+                    tempStreak++
+                } else {
+                    if (tempStreak > longestStreak) {
+                        longestStreak = tempStreak
+                    }
+                    tempStreak = 1
+                }
+            }
+            lastDate = date
+        }
+        
+        // Update longest streak one more time
+        if (tempStreak > longestStreak) {
+            longestStreak = tempStreak
+        }
+        
+        // Calculate current streak (only if last practice was today or yesterday)
+        if (lastDate != null) {
+            val daysSinceLastPractice = ((today - lastDate) / (24 * 60 * 60 * 1000)).toInt()
+            if (daysSinceLastPractice <= 1) {
+                // Count backwards from most recent date
+                currentStreak = 1
+                var prevDate = lastDate
+                for (i in sessionsByDate.size - 2 downTo 0) {
+                    val date = sessionsByDate.elementAt(i)
+                    val daysDiff = ((prevDate - date) / (24 * 60 * 60 * 1000)).toInt()
+                    if (daysDiff == 1) {
+                        currentStreak++
+                        prevDate = date
+                    } else {
+                        break
+                    }
+                }
+            }
+        }
+        
+        // Calculate favorite instrument
+        val instrumentCounts = practiceHistory
+            .mapNotNull { it.instrument }
+            .groupingBy { it }
+            .eachCount()
+        val favoriteInstrument = instrumentCounts.maxByOrNull { it.value }?.key
+        
+        // Calculate sessions this week and month
+        val weekAgo = today - (7 * 24 * 60 * 60 * 1000)
+        val monthAgo = today - (30 * 24 * 60 * 60 * 1000)
+        
+        val sessionsThisWeek = practiceHistory.count { it.completedAt >= weekAgo }
+        val sessionsThisMonth = practiceHistory.count { it.completedAt >= monthAgo }
+        
+        val lastPracticeDate = sortedHistory.lastOrNull()?.completedAt
+        
+        return PracticeStatistics(
+            totalSessions = totalSessions,
+            totalMinutes = totalMinutes,
+            currentStreak = currentStreak,
+            longestStreak = longestStreak,
+            averageSessionMinutes = averageSessionMinutes,
+            favoriteInstrument = favoriteInstrument,
+            sessionsThisWeek = sessionsThisWeek,
+            sessionsThisMonth = sessionsThisMonth,
+            lastPracticeDate = lastPracticeDate
+        )
     }
 }

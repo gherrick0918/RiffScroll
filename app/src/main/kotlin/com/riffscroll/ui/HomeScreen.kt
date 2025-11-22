@@ -45,6 +45,7 @@ fun HomeScreen(
     onAddRoutineToSchedule: (String, String) -> Unit,
     onRemoveRoutineFromSchedule: (String, String) -> Unit,
     onNavigateToSchedulePlanner: () -> Unit,
+    onNavigateToHistory: () -> Unit,
     calendarSchedules: List<CalendarSchedule>,
     currentViewingDate: Long,
     onNavigatePreviousDay: () -> Unit,
@@ -64,8 +65,11 @@ fun HomeScreen(
         // Header with RPG theme
         RpgHeader(text = "⚔️ Practice Quest", modifier = Modifier.padding(bottom = 16.dp))
         
-        // User Progress Card
-        UserProgressCard(userProgress = userProgress)
+        // User Progress Card with History Link
+        UserProgressCard(
+            userProgress = userProgress,
+            onNavigateToHistory = onNavigateToHistory
+        )
         
         Spacer(modifier = Modifier.height(16.dp))
         
@@ -294,7 +298,10 @@ fun HomeScreen(
  * Display user progress with RPG stats
  */
 @Composable
-fun UserProgressCard(userProgress: UserProgress) {
+fun UserProgressCard(
+    userProgress: UserProgress,
+    onNavigateToHistory: () -> Unit
+) {
     RpgCard {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -339,6 +346,17 @@ fun UserProgressCard(userProgress: UserProgress) {
                 modifier = Modifier.fillMaxWidth()
             )
         }
+        
+        Spacer(modifier = Modifier.height(12.dp))
+        
+        // Button to view practice history
+        RpgButton(
+            text = "📊 View Practice History",
+            onClick = onNavigateToHistory,
+            modifier = Modifier.fillMaxWidth(),
+            color = RpgTheme.info,
+            fontSize = 14.sp
+        )
     }
 }
 
