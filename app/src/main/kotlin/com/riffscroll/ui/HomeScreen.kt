@@ -94,8 +94,7 @@ fun HomeScreen(
                         Spacer(modifier = Modifier.height(4.dp))
                         RpgText(
                             text = "Create automatic practice schedules for multiple days",
-                            color = RpgTheme.textSecondary,
-                            fontSize = 13.sp
+                            color = RpgTheme.textSecondary
                         )
                     }
                     Icon(
