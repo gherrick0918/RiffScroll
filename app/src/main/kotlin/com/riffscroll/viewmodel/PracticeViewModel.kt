@@ -92,6 +92,13 @@ class PracticeViewModel(
     }
     
     /**
+     * Get all available exercises for browsing
+     */
+    fun getAllExercises(): List<Exercise> {
+        return repository.getAllExercises()
+    }
+    
+    /**
      * Generate a new practice routine
      */
     fun generateRoutine(

@@ -46,6 +46,7 @@ fun HomeScreen(
     onRemoveRoutineFromSchedule: (String, String) -> Unit,
     onNavigateToSchedulePlanner: () -> Unit,
     onNavigateToHistory: () -> Unit,
+    onNavigateToExerciseBrowser: () -> Unit,
     calendarSchedules: List<CalendarSchedule>,
     currentViewingDate: Long,
     onNavigatePreviousDay: () -> Unit,
@@ -114,6 +115,53 @@ fun HomeScreen(
                     onClick = onNavigateToSchedulePlanner,
                     modifier = Modifier.fillMaxWidth(),
                     color = RpgTheme.accent
+                )
+            }
+        }
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        // Exercise Browser Button - Prominent!
+        RpgCard {
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "📚",
+                                fontSize = 24.sp,
+                                modifier = Modifier.padding(end = 8.dp)
+                            )
+                            Text(
+                                text = "Exercise Browser",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = RpgTheme.textPrimary
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        RpgText(
+                            text = "Search and browse 150+ exercises with advanced filters",
+                            color = RpgTheme.textSecondary
+                        )
+                    }
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowRight,
+                        contentDescription = "Open",
+                        tint = RpgTheme.accent,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                RpgButton(
+                    text = "🔍 Browse All Exercises",
+                    onClick = onNavigateToExerciseBrowser,
+                    modifier = Modifier.fillMaxWidth(),
+                    color = RpgTheme.primary
                 )
             }
         }
