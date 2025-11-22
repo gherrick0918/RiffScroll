@@ -220,4 +220,48 @@ class InstrumentAndSchedulingTest {
         assertTrue("Should have creativity exercises", hasCreativity)
         assertTrue("Should have song exercises", hasSongs)
     }
+    
+    @Test
+    fun `createPracticeSchedulePlan should save routines that can be retrieved`() {
+        val repository = RoutineRepository()
+        val exerciseRepo = ExerciseRepository()
+        
+        val startDate = System.currentTimeMillis()
+        val endDate = startDate + (2 * 24 * 60 * 60 * 1000L) // 2 days later (3 days inclusive)
+        
+        val plan = repository.createPracticeSchedulePlan(
+            name = "Test Plan",
+            startDate = startDate,
+            endDate = endDate,
+            instrument = InstrumentType.PIANO,
+            targetDurationMinutes = 30,
+            difficulty = DifficultyLevel.INTERMEDIATE,
+            exerciseRepository = exerciseRepo
+        )
+        
+        // Verify all schedule entries reference valid saved routines
+        assertEquals("Should have 3 schedule entries", 3, plan.scheduleEntries.size)
+        
+        plan.scheduleEntries.forEach { entry ->
+            val savedRoutine = repository.getSavedRoutine(entry.routineId)
+            assertNotNull("Routine ${entry.routineId} should be retrievable", savedRoutine)
+            assertNotNull("Saved routine should have a routine", savedRoutine?.routine)
+            assertTrue("Routine should have exercises", savedRoutine!!.routine.exercises.isNotEmpty())
+            
+            // Verify the routine matches the plan parameters
+            assertTrue("All exercises should be piano", 
+                savedRoutine.routine.exercises.all { it.instrument == InstrumentType.PIANO })
+            assertTrue("All exercises should be intermediate difficulty",
+                savedRoutine.routine.exercises.all { it.difficulty == DifficultyLevel.INTERMEDIATE })
+        }
+        
+        // Verify routines appear in the saved routines list
+        val allSavedRoutines = repository.getSavedRoutines()
+        assertEquals("Saved routines list should contain all plan routines", 3, allSavedRoutines.size)
+        
+        plan.scheduleEntries.forEach { entry ->
+            assertTrue("Saved routines list should contain routine ${entry.routineId}",
+                allSavedRoutines.any { it.id == entry.routineId })
+        }
+    }
 }

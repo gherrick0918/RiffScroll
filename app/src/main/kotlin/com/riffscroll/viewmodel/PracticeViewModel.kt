@@ -408,6 +408,7 @@ class PracticeViewModel : ViewModel() {
             difficulty = difficulty,
             exerciseRepository = repository
         )
+        refreshSavedRoutines()
         refreshCalendarSchedules()
         refreshPracticeSchedulePlans()
         return plan
