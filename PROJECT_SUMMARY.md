@@ -194,7 +194,7 @@ Total code: ~1,330 lines of Kotlin + Compose
 ### Future Enhancements
 
 #### Short Term (Low effort, high value)
-- Audio playback for metronome clicks
+- ✅ Audio playback for metronome clicks (implemented)
 - Vibration feedback for metronome
 - Save/load user progress (SharedPreferences)
 - Practice history log

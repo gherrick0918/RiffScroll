@@ -1,7 +1,8 @@
 package com.riffscroll.viewmodel
 
-import android.media.AudioManager
-import android.media.ToneGenerator
+import android.media.AudioAttributes
+import android.media.AudioFormat
+import android.media.AudioTrack
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.riffscroll.data.*
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlin.math.sin
 
 /**
  * ViewModel for managing practice routines and sessions.
@@ -67,22 +69,12 @@ class PracticeViewModel(
     
     private var timerJob: Job? = null
     private var metronomeJob: Job? = null
-    private var toneGenerator: ToneGenerator? = null
     private var beatCounter = 0  // Track beats for accenting first beat of measure
     
-    init {
-        // Load persisted user progress if available
-        persistenceManager?.loadUserProgress()?.let { progress ->
-            _userProgress.value = progress
-        }
-    }
-    
-    /**
-     * Save user progress to persistent storage
-     */
-    private fun saveUserProgress() {
-        persistenceManager?.saveUserProgress(_userProgress.value)
-    }
+    // Audio parameters for metronome
+    private val sampleRate = 44100
+    private val clickDurationMs = 50  // Duration of each click sound
+    private val metronomePollDelayMs = 5L  // Delay between timing checks to avoid busy-waiting
     
     /**
      * Generate a new practice routine
@@ -238,6 +230,34 @@ class PracticeViewModel(
     }
     
     /**
+     * Generate a metronome click sound
+     * @param isAccented true for the first beat of a measure (higher pitch)
+     * @return ByteArray containing the audio samples
+     */
+    private fun generateClickSound(isAccented: Boolean): ByteArray {
+        val frequency = if (isAccented) 1200.0 else 800.0  // Hz
+        val numSamples = (sampleRate * clickDurationMs / 1000.0).toInt()
+        val samples = ShortArray(numSamples)
+        
+        for (i in 0 until numSamples) {
+            // Generate sine wave with envelope for click sound
+            val time = i.toDouble() / sampleRate
+            val envelope = 1.0 - (i.toDouble() / numSamples)  // Linear decay
+            val sample = (sin(2.0 * Math.PI * frequency * time) * envelope * Short.MAX_VALUE * 0.8).toInt()
+            samples[i] = sample.toShort()
+        }
+        
+        // Convert to bytes
+        val bytes = ByteArray(samples.size * 2)
+        for (i in samples.indices) {
+            bytes[i * 2] = (samples[i].toInt() and 0xFF).toByte()
+            bytes[i * 2 + 1] = ((samples[i].toInt() shr 8) and 0xFF).toByte()
+        }
+        
+        return bytes
+    }
+    
+    /**
      * Start the metronome
      */
     fun startMetronome() {
@@ -247,33 +267,68 @@ class PracticeViewModel(
         beatCounter = 0  // Reset beat counter when starting
         metronomeJob?.cancel()
         
-        // Initialize ToneGenerator for metronome beeps
-        try {
-            toneGenerator = ToneGenerator(AudioManager.STREAM_MUSIC, 80)
-        } catch (e: Exception) {
-            // Handle case where ToneGenerator initialization fails
-            toneGenerator = null
-        }
-        
         metronomeJob = viewModelScope.launch {
-            val bpm = _metronomeBpm.value
-            val intervalMs = (60000.0 / bpm).toLong()
-            
-            while (_isMetronomeActive.value) {
-                // Play metronome beep with accent on first beat (4/4 time)
-                try {
-                    if (beatCounter % 4 == 0) {
-                        // Accented first beat - higher pitch and louder
-                        toneGenerator?.startTone(ToneGenerator.TONE_DTMF_1, 100)
-                    } else {
-                        // Regular beats
-                        toneGenerator?.startTone(ToneGenerator.TONE_PROP_BEEP, 100)
+            try {
+                // Pre-generate click sounds
+                val accentedClick = generateClickSound(true)
+                val regularClick = generateClickSound(false)
+                
+                // Create AudioTrack for playback
+                val bufferSize = AudioTrack.getMinBufferSize(
+                    sampleRate,
+                    AudioFormat.CHANNEL_OUT_MONO,
+                    AudioFormat.ENCODING_PCM_16BIT
+                )
+                
+                val audioTrack = AudioTrack.Builder()
+                    .setAudioAttributes(
+                        AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_MEDIA)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                            .build()
+                    )
+                    .setAudioFormat(
+                        AudioFormat.Builder()
+                            .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
+                            .setSampleRate(sampleRate)
+                            .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
+                            .build()
+                    )
+                    .setBufferSizeInBytes(bufferSize)
+                    .setTransferMode(AudioTrack.MODE_STREAM)
+                    .build()
+                
+                audioTrack.play()
+                var lastBeatTimeNanos = System.nanoTime()
+                
+                while (_isMetronomeActive.value) {
+                    val currentTimeNanos = System.nanoTime()
+                    val bpm = _metronomeBpm.value
+                    val intervalNanos = (60_000_000_000.0 / bpm).toLong()
+                    
+                    // Check if it's time for the next beat
+                    if (currentTimeNanos - lastBeatTimeNanos >= intervalNanos) {
+                        // Play the appropriate click sound
+                        val clickData = if (beatCounter % 4 == 0) accentedClick else regularClick
+                        
+                        // Write the click to the audio track
+                        audioTrack.write(clickData, 0, clickData.size)
+                        
+                        beatCounter++
+                        lastBeatTimeNanos = currentTimeNanos
                     }
-                    beatCounter++
-                } catch (e: Exception) {
-                    // Silently handle tone generation errors
+                    
+                    // Small delay to avoid busy-waiting
+                    delay(metronomePollDelayMs)
                 }
-                delay(intervalMs)
+                
+                // Clean up
+                audioTrack.stop()
+                audioTrack.release()
+                
+            } catch (e: Exception) {
+                // Handle audio errors gracefully
+                _isMetronomeActive.value = false
             }
         }
     }
@@ -286,14 +341,6 @@ class PracticeViewModel(
         beatCounter = 0  // Reset beat counter when stopping
         metronomeJob?.cancel()
         metronomeJob = null
-        
-        // Release ToneGenerator resources
-        try {
-            toneGenerator?.release()
-            toneGenerator = null
-        } catch (e: Exception) {
-            // Silently handle release errors
-        }
     }
     
     /**
@@ -539,6 +586,5 @@ class PracticeViewModel(
         super.onCleared()
         stopTimer()
         stopMetronome()
-        toneGenerator?.release()
     }
 }
