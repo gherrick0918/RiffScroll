@@ -5,14 +5,52 @@ import java.util.Locale
 
 /**
  * Repository for managing saved routines and schedules
- * Currently stores data in-memory. Future enhancement: add persistent storage
+ * Uses PersistenceManager for data storage
  */
-class RoutineRepository {
+class RoutineRepository(private val persistenceManager: PersistenceManager? = null) {
     
     private val savedRoutines = mutableMapOf<String, SavedRoutine>()
     private val schedules = mutableMapOf<String, Schedule>()
     private val calendarSchedules = mutableMapOf<String, CalendarSchedule>()
     private val practiceSchedulePlans = mutableMapOf<String, PracticeSchedulePlan>()
+    
+    init {
+        // Load persisted data if persistence manager is available
+        persistenceManager?.let {
+            loadPersistedData()
+        }
+    }
+    
+    /**
+     * Load all persisted data into memory
+     */
+    private fun loadPersistedData() {
+        persistenceManager?.let { pm ->
+            // Load saved routines
+            pm.loadSavedRoutines().forEach { savedRoutines[it.id] = it }
+            
+            // Load schedules
+            pm.loadSchedules().forEach { schedules[it.id] = it }
+            
+            // Load calendar schedules
+            pm.loadCalendarSchedules().forEach { calendarSchedules[it.id] = it }
+            
+            // Load practice schedule plans
+            pm.loadPracticeSchedulePlans().forEach { practiceSchedulePlans[it.id] = it }
+        }
+    }
+    
+    /**
+     * Persist all data to storage
+     */
+    private fun persistData() {
+        persistenceManager?.let { pm ->
+            pm.saveSavedRoutines(savedRoutines.values.toList())
+            pm.saveSchedules(schedules.values.toList())
+            pm.saveCalendarSchedules(calendarSchedules.values.toList())
+            pm.savePracticeSchedulePlans(practiceSchedulePlans.values.toList())
+        }
+    }
     
     // Saved Routines operations
     
@@ -26,6 +64,7 @@ class RoutineRepository {
             routine = routine
         )
         savedRoutines[savedRoutine.id] = savedRoutine
+        persistData()
         return savedRoutine
     }
     
@@ -56,7 +95,9 @@ class RoutineRepository {
                 schedules[schedule.id] = updatedSchedule
             }
         }
-        return savedRoutines.remove(id) != null
+        val result = savedRoutines.remove(id) != null
+        if (result) persistData()
+        return result
     }
     
     // Schedule operations
@@ -71,6 +112,7 @@ class RoutineRepository {
             description = description
         )
         schedules[schedule.id] = schedule
+        persistData()
         return schedule
     }
     
@@ -94,6 +136,7 @@ class RoutineRepository {
     fun updateSchedule(schedule: Schedule): Boolean {
         if (!schedules.containsKey(schedule.id)) return false
         schedules[schedule.id] = schedule
+        persistData()
         return true
     }
     
@@ -110,6 +153,7 @@ class RoutineRepository {
             routineIds = schedule.routineIds + routineId
         )
         schedules[scheduleId] = updatedSchedule
+        persistData()
         return true
     }
     
@@ -125,6 +169,7 @@ class RoutineRepository {
             routineIds = schedule.routineIds.filter { it != routineId }
         )
         schedules[scheduleId] = updatedSchedule
+        persistData()
         return true
     }
     
@@ -132,7 +177,9 @@ class RoutineRepository {
      * Delete a schedule
      */
     fun deleteSchedule(id: String): Boolean {
-        return schedules.remove(id) != null
+        val result = schedules.remove(id) != null
+        if (result) persistData()
+        return result
     }
     
     /**
@@ -155,6 +202,7 @@ class RoutineRepository {
             routineId = routineId
         )
         calendarSchedules[calendarSchedule.id] = calendarSchedule
+        persistData()
         return calendarSchedule
     }
     
@@ -195,6 +243,7 @@ class RoutineRepository {
     fun markCalendarScheduleCompleted(id: String): Boolean {
         val schedule = calendarSchedules[id] ?: return false
         calendarSchedules[id] = schedule.copy(isCompleted = true)
+        persistData()
         return true
     }
     
@@ -202,7 +251,9 @@ class RoutineRepository {
      * Delete a calendar schedule
      */
     fun deleteCalendarSchedule(id: String): Boolean {
-        return calendarSchedules.remove(id) != null
+        val result = calendarSchedules.remove(id) != null
+        if (result) persistData()
+        return result
     }
     
     /**
@@ -291,6 +342,7 @@ class RoutineRepository {
         )
         
         practiceSchedulePlans[plan.id] = plan
+        persistData()
         return plan
     }
     
@@ -312,6 +364,8 @@ class RoutineRepository {
             calendarSchedules.remove(entry.id)
         }
         
-        return practiceSchedulePlans.remove(id) != null
+        val result = practiceSchedulePlans.remove(id) != null
+        if (result) persistData()
+        return result
     }
 }
