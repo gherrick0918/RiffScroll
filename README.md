@@ -15,6 +15,7 @@ RiffScroll is an Android app that dynamically generates balanced practice routin
 - **Exercise Display**: Shows detailed instructions for each exercise
 - **Timer Integration**: Built-in timer for practice segments
 - **Metronome Support**: Adjustable metronome (40-240 BPM) for timing-based exercises
+- **Practice Notes & Feedback**: Add notes and rate exercises during practice sessions
 - **RPG Theme**: Old school RPG-inspired UI with level progression and XP system
 - **Responsive Design**: Supports portrait and landscape modes on phones and tablets
 - **Progress Tracking**: Track completed routines, practice time, and level advancement

@@ -164,7 +164,40 @@ Benefits:
 - Provides sense of achievement
 - Encourages consistency
 
-### 6. Exercise Instructions
+### 6. Practice Notes and Feedback
+
+**Capture Your Practice Journey**
+
+Features:
+- **Quick Notes**: Add text notes during any exercise
+- **Star Ratings**: Rate exercises 1-5 stars
+- **Exercise Feedback**: Structured feedback after each exercise
+- **Difficulty Rating**: Too Easy, Just Right, Challenging, Too Hard
+- **Enjoyment Rating**: 1-5 stars with emoji indicators
+- **History Integration**: All notes preserved in practice history
+- **Expandable View**: Review notes from past sessions
+
+Note Examples:
+- "Struggled with the fast part - slow down"
+- "Finally nailed that transition! ⭐⭐⭐⭐⭐"
+- "Left hand feels tense today"
+- "Perfect warm-up exercise"
+
+Benefits:
+- **Track Progress**: See improvement over time
+- **Identify Patterns**: Notice recurring challenges
+- **Stay Motivated**: Remember breakthrough moments
+- **Build Habits**: Create a practice journal
+- **Improve Planning**: Know what works best for you
+
+How It Works:
+1. Click "📝 Add Note" during practice
+2. Type your thoughts and optionally rate
+3. Add feedback after each exercise
+4. Review in Practice History later
+5. Learn from past sessions
+
+### 7. Exercise Instructions
 
 **Clear, Step-by-Step Guidance**
 
@@ -187,7 +220,7 @@ Benefits:
 - Avoid bad habits
 - Practice with purpose
 
-### 7. Responsive Design
+### 8. Responsive Design
 
 **Works on All Devices**
 
@@ -218,7 +251,7 @@ Technical Implementation:
 - State preservation during configuration changes
 - Responsive padding and spacing
 
-### 8. Practice Session Management
+### 9. Practice Session Management
 
 **Full Control Over Your Practice**
 
@@ -241,7 +274,7 @@ Benefits:
 - Skip exercises if needed
 - Complete control
 
-### 9. Visual Exercise Categorization
+### 10. Visual Exercise Categorization
 
 **Quick Identification System**
 
@@ -269,7 +302,7 @@ Benefits:
 - Color-coded organization
 - Professional appearance
 
-### 10. Old School RPG Theme
+### 11. Old School RPG Theme
 
 **Immersive Retro Gaming Aesthetic**
 
