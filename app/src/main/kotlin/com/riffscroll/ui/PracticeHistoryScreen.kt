@@ -367,6 +367,8 @@ fun PracticeHistoryList(history: List<PracticeHistoryEntry>) {
  */
 @Composable
 fun PracticeHistoryItem(entry: PracticeHistoryEntry) {
+    var expanded by remember { mutableStateOf(false) }
+    
     Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -430,6 +432,117 @@ fun PracticeHistoryItem(entry: PracticeHistoryEntry) {
                         DifficultyLevel.ADVANCED -> RpgTheme.danger
                     }
                 )
+            }
+            
+            // Show badge if notes exist
+            if (entry.notes.isNotEmpty() || entry.exerciseFeedback.isNotEmpty()) {
+                RpgBadge(
+                    text = "📝 ${entry.notes.size + entry.exerciseFeedback.size}",
+                    color = RpgTheme.accent
+                )
+            }
+        }
+        
+        // Show/hide notes button if notes exist
+        if (entry.notes.isNotEmpty() || entry.exerciseFeedback.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(8.dp))
+            TextButton(
+                onClick = { expanded = !expanded },
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = RpgTheme.accent
+                )
+            ) {
+                Text(
+                    text = if (expanded) "▼ Hide Notes & Feedback" else "▶ Show Notes & Feedback",
+                    fontSize = 12.sp
+                )
+            }
+        }
+        
+        // Expanded notes and feedback section
+        if (expanded && (entry.notes.isNotEmpty() || entry.exerciseFeedback.isNotEmpty())) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(RpgTheme.background, androidx.compose.foundation.shape.RoundedCornerShape(8.dp))
+                    .padding(12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // Display notes
+                if (entry.notes.isNotEmpty()) {
+                    Text(
+                        text = "📝 Practice Notes:",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = RpgTheme.accent
+                    )
+                    entry.notes.forEach { note ->
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(RpgTheme.surface, androidx.compose.foundation.shape.RoundedCornerShape(6.dp))
+                                .padding(10.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = note.text,
+                                    fontSize = 13.sp,
+                                    color = RpgTheme.textPrimary,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                if (note.rating != null) {
+                                    Text(
+                                        text = "${"⭐".repeat(note.rating)}",
+                                        fontSize = 12.sp,
+                                        color = RpgTheme.accent
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // Display feedback
+                if (entry.exerciseFeedback.isNotEmpty()) {
+                    Text(
+                        text = "💭 Exercise Feedback:",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = RpgTheme.accent
+                    )
+                    entry.exerciseFeedback.values.forEach { feedback ->
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(RpgTheme.surface, androidx.compose.foundation.shape.RoundedCornerShape(6.dp))
+                                .padding(10.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text(
+                                text = "Difficulty: ${feedback.difficulty.displayName}",
+                                fontSize = 12.sp,
+                                color = RpgTheme.textSecondary
+                            )
+                            Text(
+                                text = "Enjoyment: ${"⭐".repeat(feedback.enjoyment)}",
+                                fontSize = 12.sp,
+                                color = RpgTheme.textSecondary
+                            )
+                            if (feedback.notes.isNotBlank()) {
+                                Text(
+                                    text = feedback.notes,
+                                    fontSize = 12.sp,
+                                    color = RpgTheme.textPrimary
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
     }

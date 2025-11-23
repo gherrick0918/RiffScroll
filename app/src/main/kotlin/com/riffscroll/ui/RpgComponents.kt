@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -179,4 +183,202 @@ fun RpgBadge(
             color = RpgTheme.textPrimary
         )
     }
+}
+
+/**
+ * Dialog for adding a practice note
+ */
+@Composable
+fun AddNoteDialog(
+    onDismiss: () -> Unit,
+    onConfirm: (String, Int?) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var noteText by remember { mutableStateOf("") }
+    var rating by remember { mutableStateOf<Int?>(null) }
+    
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                "📝 Add Practice Note",
+                color = RpgTheme.accent,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // Note text field
+                OutlinedTextField(
+                    value = noteText,
+                    onValueChange = { noteText = it },
+                    label = { Text("Your Note") },
+                    placeholder = { Text("e.g., Struggled with the fast part...") },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = RpgTheme.surface,
+                        unfocusedContainerColor = RpgTheme.surface,
+                        focusedTextColor = RpgTheme.textPrimary,
+                        unfocusedTextColor = RpgTheme.textPrimary
+                    ),
+                    minLines = 3,
+                    maxLines = 5
+                )
+                
+                // Optional rating
+                Text(
+                    "How did it go? (optional)",
+                    color = RpgTheme.textSecondary,
+                    fontSize = 14.sp
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    for (i in 1..5) {
+                        RpgButton(
+                            text = if (rating == i) "⭐" else "☆",
+                            onClick = { 
+                                rating = if (rating == i) null else i 
+                            },
+                            color = if (rating == i) RpgTheme.accent else RpgTheme.secondary,
+                            modifier = Modifier.size(48.dp)
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            RpgButton(
+                text = "Save",
+                onClick = { 
+                    if (noteText.isNotBlank()) {
+                        onConfirm(noteText, rating)
+                    }
+                },
+                color = RpgTheme.success,
+                enabled = noteText.isNotBlank()
+            )
+        },
+        dismissButton = {
+            RpgButton(
+                text = "Cancel",
+                onClick = onDismiss,
+                color = RpgTheme.secondary
+            )
+        },
+        containerColor = RpgTheme.surface,
+        modifier = modifier
+    )
+}
+
+/**
+ * Dialog for adding exercise feedback
+ */
+@Composable
+fun AddFeedbackDialog(
+    onDismiss: () -> Unit,
+    onConfirm: (com.riffscroll.data.DifficultyRating, Int, String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var difficulty by remember { mutableStateOf<com.riffscroll.data.DifficultyRating?>(null) }
+    var enjoyment by remember { mutableStateOf(3) }
+    var notes by remember { mutableStateOf("") }
+    
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                "💭 Exercise Feedback",
+                color = RpgTheme.accent,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // Difficulty rating
+                Text(
+                    "How difficult was this exercise?",
+                    color = RpgTheme.textPrimary,
+                    fontWeight = FontWeight.Bold
+                )
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    com.riffscroll.data.DifficultyRating.values().forEach { rating ->
+                        RpgButton(
+                            text = rating.displayName,
+                            onClick = { difficulty = rating },
+                            color = if (difficulty == rating) RpgTheme.accent else RpgTheme.secondary,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+                
+                // Enjoyment rating
+                Text(
+                    "How enjoyable was it?",
+                    color = RpgTheme.textPrimary,
+                    fontWeight = FontWeight.Bold
+                )
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("😞", fontSize = 20.sp)
+                    for (i in 1..5) {
+                        RpgButton(
+                            text = if (enjoyment == i) "⭐" else "☆",
+                            onClick = { enjoyment = i },
+                            color = if (enjoyment == i) RpgTheme.accent else RpgTheme.secondary,
+                            modifier = Modifier.size(40.dp)
+                        )
+                    }
+                    Text("😊", fontSize = 20.sp)
+                }
+                
+                // Optional notes
+                OutlinedTextField(
+                    value = notes,
+                    onValueChange = { notes = it },
+                    label = { Text("Additional Notes (optional)") },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = RpgTheme.surface,
+                        unfocusedContainerColor = RpgTheme.surface,
+                        focusedTextColor = RpgTheme.textPrimary,
+                        unfocusedTextColor = RpgTheme.textPrimary
+                    ),
+                    minLines = 2,
+                    maxLines = 3
+                )
+            }
+        },
+        confirmButton = {
+            RpgButton(
+                text = "Save Feedback",
+                onClick = { 
+                    difficulty?.let { 
+                        onConfirm(it, enjoyment, notes)
+                    }
+                },
+                color = RpgTheme.success,
+                enabled = difficulty != null
+            )
+        },
+        dismissButton = {
+            RpgButton(
+                text = "Skip",
+                onClick = onDismiss,
+                color = RpgTheme.secondary
+            )
+        },
+        containerColor = RpgTheme.surface,
+        modifier = modifier
+    )
 }

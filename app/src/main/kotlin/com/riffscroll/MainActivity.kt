@@ -77,7 +77,11 @@ fun RiffScrollApp() {
                     onNext = { viewModel.nextExercise() },
                     onEnd = { viewModel.endSession() },
                     onToggleMetronome = { viewModel.toggleMetronome() },
-                    onSetBpm = { bpm -> viewModel.setMetronomeBpm(bpm) }
+                    onSetBpm = { bpm -> viewModel.setMetronomeBpm(bpm) },
+                    onAddNote = { text, rating -> viewModel.addPracticeNote(text, rating) },
+                    onAddFeedback = { difficulty, enjoyment, notes -> 
+                        viewModel.addExerciseFeedback(difficulty, enjoyment, notes)
+                    }
                 )
             }
             currentScreen == "schedule_planner" -> {
