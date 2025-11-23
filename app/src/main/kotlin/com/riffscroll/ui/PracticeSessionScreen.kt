@@ -18,7 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.riffscroll.data.DifficultyRating
 import com.riffscroll.data.Exercise
+import com.riffscroll.data.ExerciseFeedback
+import com.riffscroll.data.PracticeNote
 import com.riffscroll.data.PracticeSession
 
 /**
@@ -37,7 +40,7 @@ fun PracticeSessionScreen(
     onToggleMetronome: () -> Unit,
     onSetBpm: (Int) -> Unit,
     onAddNote: (String, Int?) -> Unit = { _, _ -> },
-    onAddFeedback: (com.riffscroll.data.DifficultyRating, Int, String) -> Unit = { _, _, _ -> },
+    onAddFeedback: (DifficultyRating, Int, String) -> Unit = { _, _, _ -> },
     modifier: Modifier = Modifier
 ) {
     val currentExercise = session.routine.exercises.getOrNull(session.currentExerciseIndex)
@@ -431,8 +434,8 @@ private fun formatTime(seconds: Int): String {
  */
 @Composable
 fun NotesAndFeedbackCard(
-    sessionNotes: List<com.riffscroll.data.PracticeNote>,
-    currentExerciseFeedback: com.riffscroll.data.ExerciseFeedback?,
+    sessionNotes: List<PracticeNote>,
+    currentExerciseFeedback: ExerciseFeedback?,
     onAddNote: () -> Unit,
     onAddFeedback: () -> Unit,
     modifier: Modifier = Modifier

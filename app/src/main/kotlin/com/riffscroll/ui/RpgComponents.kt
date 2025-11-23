@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.riffscroll.data.DifficultyRating
 
 /**
  * RPG-themed color palette
@@ -281,10 +282,10 @@ fun AddNoteDialog(
 @Composable
 fun AddFeedbackDialog(
     onDismiss: () -> Unit,
-    onConfirm: (com.riffscroll.data.DifficultyRating, Int, String) -> Unit,
+    onConfirm: (DifficultyRating, Int, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var difficulty by remember { mutableStateOf<com.riffscroll.data.DifficultyRating?>(null) }
+    var difficulty by remember { mutableStateOf<DifficultyRating?>(null) }
     var enjoyment by remember { mutableStateOf(3) }
     var notes by remember { mutableStateOf("") }
     
@@ -309,7 +310,7 @@ fun AddFeedbackDialog(
                     fontWeight = FontWeight.Bold
                 )
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    com.riffscroll.data.DifficultyRating.values().forEach { rating ->
+                    DifficultyRating.values().forEach { rating ->
                         RpgButton(
                             text = rating.displayName,
                             onClick = { difficulty = rating },

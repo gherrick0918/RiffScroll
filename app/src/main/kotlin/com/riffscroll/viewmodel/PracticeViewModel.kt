@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
 import kotlin.math.sin
 
 /**
@@ -140,7 +141,7 @@ class PracticeViewModel(
             isActive = true,
             isPaused = true,  // Start paused so user can review exercise first
             elapsedSeconds = 0,
-            sessionId = "session_${System.currentTimeMillis()}_${System.nanoTime()}",
+            sessionId = "session_${UUID.randomUUID()}",
             notes = emptyList(),
             exerciseFeedback = emptyMap()
         )
@@ -749,13 +750,16 @@ class PracticeViewModel(
         val session = _currentSession.value ?: return
         val currentExercise = session.routine.exercises.getOrNull(session.currentExerciseIndex) ?: return
         
+        // Validate rating is in valid range
+        val validRating = rating?.coerceIn(1, 5)
+        
         val note = PracticeNote(
-            id = "note_${System.currentTimeMillis()}_${System.nanoTime()}",
+            id = "note_${UUID.randomUUID()}",
             exerciseId = currentExercise.id,
             sessionId = session.sessionId,
             text = text,
             timestamp = System.currentTimeMillis(),
-            rating = rating
+            rating = validRating
         )
         
         val updatedNotes = session.notes + note
@@ -769,10 +773,13 @@ class PracticeViewModel(
         val session = _currentSession.value ?: return
         val currentExercise = session.routine.exercises.getOrNull(session.currentExerciseIndex) ?: return
         
+        // Validate enjoyment is in valid range
+        val validEnjoyment = enjoyment.coerceIn(1, 5)
+        
         val feedback = ExerciseFeedback(
             exerciseId = currentExercise.id,
             difficulty = difficulty,
-            enjoyment = enjoyment,
+            enjoyment = validEnjoyment,
             notes = notes
         )
         
