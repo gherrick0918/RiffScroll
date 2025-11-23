@@ -1,11 +1,14 @@
 package com.riffscroll.data
 
+import java.util.UUID
 import kotlin.random.Random
 
 /**
  * Repository for exercise data and routine generation
  */
 class ExerciseRepository {
+    
+    private val customExercises = mutableListOf<Exercise>()
     
     private val techniqueExercises = listOf(
         Exercise(
@@ -3342,7 +3345,65 @@ D|--5--------|
     
     fun getAllExercises(): List<Exercise> {
         return techniqueExercises + creativityExercises + songExercises + 
+               pianoTechniqueExercises + pianoCreativityExercises + pianoSongExercises +
+               customExercises
+    }
+    
+    fun getBuiltInExercises(): List<Exercise> {
+        return techniqueExercises + creativityExercises + songExercises + 
                pianoTechniqueExercises + pianoCreativityExercises + pianoSongExercises
+    }
+    
+    fun getCustomExercises(): List<Exercise> {
+        return customExercises.toList()
+    }
+    
+    /**
+     * Add a custom exercise
+     */
+    fun addCustomExercise(exercise: Exercise): Exercise {
+        val customExercise = exercise.copy(
+            id = "custom_${UUID.randomUUID()}",
+            isCustom = true
+        )
+        customExercises.add(customExercise)
+        return customExercise
+    }
+    
+    /**
+     * Update an existing custom exercise
+     */
+    fun updateCustomExercise(exercise: Exercise): Boolean {
+        if (!exercise.isCustom) return false
+        
+        val index = customExercises.indexOfFirst { it.id == exercise.id }
+        if (index != -1) {
+            customExercises[index] = exercise
+            return true
+        }
+        return false
+    }
+    
+    /**
+     * Delete a custom exercise
+     */
+    fun deleteCustomExercise(exerciseId: String): Boolean {
+        return customExercises.removeIf { it.id == exerciseId && it.isCustom }
+    }
+    
+    /**
+     * Load custom exercises from persistence
+     */
+    fun loadCustomExercises(exercises: List<Exercise>) {
+        customExercises.clear()
+        customExercises.addAll(exercises.filter { it.isCustom })
+    }
+    
+    /**
+     * Get an exercise by ID
+     */
+    fun getExerciseById(id: String): Exercise? {
+        return getAllExercises().find { it.id == id }
     }
     
     fun getExercisesByCategory(category: ExerciseCategory): List<Exercise> {

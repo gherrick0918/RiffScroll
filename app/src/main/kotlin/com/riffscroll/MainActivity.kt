@@ -49,6 +49,7 @@ fun RiffScrollApp() {
     val practiceStatistics by viewModel.practiceStatistics.collectAsState()
     
     var currentScreen by remember { mutableStateOf("home") }
+    var editingExerciseId by remember { mutableStateOf<String?>(null) }
     
     // Load initial data
     LaunchedEffect(Unit) {
@@ -105,7 +106,62 @@ fun RiffScrollApp() {
                 ExerciseBrowserScreen(
                     allExercises = viewModel.getAllExercises(),
                     onBack = { currentScreen = "home" },
-                    onAddToRoutine = null  // Can be enhanced later to add exercises to custom routines
+                    onAddToRoutine = null,  // Can be enhanced later to add exercises to custom routines
+                    onEditExercise = { exerciseId ->
+                        editingExerciseId = exerciseId
+                        currentScreen = "custom_exercise"
+                    },
+                    onDeleteExercise = { exerciseId ->
+                        viewModel.deleteCustomExercise(exerciseId)
+                    },
+                    onCreateNew = {
+                        editingExerciseId = null
+                        currentScreen = "custom_exercise"
+                    }
+                )
+            }
+            currentScreen == "custom_exercise" -> {
+                val existingExercise = editingExerciseId?.let { viewModel.getExerciseById(it) }
+                CustomExerciseScreen(
+                    existingExercise = existingExercise,
+                    onSave = { name, description, category, instrument, durationMinutes, difficulty, hasTiming, bpm, instructions, tablature ->
+                        if (existingExercise != null) {
+                            // Update existing exercise
+                            val updated = existingExercise.copy(
+                                name = name,
+                                description = description,
+                                category = category,
+                                instrument = instrument,
+                                durationMinutes = durationMinutes,
+                                difficulty = difficulty,
+                                hasTiming = hasTiming,
+                                bpm = bpm,
+                                instructions = instructions,
+                                tablature = tablature
+                            )
+                            viewModel.updateCustomExercise(updated)
+                        } else {
+                            // Create new exercise
+                            viewModel.addCustomExercise(
+                                name = name,
+                                description = description,
+                                category = category,
+                                instrument = instrument,
+                                durationMinutes = durationMinutes,
+                                difficulty = difficulty,
+                                hasTiming = hasTiming,
+                                bpm = bpm,
+                                instructions = instructions,
+                                tablature = tablature
+                            )
+                        }
+                        currentScreen = "exercise_browser"
+                        editingExerciseId = null
+                    },
+                    onCancel = { 
+                        currentScreen = "exercise_browser"
+                        editingExerciseId = null
+                    }
                 )
             }
             else -> {

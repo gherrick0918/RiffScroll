@@ -25,6 +25,7 @@ class PersistenceManager(context: Context) {
         private const val KEY_CALENDAR_SCHEDULES = "calendar_schedules"
         private const val KEY_PRACTICE_SCHEDULE_PLANS = "practice_schedule_plans"
         private const val KEY_PRACTICE_HISTORY = "practice_history"
+        private const val KEY_CUSTOM_EXERCISES = "custom_exercises"
     }
     
     // User Progress
@@ -122,6 +123,23 @@ class PersistenceManager(context: Context) {
         val json = sharedPreferences.getString(KEY_PRACTICE_HISTORY, null) ?: return emptyList()
         return try {
             val type = object : TypeToken<List<PracticeHistoryEntry>>() {}.type
+            gson.fromJson(json, type)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+    
+    // Custom Exercises
+    
+    fun saveCustomExercises(exercises: List<Exercise>) {
+        val json = gson.toJson(exercises)
+        sharedPreferences.edit().putString(KEY_CUSTOM_EXERCISES, json).apply()
+    }
+    
+    fun loadCustomExercises(): List<Exercise> {
+        val json = sharedPreferences.getString(KEY_CUSTOM_EXERCISES, null) ?: return emptyList()
+        return try {
+            val type = object : TypeToken<List<Exercise>>() {}.type
             gson.fromJson(json, type)
         } catch (e: Exception) {
             emptyList()
