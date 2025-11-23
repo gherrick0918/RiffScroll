@@ -3,17 +3,25 @@ package com.riffscroll.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.riffscroll.data.DifficultyRating
 import com.riffscroll.data.Exercise
+import com.riffscroll.data.ExerciseFeedback
+import com.riffscroll.data.PracticeNote
 import com.riffscroll.data.PracticeSession
 
 /**
@@ -31,9 +39,13 @@ fun PracticeSessionScreen(
     onEnd: () -> Unit,
     onToggleMetronome: () -> Unit,
     onSetBpm: (Int) -> Unit,
+    onAddNote: (String, Int?) -> Unit = { _, _ -> },
+    onAddFeedback: (DifficultyRating, Int, String) -> Unit = { _, _, _ -> },
     modifier: Modifier = Modifier
 ) {
     val currentExercise = session.routine.exercises.getOrNull(session.currentExerciseIndex)
+    var showNoteDialog by remember { mutableStateOf(false) }
+    var showFeedbackDialog by remember { mutableStateOf(false) }
     
     Column(
         modifier = modifier
@@ -93,6 +105,16 @@ fun PracticeSessionScreen(
             Spacer(modifier = Modifier.height(16.dp))
         }
         
+        // Notes and Feedback section
+        NotesAndFeedbackCard(
+            sessionNotes = session.notes,
+            currentExerciseFeedback = currentExercise?.let { session.exerciseFeedback[it.id] },
+            onAddNote = { showNoteDialog = true },
+            onAddFeedback = { showFeedbackDialog = true }
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
         // Control buttons
         PracticeControls(
             isPaused = session.isPaused,
@@ -100,6 +122,27 @@ fun PracticeSessionScreen(
             onPause = onPause,
             onResume = onResume,
             onNext = onNext
+        )
+    }
+    
+    // Dialogs
+    if (showNoteDialog) {
+        AddNoteDialog(
+            onDismiss = { showNoteDialog = false },
+            onConfirm = { text, rating ->
+                onAddNote(text, rating)
+                showNoteDialog = false
+            }
+        )
+    }
+    
+    if (showFeedbackDialog) {
+        AddFeedbackDialog(
+            onDismiss = { showFeedbackDialog = false },
+            onConfirm = { difficulty, enjoyment, notes ->
+                onAddFeedback(difficulty, enjoyment, notes)
+                showFeedbackDialog = false
+            }
         )
     }
 }
@@ -384,4 +427,144 @@ private fun formatTime(seconds: Int): String {
     val minutes = seconds / 60
     val secs = seconds % 60
     return String.format("%02d:%02d", minutes, secs)
+}
+
+/**
+ * Card for displaying notes and feedback options
+ */
+@Composable
+fun NotesAndFeedbackCard(
+    sessionNotes: List<PracticeNote>,
+    currentExerciseFeedback: ExerciseFeedback?,
+    onAddNote: () -> Unit,
+    onAddFeedback: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    RpgCard(modifier = modifier) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "📝 Notes & Feedback",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = RpgTheme.accent
+                )
+                
+                Text(
+                    text = "${sessionNotes.size} notes",
+                    fontSize = 14.sp,
+                    color = RpgTheme.textSecondary
+                )
+            }
+            
+            // Quick action buttons
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                RpgButton(
+                    text = "📝 Add Note",
+                    onClick = onAddNote,
+                    modifier = Modifier.weight(1f),
+                    color = RpgTheme.info
+                )
+                
+                RpgButton(
+                    text = "💭 Feedback",
+                    onClick = onAddFeedback,
+                    modifier = Modifier.weight(1f),
+                    color = if (currentExerciseFeedback != null) RpgTheme.success else RpgTheme.secondary
+                )
+            }
+            
+            // Show feedback status if exists
+            if (currentExerciseFeedback != null) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(RpgTheme.background, RoundedCornerShape(8.dp))
+                        .padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text(
+                        text = "✓ Feedback recorded",
+                        fontSize = 14.sp,
+                        color = RpgTheme.success,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "Difficulty: ${currentExerciseFeedback.difficulty.displayName}",
+                        fontSize = 12.sp,
+                        color = RpgTheme.textSecondary
+                    )
+                    Text(
+                        text = "Enjoyment: ${"⭐".repeat(currentExerciseFeedback.enjoyment)}",
+                        fontSize = 12.sp,
+                        color = RpgTheme.textSecondary
+                    )
+                }
+            }
+            
+            // Show recent notes
+            if (sessionNotes.isNotEmpty()) {
+                val recentNotes = sessionNotes.takeLast(2).reversed()
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "Recent Notes:",
+                        fontSize = 14.sp,
+                        color = RpgTheme.textSecondary,
+                        fontWeight = FontWeight.Bold
+                    )
+                    
+                    recentNotes.forEach { note ->
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(RpgTheme.background, RoundedCornerShape(8.dp))
+                                .padding(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = note.text,
+                                    fontSize = 13.sp,
+                                    color = RpgTheme.textPrimary,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                if (note.rating != null) {
+                                    Text(
+                                        text = "${"⭐".repeat(note.rating)}",
+                                        fontSize = 12.sp,
+                                        color = RpgTheme.accent
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (sessionNotes.size > 2) {
+                        Text(
+                            text = "+ ${sessionNotes.size - 2} more notes",
+                            fontSize = 12.sp,
+                            color = RpgTheme.textSecondary,
+                            fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                        )
+                    }
+                }
+            }
+        }
+    }
 }

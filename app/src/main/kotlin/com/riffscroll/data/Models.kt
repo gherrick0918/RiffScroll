@@ -62,7 +62,10 @@ data class PracticeSession(
     val currentExerciseIndex: Int = 0,
     val isActive: Boolean = false,
     val isPaused: Boolean = false,
-    val elapsedSeconds: Int = 0
+    val elapsedSeconds: Int = 0,
+    val sessionId: String = "",  // Unique ID for this session
+    val notes: List<PracticeNote> = emptyList(),  // Notes added during session
+    val exerciseFeedback: Map<String, ExerciseFeedback> = emptyMap()  // Feedback per exercise
 )
 
 /**
@@ -135,7 +138,9 @@ data class PracticeHistoryEntry(
     val routineName: String,  // Name of the routine practiced
     val exerciseCount: Int,  // Number of exercises completed
     val instrument: InstrumentType?,  // Primary instrument used (null if both)
-    val difficulty: DifficultyLevel?  // Difficulty level of the routine
+    val difficulty: DifficultyLevel?,  // Difficulty level of the routine
+    val notes: List<PracticeNote> = emptyList(),  // Notes from the session
+    val exerciseFeedback: Map<String, ExerciseFeedback> = emptyMap()  // Feedback per exercise
 )
 
 /**
@@ -152,3 +157,35 @@ data class PracticeStatistics(
     val sessionsThisMonth: Int = 0,
     val lastPracticeDate: Long? = null  // Timestamp of last practice session
 )
+
+/**
+ * Represents a note taken during or after practicing an exercise
+ */
+data class PracticeNote(
+    val id: String,
+    val exerciseId: String,  // ID of the exercise this note is about
+    val sessionId: String,  // ID of the practice session
+    val text: String,  // The note content
+    val timestamp: Long = System.currentTimeMillis(),  // When the note was created
+    val rating: Int? = null  // Optional 1-5 star rating for the exercise
+)
+
+/**
+ * Represents feedback or reflection on an exercise or session
+ */
+data class ExerciseFeedback(
+    val exerciseId: String,
+    val difficulty: DifficultyRating,  // How difficult was it?
+    val enjoyment: Int,  // 1-5 rating of how enjoyable
+    val notes: String = ""  // Optional additional notes
+)
+
+/**
+ * Rating for exercise difficulty (user's subjective experience)
+ */
+enum class DifficultyRating(val displayName: String) {
+    TOO_EASY("Too Easy"),
+    JUST_RIGHT("Just Right"),
+    CHALLENGING("Challenging"),
+    TOO_HARD("Too Hard")
+}

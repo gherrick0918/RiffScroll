@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
 import kotlin.math.sin
 
 /**
@@ -139,7 +140,10 @@ class PracticeViewModel(
             currentExerciseIndex = 0,
             isActive = true,
             isPaused = true,  // Start paused so user can review exercise first
-            elapsedSeconds = 0
+            elapsedSeconds = 0,
+            sessionId = "session_${UUID.randomUUID()}",
+            notes = emptyList(),
+            exerciseFeedback = emptyMap()
         )
         
         _currentSession.value = session
@@ -261,7 +265,9 @@ class PracticeViewModel(
             routineName = routineName,
             exerciseCount = session.routine.exercises.size,
             instrument = primaryInstrument,
-            difficulty = maxDifficulty
+            difficulty = maxDifficulty,
+            notes = session.notes,
+            exerciseFeedback = session.exerciseFeedback
         )
         
         routineRepository.addPracticeHistoryEntry(historyEntry)
@@ -733,6 +739,77 @@ class PracticeViewModel(
      */
     fun getExerciseById(id: String): Exercise? {
         return repository.getExerciseById(id)
+    }
+    
+    // Practice Notes and Feedback
+    
+    /**
+     * Add a note during or after practicing an exercise
+     */
+    fun addPracticeNote(text: String, rating: Int? = null) {
+        val session = _currentSession.value ?: return
+        val currentExercise = session.routine.exercises.getOrNull(session.currentExerciseIndex) ?: return
+        
+        // Validate rating is in valid range
+        val validRating = rating?.coerceIn(1, 5)
+        
+        val note = PracticeNote(
+            id = "note_${UUID.randomUUID()}",
+            exerciseId = currentExercise.id,
+            sessionId = session.sessionId,
+            text = text,
+            timestamp = System.currentTimeMillis(),
+            rating = validRating
+        )
+        
+        val updatedNotes = session.notes + note
+        _currentSession.value = session.copy(notes = updatedNotes)
+    }
+    
+    /**
+     * Add feedback for an exercise
+     */
+    fun addExerciseFeedback(difficulty: DifficultyRating, enjoyment: Int, notes: String = "") {
+        val session = _currentSession.value ?: return
+        val currentExercise = session.routine.exercises.getOrNull(session.currentExerciseIndex) ?: return
+        
+        // Validate enjoyment is in valid range
+        val validEnjoyment = enjoyment.coerceIn(1, 5)
+        
+        val feedback = ExerciseFeedback(
+            exerciseId = currentExercise.id,
+            difficulty = difficulty,
+            enjoyment = validEnjoyment,
+            notes = notes
+        )
+        
+        val updatedFeedback = session.exerciseFeedback + (currentExercise.id to feedback)
+        _currentSession.value = session.copy(exerciseFeedback = updatedFeedback)
+    }
+    
+    /**
+     * Get all notes for the current session
+     */
+    fun getCurrentSessionNotes(): List<PracticeNote> {
+        return _currentSession.value?.notes ?: emptyList()
+    }
+    
+    /**
+     * Get feedback for current exercise
+     */
+    fun getCurrentExerciseFeedback(): ExerciseFeedback? {
+        val session = _currentSession.value ?: return null
+        val currentExercise = session.routine.exercises.getOrNull(session.currentExerciseIndex) ?: return null
+        return session.exerciseFeedback[currentExercise.id]
+    }
+    
+    /**
+     * Delete a practice note
+     */
+    fun deletePracticeNote(noteId: String) {
+        val session = _currentSession.value ?: return
+        val updatedNotes = session.notes.filter { it.id != noteId }
+        _currentSession.value = session.copy(notes = updatedNotes)
     }
     
     // User Progress Persistence
